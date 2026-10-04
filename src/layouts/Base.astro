@@ -4,15 +4,28 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/manrope';
 import '../styles/global.css';
 import { campanhasAtivas } from '../lib/campanhas';
-import { u } from '../lib/url';
+import { u, data } from '../lib/url';
 
 interface Props { titulo: string; descricao?: string; }
 const { titulo, descricao = 'Robots corta-relva Husqvarna e outros equipamentos para o jardim. Representante oficial Husqvarna.' } = Astro.props;
 
 const ativas = await campanhasAtivas();
 const destaque = ativas[0];
+
+// Texto de urgência do banner (o site é reconstruído todos os dias, por isso fica atualizado)
+let prazo = '';
+if (destaque) {
+  const hoje = new Date();
+  const fim = destaque.data.dataFim;
+  const dias = Math.round(
+    (Date.UTC(fim.getUTCFullYear(), fim.getUTCMonth(), fim.getUTCDate()) -
+      Date.UTC(hoje.getUTCFullYear(), hoje.getUTCMonth(), hoje.getUTCDate())) / 86400000
+  );
+  prazo = dias <= 0 ? 'Termina hoje' : dias === 1 ? 'Termina amanhã' : dias <= 14 ? 'Termina em ' + dias + ' dias' : 'Até ' + data(fim);
+}
 const caminho = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
 const nav = [
+  { href: '/', texto: 'Início', icone: true },
   { href: '/robots/', texto: 'Robots corta-relva' },
   { href: '/produtos/', texto: 'Outros produtos' },
   { href: '/campanhas/', texto: 'Campanhas' },
@@ -32,9 +45,11 @@ const nav = [
   <body>
     {destaque && (
       <div class="banner">
-        <div class="wrap">
-          {destaque.data.titulo}: {destaque.data.resumo}{' '}
-          <a href={u('/campanhas/#' + destaque.id)}>Ver campanha</a>
+        <div class="wrap banner-linha">
+          <span class="banner-chip"><span class="banner-ponto" aria-hidden="true"></span>Campanha</span>
+          <p class="banner-texto"><strong>{destaque.data.titulo}</strong> {destaque.data.resumo}</p>
+          <span class="banner-prazo">{prazo}</span>
+          <a class="banner-link" href={u('/campanhas/#' + destaque.id)}>Ver campanha</a>
         </div>
       </div>
     )}
@@ -43,7 +58,14 @@ const nav = [
         <a class="marca" href={u('/')}><img src={u('/imagens/logo1.jpg')} alt="Promáquinas, página inicial" width="89" height="56" /></a>
         <nav aria-label="Principal">
           {nav.map((n) => (
-            <a href={u(n.href)} class={n.cta ? 'nav-cta' : undefined} aria-current={caminho.startsWith(n.href) ? 'page' : undefined}>{n.texto}</a>
+            <a href={u(n.href)} class={n.cta ? 'nav-cta' : undefined} title={n.icone ? n.texto : undefined} aria-current={(n.href === '/' ? caminho === '/' : caminho.startsWith(n.href)) ? 'page' : undefined}>
+              {n.icone ? (
+                <>
+                  <svg class="nav-icone" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" /></svg>
+                  <span class="so-leitores">{n.texto}</span>
+                </>
+              ) : n.texto}
+            </a>
           ))}
         </nav>
       </div>
@@ -63,6 +85,9 @@ const nav = [
         </p>
       </div>
     </footer>
+    <button type="button" class="topo-voltar" id="topo-voltar" aria-label="Voltar ao topo">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 15l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </button>
     <script>
       // Animações de entrada ao fazer scroll e parallax suave no topo (desligados com "reduzir movimento")
       const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -84,6 +109,14 @@ const nav = [
             pendente = false;
           });
         }, { passive: true });
+      }
+      // Botão "Voltar ao topo": aparece depois de descer um pouco
+      const voltar = document.getElementById('topo-voltar');
+      if (voltar) {
+        const atualizarVoltar = () => voltar.classList.toggle('ativo', window.scrollY > 600);
+        window.addEventListener('scroll', atualizarVoltar, { passive: true });
+        atualizarVoltar();
+        voltar.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduzir ? 'auto' : 'smooth' }));
       }
     </script>
   </body>

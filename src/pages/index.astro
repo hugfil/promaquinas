@@ -55,7 +55,7 @@ const emCampanha = await produtosEmCampanha();
                 <h3>{c.data.titulo}</h3>
                 <p>{c.data.resumo}</p>
                 <p class="etiqueta">Até {data(c.data.dataFim)}</p>
-                <a href={u('/campanhas/#' + c.id)}>Saber mais</a>
+                <a class="cobre-tudo" href={u('/campanhas/#' + c.id)}>Saber mais</a>
               </div>
             </li>
           ))}
