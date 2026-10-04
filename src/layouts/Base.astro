@@ -24,7 +24,7 @@ const nav = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{titulo} | Promaquinas</title>
+    <title>{titulo} | Promáquinas</title>
     <meta name="description" content={descricao} />
     <link rel="icon" type="image/jpeg" href={u('/imagens/logo2.jpg')} />
     <script is:inline>document.documentElement.classList.add('js');</script>
@@ -40,7 +40,7 @@ const nav = [
     )}
     <header class="topo">
       <div class="wrap">
-        <a class="marca" href={u('/')}><img src={u('/imagens/logo1.jpg')} alt="Promaquinas, página inicial" width="89" height="56" /></a>
+        <a class="marca" href={u('/')}><img src={u('/imagens/logo1.jpg')} alt="Promáquinas, página inicial" width="89" height="56" /></a>
         <nav aria-label="Principal">
           {nav.map((n) => (
             <a href={u(n.href)} class={n.cta ? 'nav-cta' : undefined} aria-current={caminho.startsWith(n.href) ? 'page' : undefined}>{n.texto}</a>
@@ -51,7 +51,7 @@ const nav = [
     <main><slot /></main>
     <footer class="rodape">
       <div class="wrap">
-        <a href={u('/')}><img class="logo-rodape" src={u('/imagens/logo1.jpg')} alt="Promaquinas" width="102" height="64" /></a>
+        <a href={u('/')}><img class="logo-rodape" src={u('/imagens/logo1.jpg')} alt="Promáquinas" width="102" height="64" /></a>
         <p>Representante oficial Husqvarna.</p>
         <p>
           Este site apresenta produtos e campanhas. Não efetuamos vendas online: peça um orçamento e entramos em contacto.
