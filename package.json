@@ -1,0 +1,11 @@
+{
+  "name": "site-husqvarna",
+  "type": "module",
+  "version": "0.1.0",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": { "dev": "astro dev", "build": "astro build", "preview": "astro preview" },
+  "dependencies": { "astro": "^7.3.5",
+    "@fontsource-variable/inter": "^5.0.0",
+    "@fontsource-variable/manrope": "^5.0.0",
+    "@fontsource-variable/montserrat": "^5.0.0" }
+}

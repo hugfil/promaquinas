@@ -1,0 +1,90 @@
+---
+import '@fontsource-variable/montserrat';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/manrope';
+import '../styles/global.css';
+import { campanhasAtivas } from '../lib/campanhas';
+import { u } from '../lib/url';
+
+interface Props { titulo: string; descricao?: string; }
+const { titulo, descricao = 'Robots corta-relva Husqvarna e outros equipamentos para o jardim. Representante oficial Husqvarna.' } = Astro.props;
+
+const ativas = await campanhasAtivas();
+const destaque = ativas[0];
+const caminho = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
+const nav = [
+  { href: '/robots/', texto: 'Robots corta-relva' },
+  { href: '/produtos/', texto: 'Outros produtos' },
+  { href: '/campanhas/', texto: 'Campanhas' },
+  { href: '/orcamento/', texto: 'Pedir Orçamento', cta: true },
+];
+---
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo} | Promaquinas</title>
+    <meta name="description" content={descricao} />
+    <link rel="icon" type="image/jpeg" href={u('/imagens/logo2.jpg')} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    {destaque && (
+      <div class="banner">
+        <div class="wrap">
+          {destaque.data.titulo}: {destaque.data.resumo}{' '}
+          <a href={u('/campanhas/#' + destaque.id)}>Ver campanha</a>
+        </div>
+      </div>
+    )}
+    <header class="topo">
+      <div class="wrap">
+        <a class="marca" href={u('/')}><img src={u('/imagens/logo1.jpg')} alt="Promaquinas, página inicial" width="89" height="56" /></a>
+        <nav aria-label="Principal">
+          {nav.map((n) => (
+            <a href={u(n.href)} class={n.cta ? 'nav-cta' : undefined} aria-current={caminho.startsWith(n.href) ? 'page' : undefined}>{n.texto}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main><slot /></main>
+    <footer class="rodape">
+      <div class="wrap">
+        <a href={u('/')}><img class="logo-rodape" src={u('/imagens/logo1.jpg')} alt="Promaquinas" width="102" height="64" /></a>
+        <p>Representante oficial Husqvarna.</p>
+        <p>
+          Este site apresenta produtos e campanhas. Não efetuamos vendas online: peça um orçamento e entramos em contacto.
+        </p>
+        <p>
+          <!-- SUBSTITUIR pelos dados reais -->
+          Email: <a href="mailto:geral@exemplo.pt">geral@exemplo.pt</a> · Telefone: 000 000 000 ·{' '}
+          <a href={u('/privacidade/')}>Política de privacidade</a>
+        </p>
+      </div>
+    </footer>
+    <script>
+      // Animações de entrada ao fazer scroll e parallax suave no topo (desligados com "reduzir movimento")
+      const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduzir && 'IntersectionObserver' in window) {
+        const alvos = document.querySelectorAll('main .secao > .wrap, main > .wrap');
+        const obs = new IntersectionObserver((entradas) => {
+          entradas.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visivel'); obs.unobserve(e.target); } });
+        }, { rootMargin: '0px 0px -10% 0px' });
+        alvos.forEach((el) => { el.classList.add('anim'); obs.observe(el); });
+      }
+      const fundo = document.querySelector<HTMLElement>('.hero-fundo');
+      if (fundo && !reduzir && window.matchMedia('(min-width: 768px)').matches) {
+        let pendente = false;
+        window.addEventListener('scroll', () => {
+          if (pendente) return;
+          pendente = true;
+          requestAnimationFrame(() => {
+            fundo.style.transform = `translateY(${Math.min(window.scrollY, 1200) * 0.5}px)`;
+            pendente = false;
+          });
+        }, { passive: true });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import { render } from 'astro:content';
+import { campanhasAtivas, resolverProdutos } from '../lib/campanhas';
+import { u, data } from '../lib/url';
+import EmCampanha from '../components/EmCampanha.astro';
+
+const ativas = await campanhasAtivas();
+const itens = await Promise.all(
+  ativas.map(async (c) => ({
+    c,
+    Content: (await render(c)).Content,
+    produtos: await resolverProdutos(c.data.produtos, c.data.titulo),
+  }))
+);
+---
+<Base titulo="Campanhas">
+  <section class="hero claro">
+    <div class="wrap">
+      <h1>Campanhas</h1>
+      <p>Ofertas e condições especiais por tempo limitado.</p>
+    </div>
+  </section>
+  <div class="wrap">
+    {itens.length === 0 && (
+      <p>Neste momento não há campanhas ativas. Volte em breve ou <a href={u('/orcamento/')}>peça um orçamento</a>.</p>
+    )}
+    {itens.map(({ c, Content, produtos }) => (
+      <article class="prosa campanha" id={c.id}>
+        <h2>{c.data.titulo}</h2>
+        <p class="etiqueta">De {data(c.data.dataInicio)} a {data(c.data.dataFim)}</p>
+        {c.data.imagem && <img class="campanha-img" loading="lazy" decoding="async" src={u(c.data.imagem)} alt={c.data.titulo} />}
+        <p>{c.data.resumo}</p>
+        <Content />
+        {produtos.length > 0 && (
+          <>
+            <h3>Produtos desta campanha</h3>
+            <ul class="grelha campanha-produtos">
+              {produtos.map((p) => (
+                <li class="cartao">
+                  <EmCampanha />
+                  {p.imagem && <img loading="lazy" decoding="async" src={u(p.imagem)} alt={p.nome} />}
+                  <div class="corpo">
+                    <p class="etiqueta">{p.marca}</p>
+                    <a class="cobre" href={u(p.href)}><h3>{p.nome}</h3></a>
+                    <p>{p.resumo}</p>
+                    {p.preco && <p class="preco">{p.preco}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+        {c.data.link && <p><a href={u(c.data.link)}>{produtos.length > 0 ? 'Saber mais' : 'Ver produtos desta campanha'}</a></p>}
+      </article>
+    ))}
+  </div>
+</Base>

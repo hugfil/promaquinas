@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { u } from '../lib/url';
+
+const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.data.ordem);
+// SUBSTITUIR pelo endereço do teu formulário (ex.: Formspree: https://formspree.io/f/xxxxxxxx)
+const ACAO = 'https://formspree.io/f/SEU_ID';
+---
+<Base titulo="Pedir orçamento" descricao="Peça um orçamento para um robot corta-relva Husqvarna.">
+  <section class="hero claro">
+    <div class="wrap">
+      <h1>Pedir orçamento</h1>
+      <p>Quanto mais souber do seu jardim, mais rigoroso será o orçamento. Os campos com * são obrigatórios. Respondemos por email ou telefone.</p>
+    </div>
+  </section>
+  <div class="wrap">
+    <form class="orcamento" method="POST" action={ACAO}>
+      <input type="hidden" name="_subject" value="Novo pedido de orçamento (robot corta-relva)" />
+      <p class="oculto" aria-hidden="true"><label>Não preencher<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+
+      <fieldset>
+        <legend>Os seus dados</legend>
+        <label>Nome *<input name="nome" required autocomplete="name" /></label>
+        <div class="duas">
+          <label>Email *<input type="email" name="email" required autocomplete="email" /></label>
+          <label>Telefone *<input type="tel" name="telefone" required autocomplete="tel" /></label>
+        </div>
+        <div class="duas">
+          <label>Código postal *<input name="codigo_postal" required pattern="[0-9]{4}-[0-9]{3}" placeholder="0000-000" autocomplete="postal-code" /></label>
+          <label>Localidade *<input name="localidade" required autocomplete="address-level2" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>O seu jardim</legend>
+        <label>Modelo de interesse
+          <select name="modelo" id="modelo">
+            <option value="Ainda não sei">Ainda não sei, preciso de aconselhamento</option>
+            {robots.map((r) => <option value={r.data.nome}>{r.data.nome}</option>)}
+          </select>
+        </label>
+        <div class="duas">
+          <label>Área do relvado (m²) *<input type="number" name="area_m2" min="1" required /></label>
+          <label>Zonas de relva separadas *
+            <input type="number" name="zonas" min="1" value="1" required />
+            <span class="ajuda">Áreas ligadas apenas por passagens ou separadas por obstáculos.</span>
+          </label>
+        </div>
+        <label>Declive máximo *
+          <select name="declive" required>
+            <option value="">Escolha</option>
+            <option>Praticamente plano (até 10%)</option>
+            <option>Moderado (10% a 25%)</option>
+            <option>Acentuado (25% a 40%)</option>
+            <option>Muito acentuado (mais de 40%)</option>
+            <option>Não sei</option>
+          </select>
+        </label>
+        <label>Passagens estreitas ou obstáculos
+          <textarea name="obstaculos" rows="3" placeholder="Ex.: passagem de 1 m entre a casa e o muro, piscina, árvores, canteiros"></textarea>
+        </label>
+        <label>Cobertura de rede no jardim
+          <select name="rede">
+            <option>Não sei</option>
+            <option>Wi-Fi chega ao jardim</option>
+            <option>Só cobertura móvel</option>
+            <option>Sem rede</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" name="instalacao" value="sim" /> Quero instalação e configuração incluídas</label>
+      </fieldset>
+
+      <label>Mais informações<textarea name="mensagem" rows="4"></textarea></label>
+
+      <label class="check">
+        <input type="checkbox" name="consentimento" value="sim" required />
+        <span>Aceito que os meus dados sejam usados para responder a este pedido, conforme a <a href={u('/privacidade/')}>política de privacidade</a>. *</span>
+      </label>
+
+      <p><button class="botao" type="submit">Enviar Pedido</button></p>
+    </form>
+  </div>
+  <script>
+    // Pré-seleciona o modelo quando se chega da ficha de um robot (?modelo=...)
+    const m = new URLSearchParams(location.search).get('modelo');
+    const sel = document.getElementById('modelo') as HTMLSelectElement | null;
+    if (m && sel) sel.value = m;
+  </script>
+</Base>

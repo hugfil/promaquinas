@@ -1,0 +1,88 @@
+---
+import { u } from '../lib/url';
+
+interface Props { imagens: string[]; nome: string; }
+const { imagens, nome } = Astro.props;
+const varias = imagens.length > 1;
+---
+{imagens.length > 0 && (
+  <div class="galeria">
+    <h2>Galeria</h2>
+    <ul class="galeria-lista">
+      {imagens.map((src, i) => (
+        <li>
+          <button type="button" class="galeria-abrir" data-src={u(src)} data-alt={`${nome}, imagem ${i + 1}`}>
+            <img loading="lazy" decoding="async" src={u(src)} alt={`${nome}, imagem ${i + 1}`} />
+          </button>
+        </li>
+      ))}
+    </ul>
+    <dialog class="galeria-dialogo" aria-label={`Galeria de ${nome}`}>
+      <div class="galeria-topo">
+        <span class="galeria-contagem" aria-live="polite"></span>
+        <button type="button" class="galeria-fechar">Fechar</button>
+      </div>
+      <div class="galeria-palco">
+        {varias && (
+          <button type="button" class="galeria-seta galeria-ant" aria-label="Imagem anterior">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
+        )}
+        <img alt="" />
+        {varias && (
+          <button type="button" class="galeria-seta galeria-seg" aria-label="Imagem seguinte">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
+        )}
+      </div>
+    </dialog>
+  </div>
+)}
+<script>
+  // Galeria: abre a imagem ampliada e permite passar à anterior/seguinte
+  // (setas no ecrã, teclas ← →, ou deslizar o dedo). Esc, clique fora ou "Fechar" fecham.
+  document.querySelectorAll<HTMLElement>('.galeria').forEach((g) => {
+    const dialogo = g.querySelector<HTMLDialogElement>('dialog');
+    const grande = dialogo?.querySelector<HTMLImageElement>('.galeria-palco img');
+    const contagem = dialogo?.querySelector<HTMLElement>('.galeria-contagem');
+    const fechar = dialogo?.querySelector<HTMLButtonElement>('.galeria-fechar');
+    const botoes = Array.from(g.querySelectorAll<HTMLButtonElement>('.galeria-abrir'));
+    if (!dialogo || !grande || !fechar || botoes.length === 0) return;
+
+    let atual = 0;
+    const mostrar = (i: number) => {
+      atual = (i + botoes.length) % botoes.length;
+      const b = botoes[atual];
+      grande.src = b.dataset.src ?? '';
+      grande.alt = b.dataset.alt ?? '';
+      if (contagem && botoes.length > 1) contagem.textContent = (atual + 1) + ' / ' + botoes.length;
+    };
+
+    botoes.forEach((b, i) => b.addEventListener('click', () => {
+      mostrar(i);
+      dialogo.showModal();
+      fechar.focus();
+    }));
+    g.querySelector('.galeria-ant')?.addEventListener('click', () => mostrar(atual - 1));
+    g.querySelector('.galeria-seg')?.addEventListener('click', () => mostrar(atual + 1));
+
+    dialogo.addEventListener('keydown', (e) => {
+      if (botoes.length < 2) return;
+      if (e.key === 'ArrowLeft') { e.preventDefault(); mostrar(atual - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); mostrar(atual + 1); }
+    });
+    dialogo.addEventListener('click', (e) => {
+      const alvo = e.target as HTMLElement;
+      if (alvo === dialogo || alvo.classList.contains('galeria-fechar')) dialogo.close();
+    });
+
+    let x0: number | null = null;
+    grande.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    grande.addEventListener('touchend', (e) => {
+      if (x0 === null || botoes.length < 2) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) mostrar(atual + (dx < 0 ? 1 : -1));
+      x0 = null;
+    });
+  });
+</script>

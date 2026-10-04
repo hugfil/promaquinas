@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { u } from '../../lib/url';
+import Galeria from '../../components/Galeria.astro';
+import EmCampanha from '../../components/EmCampanha.astro';
+import { produtosEmCampanha } from '../../lib/campanhas';
+
+export async function getStaticPaths() {
+  const produtos = await getCollection('outros');
+  return produtos.map((p) => ({ params: { slug: p.id }, props: { produto: p } }));
+}
+const { produto } = Astro.props;
+const { Content } = await render(produto);
+const d = produto.data;
+const emCampanha = (await produtosEmCampanha()).has('produtos/' + produto.id);
+const assunto = encodeURIComponent(`Pedido de informações: ${d.nome}`);
+---
+<Base titulo={d.nome} descricao={d.resumo}>
+  <div class="wrap">
+    <p><a href={u('/produtos/')}>Voltar a outros produtos</a></p>
+    {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}
+    <h1>{d.nome}</h1>
+    <p class="etiqueta">{d.marca}{d.tipo ? `, ${d.tipo}` : ''}</p>
+    <p>{d.resumo}</p>
+    {d.imagem && <img src={u(d.imagem)} alt={d.nome} style="max-width:100%;border-radius:6px" />}
+    {d.preco && <p class="preco">Preço indicativo: {d.preco}<small>Valor sujeito a confirmação.</small></p>}
+    <div class="prosa"><Content /></div>
+    <Galeria imagens={d.galeria} nome={d.nome} />
+    <p><a class="botao" href={`mailto:geral@exemplo.pt?subject=${assunto}`}>Pedir informações</a></p>
+  </div>
+</Base>

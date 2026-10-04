@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { u } from '../../lib/url';
+import { produtosEmCampanha } from '../../lib/campanhas';
+import EmCampanha from '../../components/EmCampanha.astro';
+
+const produtos = (await getCollection('outros')).sort((a, b) => a.data.nome.localeCompare(b.data.nome, 'pt'));
+const marcas = [...new Set(produtos.map((p) => p.data.marca))].sort((a, b) => a.localeCompare(b, 'pt'));
+const emCampanha = await produtosEmCampanha();
+---
+<Base titulo="Outros produtos">
+  <section class="hero claro">
+    <div class="wrap">
+      <h1>Outros produtos</h1>
+      <p>Equipamentos de várias marcas para o jardim e a floresta.</p>
+    </div>
+  </section>
+  <div class="wrap">
+    {marcas.length > 1 && (
+      <div class="filtro">
+        <label for="marca">Marca</label>
+        <select id="marca">
+          <option value="">Todas</option>
+          {marcas.map((m) => <option value={m}>{m}</option>)}
+        </select>
+      </div>
+    )}
+    <ul class="grelha">
+      {produtos.map((p) => (
+        <li class="cartao" data-marca={p.data.marca}>
+          {emCampanha.has('produtos/' + p.id) && <EmCampanha />}
+          {p.data.imagem && <img loading="lazy" decoding="async" src={u(p.data.imagem)} alt={p.data.nome} />}
+          <div class="corpo">
+            <p class="etiqueta">{p.data.marca}{p.data.tipo ? `, ${p.data.tipo}` : ''}</p>
+            <a class="cobre" href={u(`/produtos/${p.id}/`)}><h3>{p.data.nome}</h3></a>
+            <p>{p.data.resumo}</p>
+            {p.data.preco && <p class="preco">{p.data.preco}</p>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <script>
+    // Filtro por marca (só aparece quando há mais de uma marca)
+    const sel = document.getElementById('marca') as HTMLSelectElement | null;
+    sel?.addEventListener('change', () => {
+      document.querySelectorAll<HTMLElement>('[data-marca]').forEach((li) => {
+        li.hidden = sel.value !== '' && li.dataset.marca !== sel.value;
+      });
+    });
+  </script>
+</Base>

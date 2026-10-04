@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { u } from '../../lib/url';
+import { produtosEmCampanha } from '../../lib/campanhas';
+import EmCampanha from '../../components/EmCampanha.astro';
+
+const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.data.ordem);
+const emCampanha = await produtosEmCampanha();
+---
+<Base titulo="Robots corta-relva" descricao="Gama de robots corta-relva Husqvarna: escolha o modelo certo para o seu jardim.">
+  <section class="hero claro">
+    <div class="wrap">
+      <h1>Robots corta-relva</h1>
+      <p>A escolha do modelo depende sobretudo da área do relvado, do declive e do número de zonas separadas. Se tiver dúvidas, diga-nos como é o seu jardim no pedido de orçamento.</p>
+      <p><a class="botao" href={u('/orcamento/')}>Pedir Orçamento</a></p>
+    </div>
+  </section>
+  <div class="wrap">
+    <h2>Modelos</h2>
+    <ul class="grelha">
+      {robots.map((r) => (
+        <li class="cartao">
+          {emCampanha.has('robots/' + r.id) && <EmCampanha />}
+          {r.data.imagem && <img loading="lazy" decoding="async" src={u(r.data.imagem)} alt={r.data.nome} />}
+          <div class="corpo">
+            <p class="etiqueta">{r.data.gama}</p>
+            <a class="cobre" href={u(`/robots/${r.id}/`)}><h3>{r.data.nome}</h3></a>
+            <p>{r.data.resumo}</p>
+            <p class="etiqueta">Até {r.data.areaMaxima} m², declive até {r.data.decliveMaximo}%</p>
+            {r.data.preco && <p class="preco">{r.data.preco}</p>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

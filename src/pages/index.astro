@@ -1,0 +1,155 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { campanhasAtivas, produtosEmCampanha } from '../lib/campanhas';
+import EmCampanha from '../components/EmCampanha.astro';
+import { testemunhos as obterTestemunhos } from '../lib/testemunhos';
+import { u, data } from '../lib/url';
+import { existsSync } from 'node:fs';
+
+// O vídeo só aparece se o ficheiro existir (public/videos/hero.mp4).
+const temVideo = existsSync('./public/videos/hero.mp4');
+const temPoster = existsSync('./public/imagens/hero-poster.jpg');
+
+const ativas = await campanhasAtivas();
+const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.data.ordem);
+const destaquesRobots = robots.filter((r) => r.data.destaque);
+const robotsMostrar = (destaquesRobots.length ? destaquesRobots : robots).slice(0, 2);
+const outros = await getCollection('outros');
+const destaquesOutros = outros.filter((o) => o.data.destaque);
+const outrosMostrar = (destaquesOutros.length ? destaquesOutros : outros).slice(0, 2);
+const testemunhos = await obterTestemunhos();
+const emCampanha = await produtosEmCampanha();
+---
+<Base titulo="Início">
+  <section class={temVideo ? 'hero hero-grande hero-video' : 'hero hero-grande'}>
+    {temVideo && (
+      <>
+        <video class="hero-fundo" autoplay muted loop playsinline preload="metadata" aria-hidden="true"
+          poster={temPoster ? u('/imagens/hero-poster.jpg') : undefined}>
+          <source src={u('/videos/hero.mp4')} type="video/mp4" />
+        </video>
+        <button type="button" class="hero-pausa" id="hero-pausa" aria-label="Pausar vídeo">Pausar vídeo</button>
+      </>
+    )}
+    <div class="wrap hero-texto">
+      <h1>O futuro da manutenção do seu jardim começa aqui</h1>
+      <p class="sub">Robots corta-relva inteligentes para jardins de qualquer dimensão.</p>
+      <p class="pequeno">Representante oficial Husqvarna.</p>
+      <p class="acoes">
+        <a class="botao" href={u('/orcamento/')}>Pedir Orçamento</a>
+        <a class="botao sec" href={u('/robots/')}>Ver Robots</a>
+      </p>
+    </div>
+  </section>
+
+  {ativas.length > 0 && (
+    <section class="secao cinza">
+      <div class="wrap">
+        <h2>Campanhas ativas</h2>
+        <ul class="grelha">
+          {ativas.map((c) => (
+            <li class="cartao">
+              {c.data.imagem && <img loading="lazy" decoding="async" src={u(c.data.imagem)} alt={c.data.titulo} />}
+              <div class="corpo">
+                <h3>{c.data.titulo}</h3>
+                <p>{c.data.resumo}</p>
+                <p class="etiqueta">Até {data(c.data.dataFim)}</p>
+                <a href={u('/campanhas/#' + c.id)}>Saber mais</a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="secao">
+    <div class="wrap split">
+      <div>
+        <h2>Robots corta-relva Husqvarna</h2>
+        <p>Instalação profissional, assistência técnica e acompanhamento especializado.</p>
+        <p><a class="botao" href={u('/robots/')}>Ver Robots</a></p>
+      </div>
+      <ul class="grelha">
+        {robotsMostrar.map((r) => (
+          <li class="cartao">
+            {emCampanha.has('robots/' + r.id) && <EmCampanha />}
+            {r.data.imagem && <img loading="lazy" decoding="async" src={u(r.data.imagem)} alt={r.data.nome} />}
+            <div class="corpo">
+              <a class="cobre" href={u(`/robots/${r.id}/`)}><h3>{r.data.nome}</h3></a>
+              <p>{r.data.resumo}</p>
+              <p class="etiqueta">Até {r.data.areaMaxima} m²</p>
+              {r.data.preco && <p class="preco">{r.data.preco}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {testemunhos.length > 0 && (
+    <section class="secao cinza">
+      <div class="wrap">
+        <h2>O que dizem os clientes</h2>
+        {testemunhos.map((t) => (
+          <figure class="testemunho">
+            {t.data.estrelas && (
+              <div class="estrelas" role="img" aria-label={t.data.estrelas + ' em 5 estrelas'}>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" class={n <= (t.data.estrelas ?? 0) ? 'cheia' : 'vazia'}>
+                    <path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" />
+                  </svg>
+                ))}
+              </div>
+            )}
+            <blockquote style="margin:0"><p>“{t.data.texto}”</p></blockquote>
+            <footer>{t.data.autor}{t.data.localidade ? `, ${t.data.localidade}` : ''}</footer>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="secao">
+    <div class="wrap split inverso">
+      <div>
+        <h2>Outros produtos</h2>
+        <p>Equipamentos de várias marcas para o jardim e a floresta.</p>
+        <p><a class="botao sec" href={u('/produtos/')}>Ver Outros Produtos</a></p>
+      </div>
+      <ul class="grelha">
+        {outrosMostrar.map((p) => (
+          <li class="cartao">
+            {emCampanha.has('produtos/' + p.id) && <EmCampanha />}
+            {p.data.imagem && <img loading="lazy" decoding="async" src={u(p.data.imagem)} alt={p.data.nome} />}
+            <div class="corpo">
+              <p class="etiqueta">{p.data.marca}{p.data.tipo ? `, ${p.data.tipo}` : ''}</p>
+              <a class="cobre" href={u(`/produtos/${p.id}/`)}><h3>{p.data.nome}</h3></a>
+              <p>{p.data.resumo}</p>
+              {p.data.preco && <p class="preco">{p.data.preco}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    // Botão de pausa (acessibilidade) e respeito por "reduzir movimento" do sistema
+    const video = document.querySelector<HTMLVideoElement>('.hero-fundo');
+    const botao = document.getElementById('hero-pausa');
+    if (video && botao) {
+      const atualizar = () => {
+        const texto = video.paused ? 'Reproduzir vídeo' : 'Pausar vídeo';
+        botao.textContent = texto;
+        botao.setAttribute('aria-label', texto);
+      };
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) video.pause();
+      atualizar();
+      botao.addEventListener('click', () => { video.paused ? video.play() : video.pause(); });
+      video.addEventListener('play', atualizar);
+      video.addEventListener('pause', atualizar);
+    }
+  </script>
+</Base>

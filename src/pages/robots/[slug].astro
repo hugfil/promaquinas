@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { u } from '../../lib/url';
+import Galeria from '../../components/Galeria.astro';
+import EmCampanha from '../../components/EmCampanha.astro';
+import { produtosEmCampanha } from '../../lib/campanhas';
+
+export async function getStaticPaths() {
+  const robots = await getCollection('robots');
+  return robots.map((r) => ({ params: { slug: r.id }, props: { robot: r } }));
+}
+const { robot } = Astro.props;
+const { Content } = await render(robot);
+const d = robot.data;
+const emCampanha = (await produtosEmCampanha()).has('robots/' + robot.id);
+---
+<Base titulo={d.nome} descricao={d.resumo}>
+  <div class="wrap">
+    <p><a href={u('/robots/')}>Voltar aos robots</a></p>
+    {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}
+    <h1>{d.nome}</h1>
+    <p>{d.resumo}</p>
+    {d.imagem && <img src={u(d.imagem)} alt={d.nome} style="max-width:100%;border-radius:6px" />}
+    <h2>Ficha técnica</h2>
+    <table class="ficha">
+      <tbody>
+        <tr><th>Marca</th><td>{d.marca}</td></tr>
+        <tr><th>Gama</th><td>{d.gama}</td></tr>
+        <tr><th>Área máxima</th><td>{d.areaMaxima} m²</td></tr>
+        <tr><th>Declive máximo</th><td>{d.decliveMaximo}%</td></tr>
+        {d.ligacao.length > 0 && <tr><th>Ligação</th><td>{d.ligacao.join(', ')}</td></tr>}
+      </tbody>
+    </table>
+    {d.preco && <p class="preco">Preço indicativo: {d.preco}<small>Valor sujeito a confirmação no orçamento.</small></p>}
+    <div class="prosa"><Content /></div>
+    <Galeria imagens={d.galeria} nome={d.nome} />
+    <p><a class="botao" href={u(`/orcamento/?modelo=${encodeURIComponent(d.nome)}`)}>Pedir Orçamento para este modelo</a></p>
+  </div>
+</Base>
