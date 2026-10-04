@@ -47,7 +47,7 @@ const nav = [
       <div class="banner">
         <div class="wrap banner-linha">
           <span class="banner-chip"><span class="banner-ponto" aria-hidden="true"></span>Campanha</span>
-          <p class="banner-texto"><strong>{destaque.data.titulo}</strong> {destaque.data.resumo}</p>
+          <p class="banner-texto"><strong>{destaque.data.titulo}</strong> <span class="banner-resumo">{destaque.data.resumo}</span></p>
           <span class="banner-prazo">{prazo}</span>
           <a class="banner-link" href={u('/campanhas/#' + destaque.id)}>Ver campanha</a>
         </div>
@@ -92,7 +92,7 @@ const nav = [
       // Animações de entrada ao fazer scroll e parallax suave no topo (desligados com "reduzir movimento")
       const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduzir && 'IntersectionObserver' in window) {
-        const alvos = document.querySelectorAll('main .secao > .wrap, main > .wrap');
+        const alvos = document.querySelectorAll('main .secao > .wrap, main > .wrap:not([data-sem-anim])');
         const obs = new IntersectionObserver((entradas) => {
           entradas.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visivel'); obs.unobserve(e.target); } });
         }, { rootMargin: '0px 0px -10% 0px' });
@@ -113,8 +113,28 @@ const nav = [
       // Botão "Voltar ao topo": aparece depois de descer um pouco
       const voltar = document.getElementById('topo-voltar');
       if (voltar) {
-        const atualizarVoltar = () => voltar.classList.toggle('ativo', window.scrollY > 600);
-        window.addEventListener('scroll', atualizarVoltar, { passive: true });
+        // Anel de progresso do scroll e destaque (âmbar + halo) quando está por cima de zonas escuras
+        const escuros = Array.from(document.querySelectorAll<HTMLElement>('footer.rodape, .hero:not(.claro)'));
+        let pendenteVoltar = false;
+        const atualizarVoltar = () => {
+          pendenteVoltar = false;
+          const total = document.documentElement.scrollHeight - window.innerHeight;
+          const progresso = total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0;
+          voltar.style.setProperty('--progresso', progresso.toFixed(1));
+          voltar.classList.toggle('ativo', window.scrollY > 600);
+          const r = voltar.getBoundingClientRect();
+          const sobreEscuro = escuros.some((el) => {
+            const e = el.getBoundingClientRect();
+            return e.top < r.bottom && e.bottom > r.top;
+          });
+          voltar.classList.toggle('sobre-escuro', sobreEscuro);
+        };
+        window.addEventListener('scroll', () => {
+          if (pendenteVoltar) return;
+          pendenteVoltar = true;
+          requestAnimationFrame(atualizarVoltar);
+        }, { passive: true });
+        window.addEventListener('resize', atualizarVoltar);
         atualizarVoltar();
         voltar.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduzir ? 'auto' : 'smooth' }));
       }

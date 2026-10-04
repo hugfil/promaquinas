@@ -21,7 +21,10 @@ const assunto = encodeURIComponent(`Pedido de informações: ${d.nome}`);
     <p><a href={u('/produtos/')}>Voltar a outros produtos</a></p>
     {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}
     <h1>{d.nome}</h1>
-    <p class="etiqueta">{d.marca}{d.tipo ? `, ${d.tipo}` : ''}</p>
+    <p class="etiquetas">
+      <a class="etiqueta-filtro" title={'Ver todos os produtos da marca ' + d.marca} href={u('/produtos/') + '?marca=' + encodeURIComponent(d.marca)}>{d.marca}</a>
+      {d.tipo && <a class="etiqueta-filtro" title={'Ver todos: ' + d.tipo} href={u('/produtos/') + '?tipo=' + encodeURIComponent(d.tipo)}>{d.tipo}</a>}
+    </p>
     <p>{d.resumo}</p>
     {d.imagem && <img src={u(d.imagem)} alt={d.nome} style="max-width:100%;border-radius:6px" />}
     {d.preco && <p class="preco">Preço indicativo: {d.preco}<small>Valor sujeito a confirmação.</small></p>}

@@ -3,11 +3,15 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { u } from '../../lib/url';
 import { produtosEmCampanha } from '../../lib/campanhas';
+import { precoNumero } from '../../lib/preco';
 import EmCampanha from '../../components/EmCampanha.astro';
 
 const produtos = (await getCollection('outros')).sort((a, b) => a.data.nome.localeCompare(b.data.nome, 'pt'));
+const lista = produtos.map((p, i) => ({ p, i, valor: precoNumero(p.data.preco) }));
 const marcas = [...new Set(produtos.map((p) => p.data.marca))].sort((a, b) => a.localeCompare(b, 'pt'));
+const tipos = [...new Set(produtos.map((p) => p.data.tipo).filter((t): t is string => Boolean(t)))].sort((a, b) => a.localeCompare(b, 'pt'));
 const emCampanha = await produtosEmCampanha();
+const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
 ---
 <Base titulo="Outros produtos">
   <section class="hero claro">
@@ -16,19 +20,64 @@ const emCampanha = await produtosEmCampanha();
       <p>Equipamentos de várias marcas para o jardim e a floresta.</p>
     </div>
   </section>
-  <div class="wrap">
-    {marcas.length > 1 && (
-      <div class="filtro">
-        <label for="marca">Marca</label>
-        <select id="marca">
-          <option value="">Todas</option>
-          {marcas.map((m) => <option value={m}>{m}</option>)}
-        </select>
+  <div class="wrap" data-sem-anim>
+    {temFiltros && (
+      <div class="filtros-barra">
+        <div class="filtros-grupos">
+          {tipos.length > 1 && (
+            <fieldset class="grupo">
+              <legend>Tipo</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="tipo" value="" checked /><span>Todos<small class="chip-n"></small></span></label>
+                {tipos.map((t) => (
+                  <label class="chip"><input type="radio" name="tipo" value={t} /><span>{t}<small class="chip-n"></small></span></label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          {marcas.length > 1 && (
+            <fieldset class="grupo">
+              <legend>Marca</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="marca" value="" checked /><span>Todas<small class="chip-n"></small></span></label>
+                {marcas.map((m) => (
+                  <label class="chip"><input type="radio" name="marca" value={m} /><span>{m}<small class="chip-n"></small></span></label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          {produtos.length > 1 && (
+            <fieldset class="grupo">
+              <legend>Ordenar</legend>
+              <div class="segmentos">
+                <label class="segmento"><input type="radio" name="ordem" value="" checked /><span>Nome</span></label>
+                <label class="segmento">
+                  <input type="radio" name="ordem" value="preco-asc" />
+                  <span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    Preço crescente
+                  </span>
+                </label>
+                <label class="segmento">
+                  <input type="radio" name="ordem" value="preco-desc" />
+                  <span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    Preço decrescente
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+          )}
+        </div>
+        <div class="filtros-rodape">
+          <p class="filtros-contagem" id="contagem" aria-live="polite"></p>
+          <button type="button" class="filtro-limpar" id="limpar-filtros" hidden>Limpar filtros</button>
+        </div>
       </div>
     )}
     <ul class="grelha">
-      {produtos.map((p) => (
-        <li class="cartao" data-marca={p.data.marca}>
+      {lista.map(({ p, i, valor }) => (
+        <li class="cartao" data-i={i} data-marca={p.data.marca} data-tipo={p.data.tipo ?? ''} data-preco={valor ?? ''}>
           {emCampanha.has('produtos/' + p.id) && <EmCampanha />}
           {p.data.imagem && <img loading="lazy" decoding="async" src={u(p.data.imagem)} alt={p.data.nome} />}
           <div class="corpo">
@@ -40,14 +89,123 @@ const emCampanha = await produtosEmCampanha();
         </li>
       ))}
     </ul>
+    <p id="sem-resultados" hidden>Não há produtos com esta seleção. <a href={u('/produtos/')}>Ver todos os produtos</a></p>
   </div>
   <script>
-    // Filtro por marca (só aparece quando há mais de uma marca)
-    const sel = document.getElementById('marca') as HTMLSelectElement | null;
-    sel?.addEventListener('change', () => {
-      document.querySelectorAll<HTMLElement>('[data-marca]').forEach((li) => {
-        li.hidden = sel.value !== '' && li.dataset.marca !== sel.value;
+    // Filtros por marca e tipo, e ordenação por preço. Aceitam ligações como /produtos/?tipo=Motosserra
+    const lista = document.querySelector<HTMLElement>('.grelha');
+    const itens = Array.from(document.querySelectorAll<HTMLElement>('.grelha > [data-marca]'));
+    const limpar = document.getElementById('limpar-filtros');
+    const vazio = document.getElementById('sem-resultados');
+    const contagem = document.getElementById('contagem');
+
+    const radios = (nome: string) => Array.from(document.querySelectorAll<HTMLInputElement>('input[name="' + nome + '"]'));
+    const valor = (nome: string) => document.querySelector<HTMLInputElement>('input[name="' + nome + '"]:checked')?.value ?? '';
+    const corresponde = (li: HTMLElement, marca: string, tipo: string) =>
+      (marca === '' || li.dataset.marca === marca) && (tipo === '' || li.dataset.tipo === tipo);
+    const indice = (li: HTMLElement) => Number(li.dataset.i);
+    const preco = (li: HTMLElement) => (li.dataset.preco === '' ? null : Number(li.dataset.preco));
+    const escreverN = (r: HTMLInputElement, n: number) => {
+      const el = r.nextElementSibling?.querySelector('.chip-n');
+      if (el) el.textContent = String(n);
+    };
+
+    // Animação dos cartões: entram um a um ao fazer scroll e voltam a entrar quando os filtros mudam
+    const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let observador: IntersectionObserver | null = null;
+    if (!reduzir && 'IntersectionObserver' in window) {
+      observador = new IntersectionObserver((entradas) => {
+        let k = 0;
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const li = e.target as HTMLElement;
+          li.style.setProperty('--atraso', Math.min(k++, 8) * 70 + 'ms');
+          li.classList.remove('cartao-pre');
+          li.classList.add('entra');
+          observador?.unobserve(li);
+        });
+      }, { rootMargin: '0px 0px -8% 0px' });
+    }
+    itens.forEach((li) => li.addEventListener('animationend', () => li.classList.remove('entra')));
+    const animarCartoes = () => {
+      const obs = observador;
+      if (!obs) return;
+      const cartoes = Array.from(lista?.querySelectorAll<HTMLElement>(':scope > [data-marca]') ?? []);
+      cartoes.forEach((li) => {
+        obs.unobserve(li);
+        li.classList.remove('entra', 'cartao-pre');
       });
+      const visiveis = cartoes.filter((li) => !li.hidden);
+      visiveis.forEach((li) => li.classList.add('cartao-pre'));
+      void lista?.offsetWidth;
+      visiveis.forEach((li) => obs.observe(li));
+    };
+
+    const aplicar = (animar: boolean) => {
+      const marca = valor('marca');
+      const tipo = valor('tipo');
+      const ordem = valor('ordem');
+
+      let visiveis = 0;
+      itens.forEach((li) => {
+        const ok = corresponde(li, marca, tipo);
+        li.hidden = !ok;
+        if (ok) visiveis++;
+      });
+
+      const ordenados = [...itens].sort((a, b) => {
+        if (ordem === 'preco-asc' || ordem === 'preco-desc') {
+          const x = preco(a);
+          const y = preco(b);
+          if (x === null && y === null) return indice(a) - indice(b);
+          if (x === null) return 1;
+          if (y === null) return -1;
+          return (ordem === 'preco-asc' ? x - y : y - x) || indice(a) - indice(b);
+        }
+        return indice(a) - indice(b);
+      });
+      ordenados.forEach((li) => lista?.appendChild(li));
+
+      // Cada opção mostra quantos produtos daria, tendo em conta o outro filtro
+      radios('marca').forEach((r) => {
+        const n = itens.filter((li) => corresponde(li, r.value, tipo)).length;
+        escreverN(r, n);
+        r.disabled = n === 0 && !r.checked;
+      });
+      radios('tipo').forEach((r) => {
+        const n = itens.filter((li) => corresponde(li, marca, r.value)).length;
+        escreverN(r, n);
+        r.disabled = n === 0 && !r.checked;
+      });
+
+      if (contagem) contagem.textContent = visiveis === 1 ? '1 produto' : visiveis + ' produtos';
+      if (vazio) vazio.hidden = visiveis > 0;
+      if (limpar) limpar.hidden = marca === '' && tipo === '' && ordem === '';
+
+      const params = new URLSearchParams();
+      if (marca) params.set('marca', marca);
+      if (tipo) params.set('tipo', tipo);
+      if (ordem) params.set('ordem', ordem);
+      const texto = params.toString();
+      history.replaceState(null, '', location.pathname + (texto ? '?' + texto : ''));
+      if (animar) animarCartoes();
+    };
+
+    const inicial = new URLSearchParams(location.search);
+    ['marca', 'tipo', 'ordem'].forEach((nome) => {
+      const pedido = inicial.get(nome);
+      const alvo = radios(nome).find((r) => r.value === pedido);
+      if (alvo) alvo.checked = true;
     });
+    ['marca', 'tipo', 'ordem'].forEach((nome) => radios(nome).forEach((r) => r.addEventListener('change', () => aplicar(true))));
+    limpar?.addEventListener('click', () => {
+      ['marca', 'tipo', 'ordem'].forEach((nome) => {
+        const todos = radios(nome).find((r) => r.value === '');
+        if (todos) todos.checked = true;
+      });
+      aplicar(true);
+    });
+    aplicar(false);
+    animarCartoes();
   </script>
 </Base>

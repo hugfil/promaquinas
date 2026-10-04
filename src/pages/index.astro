@@ -19,6 +19,10 @@ const outros = await getCollection('outros');
 const destaquesOutros = outros.filter((o) => o.data.destaque);
 const outrosMostrar = (destaquesOutros.length ? destaquesOutros : outros).slice(0, 2);
 const testemunhos = await obterTestemunhos();
+
+// Secções a alternar entre cinza claro e branco, pela ordem em que aparecem
+let fundoAtual = 0;
+const fundo = () => (fundoAtual++ % 2 === 0 ? 'secao cinza' : 'secao');
 const emCampanha = await produtosEmCampanha();
 ---
 <Base titulo="Início">
@@ -44,7 +48,7 @@ const emCampanha = await produtosEmCampanha();
   </section>
 
   {ativas.length > 0 && (
-    <section class="secao cinza">
+    <section class={fundo()}>
       <div class="wrap">
         <h2>Campanhas ativas</h2>
         <ul class="grelha">
@@ -64,7 +68,7 @@ const emCampanha = await produtosEmCampanha();
     </section>
   )}
 
-  <section class="secao">
+  <section class={fundo()}>
     <div class="wrap split">
       <div>
         <h2>Robots corta-relva Husqvarna</h2>
@@ -88,30 +92,7 @@ const emCampanha = await produtosEmCampanha();
     </div>
   </section>
 
-  {testemunhos.length > 0 && (
-    <section class="secao cinza">
-      <div class="wrap">
-        <h2>O que dizem os clientes</h2>
-        {testemunhos.map((t) => (
-          <figure class="testemunho">
-            {t.data.estrelas && (
-              <div class="estrelas" role="img" aria-label={t.data.estrelas + ' em 5 estrelas'}>
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" class={n <= (t.data.estrelas ?? 0) ? 'cheia' : 'vazia'}>
-                    <path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" />
-                  </svg>
-                ))}
-              </div>
-            )}
-            <blockquote style="margin:0"><p>“{t.data.texto}”</p></blockquote>
-            <footer>{t.data.autor}{t.data.localidade ? `, ${t.data.localidade}` : ''}</footer>
-          </figure>
-        ))}
-      </div>
-    </section>
-  )}
-
-  <section class="secao">
+  <section class={fundo()}>
     <div class="wrap split inverso">
       <div>
         <h2>Outros produtos</h2>
@@ -134,6 +115,31 @@ const emCampanha = await produtosEmCampanha();
       </ul>
     </div>
   </section>
+
+  {testemunhos.length > 0 && (
+    <section class={fundo()}>
+      <div class="wrap">
+        <h2>O que dizem os nossos clientes</h2>
+        <div class="testemunhos">
+          {testemunhos.map((t) => (
+            <figure class="testemunho">
+                {t.data.estrelas && (
+                  <div class="estrelas" role="img" aria-label={t.data.estrelas + ' em 5 estrelas'}>
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" class={n <= (t.data.estrelas ?? 0) ? 'cheia' : 'vazia'}>
+                        <path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" />
+                      </svg>
+                    ))}
+                  </div>
+                )}
+                <blockquote style="margin:0"><p>“{t.data.texto}”</p></blockquote>
+                <footer>{t.data.autor}{t.data.localidade ? `, ${t.data.localidade}` : ''}</footer>
+              </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <script>
     // Botão de pausa (acessibilidade) e respeito por "reduzir movimento" do sistema
