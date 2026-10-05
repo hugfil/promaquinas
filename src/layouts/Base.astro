@@ -7,7 +7,7 @@ import { campanhasAtivas } from '../lib/campanhas';
 import { u, data } from '../lib/url';
 
 interface Props { titulo: string; descricao?: string; }
-const { titulo, descricao = 'Robots corta-relva Husqvarna e outros equipamentos para o jardim. Representante oficial Husqvarna.' } = Astro.props;
+const { titulo, descricao = 'Robots corta-relva Husqvarna® e outros equipamentos para o jardim. Representante oficial Husqvarna®.' } = Astro.props;
 
 const ativas = await campanhasAtivas();
 const destaque = ativas[0];
@@ -74,7 +74,7 @@ const nav = [
     <footer class="rodape">
       <div class="wrap">
         <a href={u('/')}><img class="logo-rodape" src={u('/imagens/logo1.jpg')} alt="Promáquinas" width="102" height="64" /></a>
-        <p>Representante oficial Husqvarna.</p>
+        <p>Representante oficial Husqvarna®.</p>
         <p>
           Este site apresenta produtos e campanhas. Não efetuamos vendas online: peça um orçamento e entramos em contacto.
         </p>

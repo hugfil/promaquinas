@@ -1,5 +1,5 @@
 ---
-titulo: " 🍂 Campanha Outono 2025"
+titulo: "🍂 Campanha Outono 2025"
 resumo: "Condições especiais em produtos selecionados."
 imagem: "/imagens/campanha-001.jpg"
 dataInicio: 2026-10-01
