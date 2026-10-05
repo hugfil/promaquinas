@@ -3,10 +3,18 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { u } from '../../lib/url';
 import { produtosEmCampanha } from '../../lib/campanhas';
+import { precoNumero } from '../../lib/preco';
 import EmCampanha from '../../components/EmCampanha.astro';
 
 const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.data.ordem);
+const lista = robots.map((r, i) => ({ r, i, valor: precoNumero(r.data.preco) }));
 const emCampanha = await produtosEmCampanha();
+
+// Opções dos filtros: cada valor que existe nas fichas (areaMaxima, decliveMaximo) vira uma opção "Até N"
+const unicos = (valores: number[]) => [...new Set(valores)].sort((a, b) => a - b);
+const areas = unicos(robots.map((r) => r.data.areaMaxima));
+const declives = unicos(robots.map((r) => r.data.decliveMaximo));
+const temFiltros = robots.length > 1;
 ---
 <Base titulo="Robots corta-relva" descricao="Gama de robots corta-relva Husqvarna: escolha o modelo certo para o seu jardim.">
   <section class="hero claro">
@@ -16,11 +24,68 @@ const emCampanha = await produtosEmCampanha();
       <p><a class="botao" href={u('/orcamento/')}>Pedir Orçamento</a></p>
     </div>
   </section>
-  <div class="wrap">
+  <div class="wrap" data-sem-anim>
     <h2>Modelos</h2>
+    {temFiltros && (
+      <div class="filtros-barra">
+        <button type="button" class="filtros-abrir" id="filtros-abrir" aria-expanded="false" aria-controls="filtros-grupos">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle cx="15" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="9" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+          Filtrar
+          <span class="filtros-badge" id="filtros-badge" hidden>0</span>
+        </button>
+        <div class="filtros-grupos" id="filtros-grupos">
+          {areas.length > 1 && (
+            <fieldset class="grupo">
+              <legend>Área máxima</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="area" value="" checked /><span>Todas<small class="chip-n"></small></span></label>
+                {areas.map((a) => (
+                  <label class="chip"><input type="radio" name="area" value={a} /><span>Até {a} m²<small class="chip-n"></small></span></label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          {declives.length > 1 && (
+            <fieldset class="grupo">
+              <legend>Declive máximo</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="declive" value="" checked /><span>Todos<small class="chip-n"></small></span></label>
+                {declives.map((d) => (
+                  <label class="chip"><input type="radio" name="declive" value={d} /><span>Até {d}%<small class="chip-n"></small></span></label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          <fieldset class="grupo">
+            <legend>Ordenar</legend>
+            <div class="segmentos">
+              <label class="segmento"><input type="radio" name="ordem" value="" checked /><span>Recomendados</span></label>
+              <label class="segmento">
+                <input type="radio" name="ordem" value="preco-asc" />
+                <span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Preço crescente
+                </span>
+              </label>
+              <label class="segmento">
+                <input type="radio" name="ordem" value="preco-desc" />
+                <span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Preço decrescente
+                </span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="filtros-rodape">
+          <p class="filtros-contagem" id="contagem" aria-live="polite"></p>
+          <button type="button" class="filtro-limpar" id="limpar-filtros" hidden>Limpar filtros</button>
+        </div>
+      </div>
+    )}
     <ul class="grelha">
-      {robots.map((r) => (
-        <li class="cartao">
+      {lista.map(({ r, i, valor }) => (
+        <li class="cartao" data-i={i} data-area={r.data.areaMaxima} data-declive={r.data.decliveMaximo} data-preco={valor ?? ''}>
           {emCampanha.has('robots/' + r.id) && <EmCampanha />}
           {r.data.imagem && <img loading="lazy" decoding="async" src={u(r.data.imagem)} alt={r.data.nome} />}
           <div class="corpo">
@@ -33,5 +98,139 @@ const emCampanha = await produtosEmCampanha();
         </li>
       ))}
     </ul>
+    <p id="sem-resultados" hidden>Não há robots com esta seleção. <a href={u('/robots/')}>Ver todos os robots</a></p>
   </div>
+  <script>
+    // Filtros por área e declive, ordenação por preço e animação dos cartões.
+    // Filtros cumulativos: "Até 1000 m²" mostra os robots com areaMaxima igual ou inferior a 1000 (o mesmo para o declive).
+    const grelha = document.querySelector<HTMLElement>('.grelha');
+    const itens = Array.from(document.querySelectorAll<HTMLElement>('.grelha > [data-area]'));
+    const limpar = document.getElementById('limpar-filtros');
+    const vazio = document.getElementById('sem-resultados');
+    const contagem = document.getElementById('contagem');
+    const nomes = ['area', 'declive', 'ordem'];
+
+    const radios = (nome: string) => Array.from(document.querySelectorAll<HTMLInputElement>('input[name="' + nome + '"]'));
+    const valor = (nome: string) => document.querySelector<HTMLInputElement>('input[name="' + nome + '"]:checked')?.value ?? '';
+    const corresponde = (li: HTMLElement, area: string, declive: string) =>
+      (area === '' || Number(li.dataset.area) <= Number(area)) &&
+      (declive === '' || Number(li.dataset.declive) <= Number(declive));
+    const indice = (li: HTMLElement) => Number(li.dataset.i);
+    const preco = (li: HTMLElement) => (li.dataset.preco === '' ? null : Number(li.dataset.preco));
+    const escreverN = (r: HTMLInputElement, n: number) => {
+      const el = r.nextElementSibling?.querySelector('.chip-n');
+      if (el) el.textContent = String(n);
+    };
+
+    // Animação dos cartões: entram um a um ao fazer scroll e voltam a entrar quando os filtros mudam
+    const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let observador: IntersectionObserver | null = null;
+    if (!reduzir && 'IntersectionObserver' in window) {
+      observador = new IntersectionObserver((entradas) => {
+        let k = 0;
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const li = e.target as HTMLElement;
+          li.style.setProperty('--atraso', Math.min(k++, 8) * 70 + 'ms');
+          li.classList.remove('cartao-pre');
+          li.classList.add('entra');
+          observador?.unobserve(li);
+        });
+      }, { rootMargin: '0px 0px -8% 0px' });
+    }
+    itens.forEach((li) => li.addEventListener('animationend', () => li.classList.remove('entra')));
+    const animarCartoes = () => {
+      const obs = observador;
+      if (!obs) return;
+      const cartoes = Array.from(grelha?.querySelectorAll<HTMLElement>(':scope > [data-area]') ?? []);
+      cartoes.forEach((li) => {
+        obs.unobserve(li);
+        li.classList.remove('entra', 'cartao-pre');
+      });
+      const visiveis = cartoes.filter((li) => !li.hidden);
+      visiveis.forEach((li) => li.classList.add('cartao-pre'));
+      void grelha?.offsetWidth;
+      visiveis.forEach((li) => obs.observe(li));
+    };
+
+    // Em ecrãs pequenos, os filtros ficam escondidos atrás do botão "Filtrar"
+    const barra = document.querySelector<HTMLElement>('.filtros-barra');
+    const abrir = document.getElementById('filtros-abrir');
+    const badge = document.getElementById('filtros-badge');
+    abrir?.addEventListener('click', () => {
+      const aberta = barra?.classList.toggle('aberta') ?? false;
+      abrir.setAttribute('aria-expanded', String(aberta));
+    });
+
+    const aplicar = (animar: boolean) => {
+      const area = valor('area');
+      const declive = valor('declive');
+      const ordem = valor('ordem');
+
+      let visiveis = 0;
+      itens.forEach((li) => {
+        const ok = corresponde(li, area, declive);
+        li.hidden = !ok;
+        if (ok) visiveis++;
+      });
+
+      const ordenados = [...itens].sort((a, b) => {
+        if (ordem === 'preco-asc' || ordem === 'preco-desc') {
+          const x = preco(a);
+          const y = preco(b);
+          if (x === null && y === null) return indice(a) - indice(b);
+          if (x === null) return 1;
+          if (y === null) return -1;
+          return (ordem === 'preco-asc' ? x - y : y - x) || indice(a) - indice(b);
+        }
+        return indice(a) - indice(b);
+      });
+      ordenados.forEach((li) => grelha?.appendChild(li));
+
+      // Cada opção mostra quantos robots daria, tendo em conta o outro filtro
+      radios('area').forEach((r) => {
+        const n = itens.filter((li) => corresponde(li, r.value, declive)).length;
+        escreverN(r, n);
+        r.disabled = n === 0 && !r.checked;
+      });
+      radios('declive').forEach((r) => {
+        const n = itens.filter((li) => corresponde(li, area, r.value)).length;
+        escreverN(r, n);
+        r.disabled = n === 0 && !r.checked;
+      });
+
+      if (contagem) contagem.textContent = visiveis === 1 ? '1 robot' : visiveis + ' robots';
+      if (vazio) vazio.hidden = visiveis > 0;
+      if (limpar) limpar.hidden = area === '' && declive === '' && ordem === '';
+      const ativos = [area, declive, ordem].filter((v) => v !== '').length;
+      if (badge) {
+        badge.textContent = String(ativos);
+        badge.hidden = ativos === 0;
+      }
+
+      const params = new URLSearchParams();
+      if (area) params.set('area', area);
+      if (declive) params.set('declive', declive);
+      if (ordem) params.set('ordem', ordem);
+      const texto = params.toString();
+      history.replaceState(null, '', location.pathname + (texto ? '?' + texto : ''));
+      if (animar) animarCartoes();
+    };
+
+    const inicial = new URLSearchParams(location.search);
+    nomes.forEach((nome) => {
+      const alvo = radios(nome).find((r) => r.value === inicial.get(nome));
+      if (alvo) alvo.checked = true;
+    });
+    nomes.forEach((nome) => radios(nome).forEach((r) => r.addEventListener('change', () => aplicar(true))));
+    limpar?.addEventListener('click', () => {
+      nomes.forEach((nome) => {
+        const todos = radios(nome).find((r) => r.value === '');
+        if (todos) todos.checked = true;
+      });
+      aplicar(true);
+    });
+    aplicar(false);
+    animarCartoes();
+  </script>
 </Base>

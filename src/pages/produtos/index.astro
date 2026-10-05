@@ -23,7 +23,12 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
   <div class="wrap" data-sem-anim>
     {temFiltros && (
       <div class="filtros-barra">
-        <div class="filtros-grupos">
+        <button type="button" class="filtros-abrir" id="filtros-abrir" aria-expanded="false" aria-controls="filtros-grupos">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle cx="15" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="9" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+          Filtrar
+          <span class="filtros-badge" id="filtros-badge" hidden>0</span>
+        </button>
+        <div class="filtros-grupos" id="filtros-grupos">
           {tipos.length > 1 && (
             <fieldset class="grupo">
               <legend>Tipo</legend>
@@ -141,6 +146,15 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
       visiveis.forEach((li) => obs.observe(li));
     };
 
+    // Em ecrãs pequenos, os filtros ficam escondidos atrás do botão "Filtrar"
+    const barra = document.querySelector<HTMLElement>('.filtros-barra');
+    const abrir = document.getElementById('filtros-abrir');
+    const badge = document.getElementById('filtros-badge');
+    abrir?.addEventListener('click', () => {
+      const aberta = barra?.classList.toggle('aberta') ?? false;
+      abrir.setAttribute('aria-expanded', String(aberta));
+    });
+
     const aplicar = (animar: boolean) => {
       const marca = valor('marca');
       const tipo = valor('tipo');
@@ -181,6 +195,11 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
       if (contagem) contagem.textContent = visiveis === 1 ? '1 produto' : visiveis + ' produtos';
       if (vazio) vazio.hidden = visiveis > 0;
       if (limpar) limpar.hidden = marca === '' && tipo === '' && ordem === '';
+      const ativos = [marca, tipo, ordem].filter((v) => v !== '').length;
+      if (badge) {
+        badge.textContent = String(ativos);
+        badge.hidden = ativos === 0;
+      }
 
       const params = new URLSearchParams();
       if (marca) params.set('marca', marca);

@@ -33,7 +33,10 @@ const emCampanha = await produtosEmCampanha();
           poster={temPoster ? u('/imagens/hero-poster.jpg') : undefined}>
           <source src={u('/videos/hero.mp4')} type="video/mp4" />
         </video>
-        <button type="button" class="hero-pausa" id="hero-pausa" aria-label="Pausar vídeo">Pausar vídeo</button>
+        <button type="button" class="hero-pausa" id="hero-pausa" aria-label="Pausar vídeo" title="Pausar vídeo">
+          <svg class="ic-pausa" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" /></svg>
+          <svg class="ic-play" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /></svg>
+        </button>
       </>
     )}
     <div class="wrap hero-texto">
@@ -119,7 +122,7 @@ const emCampanha = await produtosEmCampanha();
   {testemunhos.length > 0 && (
     <section class={fundo()}>
       <div class="wrap">
-        <h2>O que dizem os nossos clientes</h2>
+        <h2>O que dizem os nosso clientes</h2>
         <div class="testemunhos">
           {testemunhos.map((t) => (
             <figure class="testemunho">
@@ -148,14 +151,19 @@ const emCampanha = await produtosEmCampanha();
     if (video && botao) {
       const atualizar = () => {
         const texto = video.paused ? 'Reproduzir vídeo' : 'Pausar vídeo';
-        botao.textContent = texto;
+        botao.dataset.pausado = String(video.paused);
         botao.setAttribute('aria-label', texto);
+        botao.title = texto;
       };
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) video.pause();
       atualizar();
       botao.addEventListener('click', () => { video.paused ? video.play() : video.pause(); });
       video.addEventListener('play', atualizar);
       video.addEventListener('pause', atualizar);
+      // O anel à volta do botão mostra o progresso do vídeo
+      video.addEventListener('timeupdate', () => {
+        if (video.duration) botao.style.setProperty('--progresso', ((video.currentTime / video.duration) * 100).toFixed(1));
+      });
     }
   </script>
 </Base>

@@ -7,7 +7,7 @@ import { campanhasAtivas } from '../lib/campanhas';
 import { u, data } from '../lib/url';
 
 interface Props { titulo: string; descricao?: string; }
-const { titulo, descricao = 'Robots corta-relva Husqvarna® e outros equipamentos para o jardim. Representante oficial Husqvarna®.' } = Astro.props;
+const { titulo, descricao = 'Robots corta-relva Husqvarna e outros equipamentos para o jardim. Representante oficial Husqvarna.' } = Astro.props;
 
 const ativas = await campanhasAtivas();
 const destaque = ativas[0];
@@ -26,10 +26,10 @@ if (destaque) {
 const caminho = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
 const nav = [
   { href: '/', texto: 'Início', icone: true },
-  { href: '/robots/', texto: 'Robots corta-relva' },
+  { href: '/robots/', texto: 'Robots', dica: 'Robots corta-relva' },
   { href: '/produtos/', texto: 'Outros produtos' },
   { href: '/campanhas/', texto: 'Campanhas' },
-  { href: '/orcamento/', texto: 'Pedir Orçamento', cta: true },
+  { href: '/orcamento/', texto: 'Orçamento', cta: true },
 ];
 ---
 <!doctype html>
@@ -58,7 +58,7 @@ const nav = [
         <a class="marca" href={u('/')}><img src={u('/imagens/logo1.jpg')} alt="Promáquinas, página inicial" width="89" height="56" /></a>
         <nav aria-label="Principal">
           {nav.map((n) => (
-            <a href={u(n.href)} class={n.cta ? 'nav-cta' : undefined} title={n.icone ? n.texto : undefined} aria-current={(n.href === '/' ? caminho === '/' : caminho.startsWith(n.href)) ? 'page' : undefined}>
+            <a href={u(n.href)} class={n.cta ? 'nav-cta' : undefined} title={n.dica ?? (n.icone ? n.texto : undefined)} aria-current={(n.href === '/' ? caminho === '/' : caminho.startsWith(n.href)) ? 'page' : undefined}>
               {n.icone ? (
                 <>
                   <svg class="nav-icone" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" /></svg>
@@ -74,7 +74,7 @@ const nav = [
     <footer class="rodape">
       <div class="wrap">
         <a href={u('/')}><img class="logo-rodape" src={u('/imagens/logo1.jpg')} alt="Promáquinas" width="102" height="64" /></a>
-        <p>Representante oficial Husqvarna®.</p>
+        <p>Representante oficial Husqvarna.</p>
         <p>
           Este site apresenta produtos e campanhas. Não efetuamos vendas online: peça um orçamento e entramos em contacto.
         </p>

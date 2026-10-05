@@ -1,87 +1,148 @@
 ---
 import { u } from '../lib/url';
+import { resolverMidia } from '../lib/media';
 
 interface Props { imagens: string[]; nome: string; }
 const { imagens, nome } = Astro.props;
-const varias = imagens.length > 1;
+const itens = imagens.map(resolverMidia);
+const varias = itens.length > 1;
+const temVideo = itens.some((m) => m.tipo !== 'imagem');
 ---
-{imagens.length > 0 && (
+{itens.length > 0 && (
   <div class="galeria">
     <h2>Galeria</h2>
     <ul class="galeria-lista">
-      {imagens.map((src, i) => (
+      {itens.map((m, i) => (
         <li>
-          <button type="button" class="galeria-abrir" data-src={u(src)} data-alt={`${nome}, imagem ${i + 1}`}>
-            <img loading="lazy" decoding="async" src={u(src)} alt={`${nome}, imagem ${i + 1}`} />
+          <button
+            type="button"
+            class="galeria-abrir"
+            data-tipo={m.tipo}
+            data-src={m.tipo === 'youtube' ? m.id : u(m.src)}
+            data-poster={m.poster ? u(m.poster) : ''}
+            data-alt={m.tipo === 'imagem' ? `${nome}, imagem ${i + 1}` : `${nome}, vídeo`}
+            aria-label={m.tipo === 'imagem' ? undefined : `${nome}, vídeo`}
+          >
+            {m.tipo === 'imagem' && <img loading="lazy" decoding="async" src={u(m.src)} alt={`${nome}, imagem ${i + 1}`} />}
+            {m.tipo !== 'imagem' && m.poster && <img loading="lazy" decoding="async" src={u(m.poster)} alt="" />}
+            {m.tipo !== 'imagem' && !m.poster && <span class="galeria-tile" aria-hidden="true"></span>}
+            {m.tipo !== 'imagem' && (
+              <span class="galeria-play" aria-hidden="true">
+                <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="rgba(22,58,45,.88)" /><path d="M18 14.5v15l12-7.5z" fill="#fff" /></svg>
+              </span>
+            )}
           </button>
         </li>
       ))}
     </ul>
     <dialog class="galeria-dialogo" aria-label={`Galeria de ${nome}`}>
-      <div class="galeria-topo">
-        <span class="galeria-contagem" aria-live="polite"></span>
-        <button type="button" class="galeria-fechar">Fechar</button>
-      </div>
+      <button type="button" class="galeria-fechar" aria-label="Fechar galeria">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+      </button>
       <div class="galeria-palco">
         {varias && (
-          <button type="button" class="galeria-seta galeria-ant" aria-label="Imagem anterior">
+          <button type="button" class="galeria-seta galeria-ant" aria-label="Item anterior">
             <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </button>
         )}
         <img alt="" />
+        {temVideo && <video class="galeria-video" controls playsinline preload="metadata" hidden></video>}
+        {temVideo && <iframe class="galeria-iframe" hidden allowfullscreen allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" title="Vídeo"></iframe>}
         {varias && (
-          <button type="button" class="galeria-seta galeria-seg" aria-label="Imagem seguinte">
+          <button type="button" class="galeria-seta galeria-seg" aria-label="Item seguinte">
             <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </button>
         )}
       </div>
+      {varias && (
+        <p class="galeria-contagem" aria-live="polite"><b class="g-atual">1</b> / {itens.length}</p>
+      )}
     </dialog>
   </div>
 )}
 <script>
-  // Galeria: abre a imagem ampliada e permite passar à anterior/seguinte
-  // (setas no ecrã, teclas ← →, ou deslizar o dedo). Esc, clique fora ou "Fechar" fecham.
+  // Galeria em ecrã completo com imagens e vídeos: setas no ecrã, teclas ← →, ou deslizar o dedo.
+  // Esc, o X ou um clique no fundo escuro fecham. Os vídeos do YouTube só carregam depois de abertos.
   document.querySelectorAll<HTMLElement>('.galeria').forEach((g) => {
     const dialogo = g.querySelector<HTMLDialogElement>('dialog');
-    const grande = dialogo?.querySelector<HTMLImageElement>('.galeria-palco img');
-    const contagem = dialogo?.querySelector<HTMLElement>('.galeria-contagem');
+    const palco = dialogo?.querySelector<HTMLElement>('.galeria-palco');
+    const grande = palco?.querySelector<HTMLImageElement>('img');
+    const video = palco?.querySelector<HTMLVideoElement>('.galeria-video');
+    const quadro = palco?.querySelector<HTMLIFrameElement>('.galeria-iframe');
+    const atualEl = dialogo?.querySelector<HTMLElement>('.g-atual');
     const fechar = dialogo?.querySelector<HTMLButtonElement>('.galeria-fechar');
     const botoes = Array.from(g.querySelectorAll<HTMLButtonElement>('.galeria-abrir'));
-    if (!dialogo || !grande || !fechar || botoes.length === 0) return;
+    if (!dialogo || !palco || !grande || !fechar || botoes.length === 0) return;
+
+    const parar = () => {
+      if (video) {
+        video.pause();
+        video.removeAttribute('src');
+        video.removeAttribute('poster');
+        video.load();
+      }
+      if (quadro) quadro.removeAttribute('src');
+    };
 
     let atual = 0;
-    const mostrar = (i: number) => {
+    const mostrar = (i: number, efeito: 'abre' | 'seg' | 'ant') => {
       atual = (i + botoes.length) % botoes.length;
       const b = botoes[atual];
-      grande.src = b.dataset.src ?? '';
-      grande.alt = b.dataset.alt ?? '';
-      if (contagem && botoes.length > 1) contagem.textContent = (atual + 1) + ' / ' + botoes.length;
+      const tipo = b.dataset.tipo ?? 'imagem';
+      parar();
+      grande.hidden = tipo !== 'imagem';
+      if (video) video.hidden = tipo !== 'video';
+      if (quadro) quadro.hidden = tipo !== 'youtube';
+
+      let ativo: HTMLElement = grande;
+      if (tipo === 'video' && video) {
+        video.poster = b.dataset.poster ?? '';
+        video.src = b.dataset.src ?? '';
+        video.setAttribute('aria-label', b.dataset.alt ?? '');
+        video.play().catch(() => {});
+        ativo = video;
+      } else if (tipo === 'youtube' && quadro) {
+        quadro.title = b.dataset.alt ?? '';
+        quadro.src = 'https://www.youtube-nocookie.com/embed/' + (b.dataset.src ?? '') + '?autoplay=1&rel=0';
+        ativo = quadro;
+      } else {
+        grande.src = b.dataset.src ?? '';
+        grande.alt = b.dataset.alt ?? '';
+      }
+      if (atualEl) atualEl.textContent = String(atual + 1);
+      ativo.classList.remove('de-abre', 'de-seg', 'de-ant');
+      void ativo.offsetWidth;
+      ativo.classList.add('de-' + efeito);
     };
 
     botoes.forEach((b, i) => b.addEventListener('click', () => {
-      mostrar(i);
+      mostrar(i, 'abre');
       dialogo.showModal();
       fechar.focus();
     }));
-    g.querySelector('.galeria-ant')?.addEventListener('click', () => mostrar(atual - 1));
-    g.querySelector('.galeria-seg')?.addEventListener('click', () => mostrar(atual + 1));
+    dialogo.addEventListener('close', parar);
+    g.querySelector('.galeria-ant')?.addEventListener('click', () => mostrar(atual - 1, 'ant'));
+    g.querySelector('.galeria-seg')?.addEventListener('click', () => mostrar(atual + 1, 'seg'));
 
     dialogo.addEventListener('keydown', (e) => {
       if (botoes.length < 2) return;
-      if (e.key === 'ArrowLeft') { e.preventDefault(); mostrar(atual - 1); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); mostrar(atual + 1); }
+      if ((e.target as HTMLElement).tagName === 'VIDEO') return; // as setas avançam/recuam o vídeo
+      if (e.key === 'ArrowLeft') { e.preventDefault(); mostrar(atual - 1, 'ant'); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); mostrar(atual + 1, 'seg'); }
     });
     dialogo.addEventListener('click', (e) => {
       const alvo = e.target as HTMLElement;
-      if (alvo === dialogo || alvo.classList.contains('galeria-fechar')) dialogo.close();
+      if (alvo === dialogo || alvo === palco || alvo.closest('.galeria-fechar')) dialogo.close();
     });
 
     let x0: number | null = null;
-    grande.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
-    grande.addEventListener('touchend', (e) => {
+    dialogo.addEventListener('touchstart', (e) => {
+      x0 = (e.target as HTMLElement).closest('video, iframe') ? null : e.touches[0].clientX;
+    }, { passive: true });
+    dialogo.addEventListener('touchend', (e) => {
       if (x0 === null || botoes.length < 2) return;
       const dx = e.changedTouches[0].clientX - x0;
-      if (Math.abs(dx) > 50) mostrar(atual + (dx < 0 ? 1 : -1));
+      if (Math.abs(dx) > 50) mostrar(atual + (dx < 0 ? 1 : -1), dx < 0 ? 'seg' : 'ant');
       x0 = null;
     });
   });
