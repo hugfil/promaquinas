@@ -3,6 +3,7 @@ nome: "Produto de exemplo"
 marca: "Husqvarna"
 tipo: "Motosserra"
 resumo: "Produto fictício para testar a listagem de outros produtos."
-destaque: true
+destaque: false
+ordem: 2
 ---
-Descrição do produto em Markdown.
+Descrição do produto.

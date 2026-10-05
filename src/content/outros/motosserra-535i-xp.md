@@ -5,6 +5,7 @@ tipo: "Motosserra"
 resumo: "Para utilizadores profissionais que pretendem uma motosserra leve e de alto desempenho."
 imagem: "/imagens/motosserra-535i-xp-000.jpg"
 destaque: true
+ordem: 1
 ---
 
 Para utilizadores profissionais que pretendem uma **motosserra leve e de alto desempenho**. Perfeita para carpinteiros, empreiteiros, arboricultores e agricultores de olivais. Apresenta **excelente ergonomia, alto desempenho e alta velocidade da corrente**.
