@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { campanhasAtivas, produtosEmCampanha } from '../lib/campanhas';
 import EmCampanha from '../components/EmCampanha.astro';
+import Carrossel from '../components/Carrossel.astro';
 import { testemunhos as obterTestemunhos } from '../lib/testemunhos';
 import { u, data } from '../lib/url';
 import { existsSync } from 'node:fs';
@@ -13,11 +14,15 @@ const temPoster = existsSync('./public/imagens/hero-poster.jpg');
 
 const ativas = await campanhasAtivas();
 const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.data.ordem);
-const destaquesRobots = robots.filter((r) => r.data.destaque);
-const robotsMostrar = (destaquesRobots.length ? destaquesRobots : robots).slice(0, 2);
-const outros = await getCollection('outros');
-const destaquesOutros = outros.filter((o) => o.data.destaque);
-const outrosMostrar = (destaquesOutros.length ? destaquesOutros : outros).slice(0, 2);
+// Carrossel da página inicial: primeiro os produtos com "destaque: true" (pela ordem), depois os restantes.
+// MAXIMO_CARROSSEL é o número de cartões em cada carrossel (o último cartão leva à lista completa).
+const MAXIMO_CARROSSEL = 8;
+function destaquesPrimeiro<T extends { data: { destaque: boolean } }>(lista: T[]): T[] {
+  return [...lista.filter((x) => x.data.destaque), ...lista.filter((x) => !x.data.destaque)];
+}
+const robotsCarrossel = destaquesPrimeiro(robots).slice(0, MAXIMO_CARROSSEL);
+const outros = (await getCollection('outros')).sort((a, b) => a.data.ordem - b.data.ordem || a.data.nome.localeCompare(b.data.nome, 'pt'));
+const outrosCarrossel = destaquesPrimeiro(outros).slice(0, MAXIMO_CARROSSEL);
 const testemunhos = await obterTestemunhos();
 
 // Secções a alternar entre cinza claro e branco, pela ordem em que aparecem
@@ -78,8 +83,8 @@ const emCampanha = await produtosEmCampanha();
         <p>Instalação profissional, assistência técnica e acompanhamento especializado.</p>
         <p><a class="botao" href={u('/robots/')}>Ver Robots</a></p>
       </div>
-      <ul class="grelha">
-        {robotsMostrar.map((r) => (
+      <Carrossel rotulo="Robots em destaque">
+        {robotsCarrossel.map((r) => (
           <li class="cartao">
             {emCampanha.has('robots/' + r.id) && <EmCampanha />}
             {r.data.imagem && <img loading="lazy" decoding="async" src={u(r.data.imagem)} alt={r.data.nome} />}
@@ -91,7 +96,14 @@ const emCampanha = await produtosEmCampanha();
             </div>
           </li>
         ))}
-      </ul>
+        <li>
+          <a class="ver-todos" href={u('/robots/')}>
+            <span class="ver-todos-n">{robots.length}</span>
+            <span>{robots.length === 1 ? 'modelo de robot' : 'modelos de robots'}</span>
+            <strong>Ver todos <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg></strong>
+          </a>
+        </li>
+      </Carrossel>
     </div>
   </section>
 
@@ -102,8 +114,8 @@ const emCampanha = await produtosEmCampanha();
         <p>Equipamentos de várias marcas para o jardim e a floresta.</p>
         <p><a class="botao sec" href={u('/produtos/')}>Ver Outros Produtos</a></p>
       </div>
-      <ul class="grelha">
-        {outrosMostrar.map((p) => (
+      <Carrossel rotulo="Outros produtos em destaque">
+        {outrosCarrossel.map((p) => (
           <li class="cartao">
             {emCampanha.has('produtos/' + p.id) && <EmCampanha />}
             {p.data.imagem && <img loading="lazy" decoding="async" src={u(p.data.imagem)} alt={p.data.nome} />}
@@ -115,14 +127,21 @@ const emCampanha = await produtosEmCampanha();
             </div>
           </li>
         ))}
-      </ul>
+        <li>
+          <a class="ver-todos" href={u('/produtos/')}>
+            <span class="ver-todos-n">{outros.length}</span>
+            <span>{outros.length === 1 ? 'produto' : 'produtos'}</span>
+            <strong>Ver todos <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg></strong>
+          </a>
+        </li>
+      </Carrossel>
     </div>
   </section>
 
   {testemunhos.length > 0 && (
     <section class={fundo()}>
       <div class="wrap">
-        <h2>O que dizem os nosso clientes</h2>
+        <h2>O que dizem os clientes</h2>
         <div class="testemunhos">
           {testemunhos.map((t) => (
             <figure class="testemunho">

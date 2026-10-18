@@ -31,6 +31,7 @@ const outros = defineCollection({
     imagem: z.string().optional(),
     galeria: z.array(z.string()).default([]),
     destaque: z.boolean().default(false),
+    ordem: z.number().default(100), // menor aparece primeiro no carrossel da página inicial
   }),
 });
 
@@ -44,6 +45,10 @@ const campanhas = defineCollection({
     imagem: z.string().optional(),
     produtos: z.array(z.string()).default([]), // ex.: ["robots/automower-exemplo", "produtos/exemplo"]
     link: z.string().optional(), // destino à medida (opcional), ex.: /robots/automower-exemplo/
+    folheto: z.union([z.string(), z.array(z.string())]).optional(), // imagem do folheto, ou lista (frente e verso)
+    folhetoPdf: z.string().optional(),
+    video: z.union([z.string(), z.array(z.string())]).optional(), // ficheiro em /videos/ ou ligação do YouTube (um ou vários)
+ // ex.: /folhetos/campanha.pdf (opcional, para abrir ou descarregar)
   }),
 });
 

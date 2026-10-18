@@ -1,0 +1,82 @@
+---
+interface Props { rotulo: string; }
+const { rotulo } = Astro.props;
+---
+<div class="carrossel" data-carrossel>
+  <ul class="carrossel-pista" tabindex="0" aria-label={rotulo}>
+    <slot />
+  </ul>
+  <div class="carrossel-controlos">
+    <div class="carrossel-barra" aria-hidden="true"><span class="carrossel-fio"></span></div>
+    <button type="button" class="carrossel-seta" data-dir="-1" aria-label="Anterior">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </button>
+    <button type="button" class="carrossel-seta" data-dir="1" aria-label="Seguinte">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </button>
+  </div>
+</div>
+<script>
+  // Carrossel de cartões: deslizar com o dedo, arrastar com o rato, setas, teclado e barra de progresso
+  document.querySelectorAll<HTMLElement>('[data-carrossel]').forEach((c) => {
+    const pista = c.querySelector<HTMLElement>('.carrossel-pista');
+    const fio = c.querySelector<HTMLElement>('.carrossel-fio');
+    const setas = Array.from(c.querySelectorAll<HTMLButtonElement>('.carrossel-seta'));
+    if (!pista || !fio || setas.length < 2) return;
+    const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const atualizar = () => {
+      const total = pista.scrollWidth;
+      const visivel = pista.clientWidth;
+      const max = total - visivel;
+      c.classList.toggle('sem-scroll', max <= 1);
+      const largura = Math.min(1, visivel / total);
+      fio.style.width = largura * 100 + '%';
+      const pos = max > 0 ? pista.scrollLeft / max : 0;
+      fio.style.transform = 'translateX(' + pos * (1 / largura - 1) * 100 + '%)';
+      setas[0].disabled = pista.scrollLeft <= 1;
+      setas[1].disabled = pista.scrollLeft >= max - 1;
+    };
+
+    // avança uma "página" de cartões inteiros
+    const mover = (dir: number) => {
+      const item = pista.querySelector<HTMLElement>('li');
+      const folga = parseFloat(getComputedStyle(pista).columnGap) || 16;
+      const passo = (item ? item.getBoundingClientRect().width : pista.clientWidth * 0.8) + folga;
+      const cartoes = Math.max(1, Math.floor(pista.clientWidth / passo));
+      pista.scrollBy({ left: dir * cartoes * passo, behavior: reduzir ? 'auto' : 'smooth' });
+    };
+    setas.forEach((b) => b.addEventListener('click', () => mover(Number(b.dataset.dir))));
+    pista.addEventListener('keydown', (e) => {
+      if (e.target !== pista) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); mover(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); mover(-1); }
+    });
+    pista.addEventListener('scroll', () => requestAnimationFrame(atualizar), { passive: true });
+    window.addEventListener('resize', atualizar);
+
+    // arrastar com o rato (no telemóvel, o deslizar nativo já funciona)
+    let arrasta = false, moveu = false, x0 = 0, s0 = 0;
+    pista.addEventListener('dragstart', (e) => e.preventDefault());
+    pista.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      arrasta = true; moveu = false; x0 = e.clientX; s0 = pista.scrollLeft;
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!arrasta) return;
+      const dx = e.clientX - x0;
+      if (!moveu && Math.abs(dx) > 5) { moveu = true; pista.classList.add('a-arrastar'); }
+      if (moveu) pista.scrollLeft = s0 - dx;
+    });
+    window.addEventListener('pointerup', () => {
+      if (!arrasta) return;
+      arrasta = false;
+      pista.classList.remove('a-arrastar');
+    });
+    pista.addEventListener('click', (e) => {
+      if (moveu) { e.preventDefault(); e.stopPropagation(); moveu = false; }
+    }, true);
+
+    atualizar();
+  });
+</script>
