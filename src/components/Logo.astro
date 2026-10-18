@@ -1,0 +1,17 @@
+---
+import { existsSync } from 'node:fs';
+import { u } from '../lib/url';
+
+interface Props { variante?: 'cabecalho' | 'rodape'; }
+const { variante = 'cabecalho' } = Astro.props;
+
+// Quando existir o nome da empresa em vetor, aparece sozinho à direita do ícone:
+//   public/imagens/logo-nome-cabecalho.svg  (só no cabeçalho)
+//   public/imagens/logo-nome-rodape.svg     (só no rodapé)
+//   public/imagens/logo-nome.svg            (nos dois, se não houver um específico)
+const nome = ['/imagens/logo-nome-' + variante + '.svg', '/imagens/logo-nome.svg'].find((p) => existsSync('./public' + p));
+---
+<span class="logo">
+  <img class="logo-icone" src={u('/imagens/logo-icone-' + variante + '.svg')} alt={nome ? '' : 'Promáquinas'} width="259" height="259" />
+  {nome && <img class="logo-nome" src={u(nome)} alt="Promáquinas" />}
+</span>

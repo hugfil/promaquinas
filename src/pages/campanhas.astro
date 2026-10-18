@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import { campanhasAtivas, resolverProdutos } from '../lib/campanhas';
 import { u, data } from '../lib/url';
 import EmCampanha from '../components/EmCampanha.astro';
+import Galeria from '../components/Galeria.astro';
 
 const ativas = await campanhasAtivas();
 const itens = await Promise.all(
@@ -11,6 +12,8 @@ const itens = await Promise.all(
     c,
     Content: (await render(c)).Content,
     produtos: await resolverProdutos(c.data.produtos, c.data.titulo),
+    videos: c.data.video ? (Array.isArray(c.data.video) ? c.data.video : [c.data.video]) : [],
+    folhetos: c.data.folheto ? (Array.isArray(c.data.folheto) ? c.data.folheto : [c.data.folheto]) : [],
   }))
 );
 ---
@@ -25,13 +28,28 @@ const itens = await Promise.all(
     {itens.length === 0 && (
       <p>Neste momento não há campanhas ativas. Volte em breve ou <a href={u('/orcamento/')}>peça um orçamento</a>.</p>
     )}
-    {itens.map(({ c, Content, produtos }) => (
+    {itens.map(({ c, Content, produtos, folhetos, videos }) => (
       <article class="prosa campanha" id={c.id}>
         <h2>{c.data.titulo}</h2>
         <p class="etiqueta">De {data(c.data.dataInicio)} a {data(c.data.dataFim)}</p>
-        {c.data.imagem && <img class="campanha-img" loading="lazy" decoding="async" src={u(c.data.imagem)} alt={c.data.titulo} />}
-        <p>{c.data.resumo}</p>
-        <Content />
+        <div class={folhetos.length > 0 ? 'campanha-layout com-folheto' : 'campanha-layout'}>
+          <div class="campanha-texto">
+            {c.data.imagem && <img class="campanha-img" loading="lazy" decoding="async" src={u(c.data.imagem)} alt={c.data.titulo} />}
+            <p>{c.data.resumo}</p>
+            <Content />
+          </div>
+          {folhetos.length > 0 && (
+            <aside class="campanha-folheto" aria-label="Folheto da campanha">
+              <Galeria imagens={folhetos} nome={c.data.titulo} variante="folheto" />
+              {c.data.folhetoPdf && <a class="folheto-pdf" href={u(c.data.folhetoPdf)} target="_blank" rel="noopener">Abrir folheto em PDF</a>}
+            </aside>
+          )}
+        </div>
+        {videos.length > 0 && (
+          <div class="campanha-videos">
+            <Galeria imagens={videos} nome={c.data.titulo} titulo={videos.length > 1 ? 'Vídeos' : 'Vídeo'} />
+          </div>
+        )}
         {produtos.length > 0 && (
           <>
             <h3>Produtos desta campanha</h3>

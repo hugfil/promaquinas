@@ -2,28 +2,33 @@
 import { u } from '../lib/url';
 import { resolverMidia } from '../lib/media';
 
-interface Props { imagens: string[]; nome: string; }
-const { imagens, nome } = Astro.props;
+interface Props { imagens: string[]; nome: string; titulo?: string; variante?: 'galeria' | 'folheto'; }
+const { imagens, nome, titulo = 'Galeria', variante = 'galeria' } = Astro.props;
+const folheto = variante === 'folheto';
 const itens = imagens.map(resolverMidia);
 const varias = itens.length > 1;
 const temVideo = itens.some((m) => m.tipo !== 'imagem');
+const legenda = (tipo: string, i: number) =>
+  tipo !== 'imagem' ? `${nome}, vídeo`
+  : folheto ? `Folheto da campanha ${nome}${itens.length > 1 ? ', página ' + (i + 1) : ''}`
+  : `${nome}, imagem ${i + 1}`;
 ---
 {itens.length > 0 && (
-  <div class="galeria">
-    <h2>Galeria</h2>
+  <div class={folheto ? 'galeria galeria-folheto' : 'galeria'}>
+    {!folheto && <h2>{titulo}</h2>}
     <ul class="galeria-lista">
       {itens.map((m, i) => (
-        <li>
+        <li hidden={folheto && i > 0}>
           <button
             type="button"
-            class="galeria-abrir"
+            class={folheto ? 'galeria-abrir folheto' + (itens.length > 1 ? ' varias' : '') : 'galeria-abrir'}
             data-tipo={m.tipo}
             data-src={m.tipo === 'youtube' ? m.id : u(m.src)}
             data-poster={m.poster ? u(m.poster) : ''}
-            data-alt={m.tipo === 'imagem' ? `${nome}, imagem ${i + 1}` : `${nome}, vídeo`}
-            aria-label={m.tipo === 'imagem' ? undefined : `${nome}, vídeo`}
+            data-alt={legenda(m.tipo, i)}
+            aria-label={folheto ? `Ampliar: ${legenda(m.tipo, i)}` : m.tipo === 'imagem' ? undefined : `${nome}, vídeo`}
           >
-            {m.tipo === 'imagem' && <img loading="lazy" decoding="async" src={u(m.src)} alt={`${nome}, imagem ${i + 1}`} />}
+            {m.tipo === 'imagem' && <img loading="lazy" decoding="async" src={u(m.src)} alt={legenda(m.tipo, i)} />}
             {m.tipo !== 'imagem' && m.poster && <img loading="lazy" decoding="async" src={u(m.poster)} alt="" />}
             {m.tipo !== 'imagem' && !m.poster && <span class="galeria-tile" aria-hidden="true"></span>}
             {m.tipo !== 'imagem' && (
@@ -31,13 +36,24 @@ const temVideo = itens.some((m) => m.tipo !== 'imagem');
                 <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="rgba(22,58,45,.88)" /><path d="M18 14.5v15l12-7.5z" fill="#fff" /></svg>
               </span>
             )}
+            {folheto && i === 0 && itens.length > 1 && <span class="folheto-paginas" aria-hidden="true">{itens.length} páginas</span>}
+            {folheto && i === 0 && (
+              <span class="folheto-ampliar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2" /><path d="M16 16l4.5 4.5M11 8.5v5M8.5 11h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
+                Ampliar
+              </span>
+            )}
           </button>
         </li>
       ))}
     </ul>
-    <dialog class="galeria-dialogo" aria-label={`Galeria de ${nome}`}>
+    <dialog class="galeria-dialogo" aria-label={folheto ? `Folheto: ${nome}` : `Galeria de ${nome}`}>
       <button type="button" class="galeria-fechar" aria-label="Fechar galeria">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+      </button>
+      <button type="button" class="galeria-zoom" aria-label="Ampliar imagem" aria-pressed="false">
+        <svg class="ic-mais" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2" /><path d="M16 16l4.5 4.5M11 8.5v5M8.5 11h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
+        <svg class="ic-menos" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2" /><path d="M16 16l4.5 4.5M8.5 11h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
       </button>
       <div class="galeria-palco">
         {varias && (
@@ -71,6 +87,7 @@ const temVideo = itens.some((m) => m.tipo !== 'imagem');
     const quadro = palco?.querySelector<HTMLIFrameElement>('.galeria-iframe');
     const atualEl = dialogo?.querySelector<HTMLElement>('.g-atual');
     const fechar = dialogo?.querySelector<HTMLButtonElement>('.galeria-fechar');
+    const zoomBtn = dialogo?.querySelector<HTMLButtonElement>('.galeria-zoom');
     const botoes = Array.from(g.querySelectorAll<HTMLButtonElement>('.galeria-abrir'));
     if (!dialogo || !palco || !grande || !fechar || botoes.length === 0) return;
 
@@ -84,12 +101,28 @@ const temVideo = itens.some((m) => m.tipo !== 'imagem');
       if (quadro) quadro.removeAttribute('src');
     };
 
+    // Zoom: a imagem passa ao tamanho real e o palco passa a deslizar (útil para ler folhetos)
+    const emZoom = () => dialogo.classList.contains('zoom');
+    const definirZoom = (ligado: boolean, fx = 0.5, fy = 0) => {
+      dialogo.classList.toggle('zoom', ligado);
+      zoomBtn?.setAttribute('aria-pressed', String(ligado));
+      zoomBtn?.setAttribute('aria-label', ligado ? 'Reduzir imagem' : 'Ampliar imagem');
+      if (ligado) requestAnimationFrame(() => {
+        // centra a vista no ponto onde se clicou (pelo botão da lupa: ao centro, no topo)
+        palco.scrollLeft = grande.offsetLeft + fx * grande.offsetWidth - palco.clientWidth / 2;
+        palco.scrollTop = grande.offsetTop + fy * grande.offsetHeight - palco.clientHeight / 2;
+      });
+      else palco.scrollTo(0, 0);
+    };
+
     let atual = 0;
     const mostrar = (i: number, efeito: 'abre' | 'seg' | 'ant') => {
       atual = (i + botoes.length) % botoes.length;
       const b = botoes[atual];
       const tipo = b.dataset.tipo ?? 'imagem';
       parar();
+      definirZoom(false);
+      if (zoomBtn) zoomBtn.hidden = tipo !== 'imagem';
       grande.hidden = tipo !== 'imagem';
       if (video) video.hidden = tipo !== 'video';
       if (quadro) quadro.hidden = tipo !== 'youtube';
@@ -120,24 +153,49 @@ const temVideo = itens.some((m) => m.tipo !== 'imagem');
       dialogo.showModal();
       fechar.focus();
     }));
-    dialogo.addEventListener('close', parar);
+    dialogo.addEventListener('close', () => { parar(); definirZoom(false); });
+    zoomBtn?.addEventListener('click', () => definirZoom(!emZoom()));
+
+    // arrastar com o rato para mover a imagem ampliada; clique simples alterna o zoom
+    let pan = false, panMoveu = false, px = 0, py = 0, sl = 0, st = 0;
+    grande.draggable = false;
+    grande.addEventListener('dragstart', (e) => e.preventDefault());
+    grande.addEventListener('pointerdown', (e) => {
+      if (!emZoom() || e.pointerType !== 'mouse') return;
+      e.preventDefault();
+      pan = true; panMoveu = false; px = e.clientX; py = e.clientY; sl = palco.scrollLeft; st = palco.scrollTop;
+      grande.setPointerCapture(e.pointerId);
+    });
+    grande.addEventListener('pointermove', (e) => {
+      if (!pan) return;
+      const dx = e.clientX - px, dy = e.clientY - py;
+      if (Math.abs(dx) + Math.abs(dy) > 4) panMoveu = true;
+      palco.scrollLeft = sl - dx; palco.scrollTop = st - dy;
+    });
+    grande.addEventListener('pointerup', () => { pan = false; });
+    grande.addEventListener('click', (e) => {
+      if (panMoveu) { panMoveu = false; return; }
+      if (emZoom()) { definirZoom(false); return; }
+      const r = grande.getBoundingClientRect();
+      definirZoom(true, (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    });
     g.querySelector('.galeria-ant')?.addEventListener('click', () => mostrar(atual - 1, 'ant'));
     g.querySelector('.galeria-seg')?.addEventListener('click', () => mostrar(atual + 1, 'seg'));
 
     dialogo.addEventListener('keydown', (e) => {
-      if (botoes.length < 2) return;
+      if (botoes.length < 2 || emZoom()) return; // com zoom, as setas deslocam a imagem
       if ((e.target as HTMLElement).tagName === 'VIDEO') return; // as setas avançam/recuam o vídeo
       if (e.key === 'ArrowLeft') { e.preventDefault(); mostrar(atual - 1, 'ant'); }
       if (e.key === 'ArrowRight') { e.preventDefault(); mostrar(atual + 1, 'seg'); }
     });
     dialogo.addEventListener('click', (e) => {
       const alvo = e.target as HTMLElement;
-      if (alvo === dialogo || alvo === palco || alvo.closest('.galeria-fechar')) dialogo.close();
+      if (alvo === dialogo || (alvo === palco && !emZoom()) || alvo.closest('.galeria-fechar')) dialogo.close();
     });
 
     let x0: number | null = null;
     dialogo.addEventListener('touchstart', (e) => {
-      x0 = (e.target as HTMLElement).closest('video, iframe') ? null : e.touches[0].clientX;
+      x0 = (e.target as HTMLElement).closest('video, iframe') || emZoom() ? null : e.touches[0].clientX;
     }, { passive: true });
     dialogo.addEventListener('touchend', (e) => {
       if (x0 === null || botoes.length < 2) return;

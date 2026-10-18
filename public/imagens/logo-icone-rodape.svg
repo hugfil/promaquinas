@@ -1,0 +1,49 @@
+<svg width="259" height="259" viewBox="0 0 259 259" fill="none" xmlns="http://www.w3.org/2000/svg">
+<title>Promáquinas</title>
+<defs>
+<clipPath id="tile"><path d="M0 35C0 15.67 15.67 0 35 0H224C243.33 0 259 15.67 259 35V224C259 243.33 243.33 259 224 259H35C15.67 259 0 243.33 0 224V35Z"/></clipPath>
+<clipPath id="acima"><path clip-rule="evenodd" d="M-100 -100H400V600H-100Z M123 139.5C78.1698 122.104 -31 149.5 -31 149.5L-11 406L242 417L276 130C276 130 255 138 242 142C229 146 167.83 156.896 123 139.5Z"/></clipPath>
+<clipPath id="abaixo"><path d="M123 139.5C78.1698 122.104 -31 149.5 -31 149.5L-11 406L242 417L276 130C276 130 255 138 242 142C229 146 167.83 156.896 123 139.5Z"/></clipPath>
+<linearGradient id="brilho" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="150"><stop stop-color="#fff" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="vidro" gradientUnits="userSpaceOnUse" x1="30" y1="0" x2="230" y2="259"><stop stop-color="#fff" stop-opacity=".85"/><stop offset=".5" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity=".1"/></linearGradient>
+<filter id="sombraM" x="75" y="30" width="175" height="210" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="2.8"/></filter>
+</defs>
+<g clip-path="url(#tile)">
+<path d="M0 35C0 15.67 15.67 0 35 0H224C243.33 0 259 15.67 259 35V224C259 243.33 243.33 259 224 259H35C15.67 259 0 243.33 0 224V35Z" fill="#4E4E4E"/>
+<path d="M0 35C0 15.67 15.67 0 35 0H224C243.33 0 259 15.67 259 35V224C259 243.33 243.33 259 224 259H35C15.67 259 0 243.33 0 224V35Z" fill="url(#brilho)"/>
+<path d="M123 139.5C78.1698 122.104 -31 149.5 -31 149.5L-11 406L242 417L276 130C276 130 255 138 242 142C229 146 167.83 156.896 123 139.5Z" fill="#343434"/>
+<path d="M58 31 H198 C211 31 222 38 228 50 C234 63 235 80 231 98 C227 117 218 134 204 145 C190 156 171 159 145 159 H77 L64 203 H12 Z" fill="#fff" clip-path="url(#acima)"/>
+<path d="M58 31 H198 C211 31 222 38 228 50 C234 63 235 80 231 98 C227 117 218 134 204 145 C190 156 171 159 145 159 H77 L64 203 H12 Z" fill="#fff" fill-opacity=".55" clip-path="url(#abaixo)"/>
+<path d="M86 221.5 L102.5 53.5 L192 37.7
+C198.1 36.6 203.7 37.3 208.6 39.8
+C214.7 42.9 219.1 48.3 221.2 55.4
+C223.4 62.6 223.5 71.2 221.2 80.6
+C220.9 81.7 220.5 82.9 220.2 84
+L198.5 156.5 L177.5 169 L194.9 96
+C196.1 91 196 87.3 194.2 84.6
+C192.8 82.4 190.4 81.2 187.4 81.2
+C184.4 81.2 181.2 82.3 178 84.4
+C174.9 86.3 172.3 89 170.3 92.2
+L165.5 175 L138 192.5 L155.5 97
+C156.4 92.4 156.3 89.6 154.7 88.2
+C153.2 86.9 150.4 87.5 146.7 89
+C143.6 90.2 141 92 138.9 94.3
+L122.5 201 L86 221.5 Z" fill="#000" opacity=".72" transform="translate(2.2 3)" filter="url(#sombraM)"/>
+<path d="M86 221.5 L102.5 53.5 L192 37.7
+C198.1 36.6 203.7 37.3 208.6 39.8
+C214.7 42.9 219.1 48.3 221.2 55.4
+C223.4 62.6 223.5 71.2 221.2 80.6
+C220.9 81.7 220.5 82.9 220.2 84
+L198.5 156.5 L177.5 169 L194.9 96
+C196.1 91 196 87.3 194.2 84.6
+C192.8 82.4 190.4 81.2 187.4 81.2
+C184.4 81.2 181.2 82.3 178 84.4
+C174.9 86.3 172.3 89 170.3 92.2
+L165.5 175 L138 192.5 L155.5 97
+C156.4 92.4 156.3 89.6 154.7 88.2
+C153.2 86.9 150.4 87.5 146.7 89
+C143.6 90.2 141 92 138.9 94.3
+L122.5 201 L86 221.5 Z" fill="#9A9A9A"/>
+</g>
+<rect x="1.75" y="1.75" width="255.5" height="255.5" rx="33.25" stroke="url(#vidro)" stroke-width="3.5"/>
+</svg>

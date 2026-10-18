@@ -10,7 +10,11 @@ export type Midia = {
 // Reconhece, pelo texto, se um item da galeria é uma imagem, um vídeo (.mp4/.webm) ou uma ligação do YouTube.
 export function resolverMidia(caminho: string): Midia {
   const yt = caminho.match(/(?:youtube\.com\/watch\?(?:[^#]*&)?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([\w-]{11})/);
-  if (yt) return { tipo: 'youtube', src: caminho, id: yt[1] };
+  if (yt) {
+    const base = '/videos/' + yt[1];
+    const poster = ['.jpg', '.jpeg', '.png', '.webp'].map((e) => base + e).find((p) => existsSync('./public' + p));
+    return { tipo: 'youtube', src: caminho, id: yt[1], poster };
+  }
   if (/\.(mp4|webm|ogg)$/i.test(caminho.split('?')[0])) {
     const base = caminho.replace(/\.[^./]+$/, '');
     const poster = ['.jpg', '.jpeg', '.png', '.webp'].map((e) => base + e).find((p) => existsSync('./public' + p));
