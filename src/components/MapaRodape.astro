@@ -1,0 +1,89 @@
+---
+import { local } from '../lib/local';
+
+const { nome, morada, latitude: lat, longitude: lon, zoom } = local;
+// Ligações que abrem num novo separador (sem carregar nada de terceiros até o visitante clicar)
+const google = 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lon;
+const rota = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lon;
+// Mapa ampliado: OpenStreetMap, só carregado quando o visitante abre a janela
+const dLon = 0.01 * Math.pow(2, 16 - zoom);
+const dLat = dLon * 0.55;
+const embed = 'https://www.openstreetmap.org/export/embed.html?bbox=' +
+  [lon - dLon, lat - dLat, lon + dLon, lat + dLat].join('%2C') + '&layer=mapnik&marker=' + lat + '%2C' + lon;
+---
+<div class="mapa-cartao" data-mapa data-embed={embed}>
+  <svg class="mapa-fundo" viewBox="0 0 240 116" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <rect width="240" height="116" fill="#2b2b2b" />
+    <path d="M112 0H176L162 40L116 48Z" fill="#1E503E" opacity=".55" />
+    <path d="M-10 84C38 62 70 98 120 78S206 62 252 84" fill="none" stroke="#2E7256" stroke-width="9" stroke-linecap="round" opacity=".5" />
+    <g fill="none" stroke="#454545" stroke-width="1.3">
+      <path d="M0 28L240 12M0 56L240 40M0 104L240 96" />
+      <path d="M38 0L56 116M92 0L106 116M204 0L216 116M170 0L186 116" />
+    </g>
+    <g fill="none" stroke="#5a5a5a" stroke-width="3.2" stroke-linecap="round">
+      <path d="M0 68L240 50" />
+      <path d="M128 0L146 116" />
+    </g>
+    <ellipse class="mapa-onda" cx="150" cy="72" rx="9" ry="3.2" fill="none" stroke="#2FB57A" stroke-width="1.6" />
+    <ellipse class="mapa-onda mapa-onda-2" cx="150" cy="72" rx="9" ry="3.2" fill="none" stroke="#2FB57A" stroke-width="1.6" />
+    <path d="M150 37C142 37 137 43 137 50C137 59 150 72 150 72C150 72 163 59 163 50C163 43 158 37 150 37Z" fill="#2FB57A" stroke="#fff" stroke-width="1.8" />
+    <circle cx="150" cy="50" r="5" fill="#fff" />
+  </svg>
+  <button type="button" class="mapa-abrir" aria-haspopup="dialog" aria-label={'Ver mapa ampliado: ' + morada}>
+    <span class="mapa-faixa"><b>Onde estamos</b><span class="mapa-morada">{morada}</span></span>
+    <span class="mapa-lupa" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="14" height="14"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      Ampliar
+    </span>
+  </button>
+  <a class="mapa-externo" href={google} target="_blank" rel="noopener" aria-label="Abrir no Google Maps (novo separador)" title="Abrir no Google Maps (novo separador)">
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+  </a>
+</div>
+<dialog class="mapa-dialogo" aria-label={'Onde estamos: ' + nome}>
+  <div class="mapa-cabeca">
+    <div class="mapa-titulo"><strong>Onde estamos</strong><span>{morada}</span></div>
+    <div class="mapa-acoes">
+      <a class="mapa-btn" href={rota} target="_blank" rel="noopener">Como chegar</a>
+      <a class="mapa-btn" href={google} target="_blank" rel="noopener">Google Maps</a>
+      <button type="button" class="mapa-maximizar" aria-label="Maximizar mapa" aria-pressed="false">
+        <svg class="ic-ampliar" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <svg class="ic-reduzir" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </button>
+      <button type="button" class="mapa-fechar" aria-label="Fechar mapa">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mapa-corpo">
+    <p class="mapa-a-carregar">A carregar o mapa…</p>
+    <iframe title={'Mapa: localização de ' + nome} loading="lazy" referrerpolicy="no-referrer"></iframe>
+  </div>
+  <p class="mapa-nota">Mapa © colaboradores do OpenStreetMap. Só é carregado quando abre esta janela.</p>
+</dialog>
+<script>
+  // O mapa só é pedido ao OpenStreetMap quando o visitante abre a janela (nada é carregado ao abrir a página)
+  document.querySelectorAll<HTMLElement>('[data-mapa]').forEach((cartao) => {
+    const dialogo = cartao.nextElementSibling as HTMLDialogElement | null;
+    const abrir = cartao.querySelector<HTMLButtonElement>('.mapa-abrir');
+    const iframe = dialogo?.querySelector<HTMLIFrameElement>('iframe');
+    const fechar = dialogo?.querySelector<HTMLButtonElement>('.mapa-fechar');
+    const maximizar = dialogo?.querySelector<HTMLButtonElement>('.mapa-maximizar');
+    if (!dialogo || !abrir || !iframe || !fechar) return;
+    abrir.addEventListener('click', () => {
+      if (!iframe.getAttribute('src')) iframe.setAttribute('src', cartao.dataset.embed ?? '');
+      dialogo.showModal();
+      fechar.focus();
+    });
+    fechar.addEventListener('click', () => dialogo.close());
+    // Maximizar: a janela passa a ocupar todo o ecrã; volta ao tamanho normal ao reduzir ou ao fechar
+    const definirMax = (ligado: boolean) => {
+      dialogo.classList.toggle('maximizado', ligado);
+      maximizar?.setAttribute('aria-pressed', String(ligado));
+      maximizar?.setAttribute('aria-label', ligado ? 'Reduzir mapa' : 'Maximizar mapa');
+    };
+    maximizar?.addEventListener('click', () => definirMax(!dialogo.classList.contains('maximizado')));
+    dialogo.addEventListener('close', () => definirMax(false));
+    dialogo.addEventListener('click', (e) => { if (e.target === dialogo) dialogo.close(); });
+  });
+</script>

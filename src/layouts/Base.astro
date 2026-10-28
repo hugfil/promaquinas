@@ -6,6 +6,7 @@ import '../styles/global.css';
 import { campanhasAtivas } from '../lib/campanhas';
 import { u, data } from '../lib/url';
 import Logo from '../components/Logo.astro';
+import MapaRodape from '../components/MapaRodape.astro';
 
 interface Props { titulo: string; descricao?: string; }
 const { titulo, descricao = 'Robots corta-relva Husqvarna e outros equipamentos para o jardim. Representante oficial Husqvarna.' } = Astro.props;
@@ -75,7 +76,8 @@ const nav = [
     </header>
     <main><slot /></main>
     <footer class="rodape">
-      <div class="wrap">
+      <div class="wrap rodape-grade">
+        <div class="rodape-info">
         <a class="logo-rodape" href={u('/')} aria-label="Promáquinas, página inicial"><Logo variante="rodape" /></a>
         <p>Revendedor oficial Husqvarna® | Assistência técnica</p>
         <p>
@@ -89,6 +91,8 @@ const nav = [
           Email: <a href="mailto:sergiojngoncalves@sapo.pt">sergiojngoncalves@sapo.pt</a> · Telefone: 253 312 094 ·{' '}
           <a href={u('/privacidade/')}>Política de privacidade</a>
         </p>
+        </div>
+        <MapaRodape />
       </div>
     </footer>
     <button type="button" class="topo-voltar" id="topo-voltar" aria-label="Voltar ao topo">

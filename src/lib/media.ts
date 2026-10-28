@@ -1,9 +1,9 @@
 import { existsSync } from 'node:fs';
 
 export type Midia = {
-  tipo: 'imagem' | 'video' | 'youtube';
+  tipo: 'imagem' | 'video' | 'youtube' | 'pdf';
   src: string;
-  poster?: string; // capa do vídeo (ficheiro com o mesmo nome do vídeo, em .jpg/.png/.webp)
+  poster?: string; // capa do vídeo ou do PDF (ficheiro com o mesmo nome, em .jpg/.png/.webp)
   id?: string;     // identificador do vídeo do YouTube
 };
 
@@ -19,6 +19,11 @@ export function resolverMidia(caminho: string): Midia {
     const base = caminho.replace(/\.[^./]+$/, '');
     const poster = ['.jpg', '.jpeg', '.png', '.webp'].map((e) => base + e).find((p) => existsSync('./public' + p));
     return { tipo: 'video', src: caminho, poster };
+  }
+  if (/\.pdf$/i.test(caminho.split('?')[0])) {
+    const base = caminho.replace(/\.[^./]+$/, '');
+    const poster = ['.jpg', '.jpeg', '.png', '.webp'].map((e) => base + e).find((p) => existsSync('./public' + p));
+    return { tipo: 'pdf', src: caminho, poster };
   }
   return { tipo: 'imagem', src: caminho };
 }
