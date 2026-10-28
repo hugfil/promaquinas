@@ -13,7 +13,7 @@ const itens = await Promise.all(
     Content: (await render(c)).Content,
     produtos: await resolverProdutos(c.data.produtos, c.data.titulo),
     videos: c.data.video ? (Array.isArray(c.data.video) ? c.data.video : [c.data.video]) : [],
-    folhetos: c.data.folheto ? (Array.isArray(c.data.folheto) ? c.data.folheto : [c.data.folheto]) : [],
+    folhetos: c.data.folheto ? (Array.isArray(c.data.folheto) ? c.data.folheto : [c.data.folheto]) : (c.data.folhetoPdf ? [c.data.folhetoPdf] : []),
   }))
 );
 ---
@@ -41,7 +41,7 @@ const itens = await Promise.all(
           {folhetos.length > 0 && (
             <aside class="campanha-folheto" aria-label="Folheto da campanha">
               <Galeria imagens={folhetos} nome={c.data.titulo} variante="folheto" />
-              {c.data.folhetoPdf && <a class="folheto-pdf" href={u(c.data.folhetoPdf)} target="_blank" rel="noopener">Abrir folheto em PDF</a>}
+              {c.data.folhetoPdf && !folhetos.includes(c.data.folhetoPdf) && <a class="folheto-pdf" href={u(c.data.folhetoPdf)} target="_blank" rel="noopener">Abrir folheto em PDF</a>}
             </aside>
           )}
         </div>

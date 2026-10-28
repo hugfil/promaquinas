@@ -7,14 +7,18 @@ const { imagens, nome, titulo = 'Galeria', variante = 'galeria' } = Astro.props;
 const folheto = variante === 'folheto';
 const itens = imagens.map(resolverMidia);
 const varias = itens.length > 1;
-const temVideo = itens.some((m) => m.tipo !== 'imagem');
+const temVideo = itens.some((m) => m.tipo === 'video' || m.tipo === 'youtube');
+const temPdf = itens.some((m) => m.tipo === 'pdf');
+// Com PDF o número de páginas só se sabe ao abrir, por isso as setas e o contador existem sempre
+const mostrarNav = varias || temPdf;
 const legenda = (tipo: string, i: number) =>
-  tipo !== 'imagem' ? `${nome}, vídeo`
+  tipo === 'pdf' ? (folheto ? `Folheto da campanha ${nome}` : `${nome}, PDF`)
+  : tipo !== 'imagem' ? `${nome}, vídeo`
   : folheto ? `Folheto da campanha ${nome}${itens.length > 1 ? ', página ' + (i + 1) : ''}`
   : `${nome}, imagem ${i + 1}`;
 ---
 {itens.length > 0 && (
-  <div class={folheto ? 'galeria galeria-folheto' : 'galeria'}>
+  <div class={folheto ? 'galeria galeria-folheto' : 'galeria'} data-pdfjs={u('/vendor/pdfjs/')}>
     {!folheto && <h2>{titulo}</h2>}
     <ul class="galeria-lista">
       {itens.map((m, i) => (
@@ -26,12 +30,15 @@ const legenda = (tipo: string, i: number) =>
             data-src={m.tipo === 'youtube' ? m.id : u(m.src)}
             data-poster={m.poster ? u(m.poster) : ''}
             data-alt={legenda(m.tipo, i)}
-            aria-label={folheto ? `Ampliar: ${legenda(m.tipo, i)}` : m.tipo === 'imagem' ? undefined : `${nome}, vídeo`}
+            aria-label={folheto ? `Ampliar: ${legenda(m.tipo, i)}` : m.tipo === 'imagem' ? undefined : legenda(m.tipo, i)}
           >
             {m.tipo === 'imagem' && <img loading="lazy" decoding="async" src={u(m.src)} alt={legenda(m.tipo, i)} />}
             {m.tipo !== 'imagem' && m.poster && <img loading="lazy" decoding="async" src={u(m.poster)} alt="" />}
-            {m.tipo !== 'imagem' && !m.poster && <span class="galeria-tile" aria-hidden="true"></span>}
-            {m.tipo !== 'imagem' && (
+            {m.tipo !== 'imagem' && !m.poster && (m.tipo === 'pdf'
+              ? <span class="galeria-tile galeria-tile-pdf" aria-hidden="true"><svg viewBox="0 0 24 24" width="44" height="44"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /><path d="M14 3v5h5M9 13h6M9 16.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg><b>PDF</b></span>
+              : <span class="galeria-tile" aria-hidden="true"></span>)}
+            {m.tipo === 'pdf' && !(folheto && i === 0 && itens.length > 1) && <span class="galeria-selo" aria-hidden="true">PDF</span>}
+            {(m.tipo === 'video' || m.tipo === 'youtube') && (
               <span class="galeria-play" aria-hidden="true">
                 <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="rgba(22,58,45,.88)" /><path d="M18 14.5v15l12-7.5z" fill="#fff" /></svg>
               </span>
@@ -55,41 +62,77 @@ const legenda = (tipo: string, i: number) =>
         <svg class="ic-mais" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2" /><path d="M16 16l4.5 4.5M11 8.5v5M8.5 11h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
         <svg class="ic-menos" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2" /><path d="M16 16l4.5 4.5M8.5 11h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
       </button>
+      {temPdf && (
+        <a class="galeria-pdf-link" hidden target="_blank" rel="noopener" aria-label="Abrir o PDF num novo separador" title="Abrir o PDF num novo separador">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </a>
+      )}
       <div class="galeria-palco">
-        {varias && (
-          <button type="button" class="galeria-seta galeria-ant" aria-label="Item anterior">
+        {mostrarNav && (
+          <button type="button" class="galeria-seta galeria-ant" aria-label="Item anterior" hidden={!varias}>
             <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </button>
         )}
         <img alt="" />
         {temVideo && <video class="galeria-video" controls playsinline preload="metadata" hidden></video>}
         {temVideo && <iframe class="galeria-iframe" hidden allowfullscreen allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" title="Vídeo"></iframe>}
-        {varias && (
-          <button type="button" class="galeria-seta galeria-seg" aria-label="Item seguinte">
+        {temPdf && <iframe class="galeria-pdf" hidden title="Folheto em PDF"></iframe>}
+        {temPdf && <p class="galeria-carregar" hidden aria-live="polite">A carregar o PDF…</p>}
+        {mostrarNav && (
+          <button type="button" class="galeria-seta galeria-seg" aria-label="Item seguinte" hidden={!varias}>
             <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </button>
         )}
       </div>
-      {varias && (
-        <p class="galeria-contagem" aria-live="polite"><b class="g-atual">1</b> / {itens.length}</p>
+      {temPdf && <p class="galeria-erro" hidden></p>}
+      {mostrarNav && (
+        <p class="galeria-contagem" aria-live="polite" hidden={!varias}><b class="g-atual">1</b> / <span class="g-total">{itens.length}</span></p>
       )}
     </dialog>
   </div>
 )}
 <script>
-  // Galeria em ecrã completo com imagens e vídeos: setas no ecrã, teclas ← →, ou deslizar o dedo.
-  // Esc, o X ou um clique no fundo escuro fecham. Os vídeos do YouTube só carregam depois de abertos.
-  document.querySelectorAll<HTMLElement>('.galeria').forEach((g) => {
-    const dialogo = g.querySelector<HTMLDialogElement>('dialog');
-    const palco = dialogo?.querySelector<HTMLElement>('.galeria-palco');
-    const grande = palco?.querySelector<HTMLImageElement>('img');
-    const video = palco?.querySelector<HTMLVideoElement>('.galeria-video');
-    const quadro = palco?.querySelector<HTMLIFrameElement>('.galeria-iframe');
-    const atualEl = dialogo?.querySelector<HTMLElement>('.g-atual');
-    const fechar = dialogo?.querySelector<HTMLButtonElement>('.galeria-fechar');
-    const zoomBtn = dialogo?.querySelector<HTMLButtonElement>('.galeria-zoom');
-    const botoes = Array.from(g.querySelectorAll<HTMLButtonElement>('.galeria-abrir'));
+  // Galeria em ecrã completo com imagens, vídeos e PDF: setas no ecrã, teclas ← →, ou deslizar o dedo.
+  // Esc, o X ou um clique no fundo escuro fecham. Os vídeos do YouTube e o PDF só carregam depois de abertos.
+  // Os PDF são desenhados página a página (PDF.js, ficheiros em src/vendor/pdfjs/) e passam a ser slides como as imagens.
+  let pdfjsPromessa = null;
+  const carregarPdfjs = () => {
+    if (!pdfjsPromessa) {
+      // Importações normais (o Astro/Vite trata dos ficheiros em src/vendor/pdfjs e só os descarrega quando é preciso).
+      // O "worker" do PDF.js corre na própria página, sem ficheiro à parte: é mais simples e não depende de caminhos
+      // do servidor, e os folhetos são leves. Ao importar o ficheiro do worker, o PDF.js passa a usá-lo sozinho.
+      pdfjsPromessa = import('../vendor/pdfjs/pdf.worker.min.mjs').then(() => import('../vendor/pdfjs/pdf.min.mjs'));
+      pdfjsPromessa.catch(() => { pdfjsPromessa = null; });
+    }
+    return pdfjsPromessa;
+  };
+
+  document.querySelectorAll('.galeria').forEach((g) => {
+    const dialogo = g.querySelector('dialog');
+    const palco = dialogo && dialogo.querySelector('.galeria-palco');
+    const grande = palco && palco.querySelector('img');
+    const video = palco && palco.querySelector('.galeria-video');
+    const quadro = palco && palco.querySelector('.galeria-iframe');
+    const pdfQuadro = palco && palco.querySelector('.galeria-pdf');
+    const aCarregar = palco && palco.querySelector('.galeria-carregar');
+    const contagem = dialogo && dialogo.querySelector('.galeria-contagem');
+    const atualEl = dialogo && dialogo.querySelector('.g-atual');
+    const totalEl = dialogo && dialogo.querySelector('.g-total');
+    const fechar = dialogo && dialogo.querySelector('.galeria-fechar');
+    const zoomBtn = dialogo && dialogo.querySelector('.galeria-zoom');
+    const pdfLink = dialogo && dialogo.querySelector('.galeria-pdf-link');
+    const erroEl = dialogo && dialogo.querySelector('.galeria-erro');
+    const setas = dialogo ? Array.from(dialogo.querySelectorAll('.galeria-seta')) : [];
+    const botoes = Array.from(g.querySelectorAll('.galeria-abrir'));
     if (!dialogo || !palco || !grande || !fechar || botoes.length === 0) return;
+
+    // Pasta com os ficheiros de apoio do PDF.js (descodificadores de imagem, perfis de cor, tipos de letra padrão)
+    const recursos = g.dataset.pdfjs || '/vendor/pdfjs/';
+
+    const slides = botoes.map((b) => ({
+      tipo: b.dataset.tipo || 'imagem', src: b.dataset.src || '', poster: b.dataset.poster || '',
+      alt: b.dataset.alt || '', botao: b,
+    }));
 
     const parar = () => {
       if (video) {
@@ -99,14 +142,21 @@ const legenda = (tipo: string, i: number) =>
         video.load();
       }
       if (quadro) quadro.removeAttribute('src');
+      if (pdfQuadro) pdfQuadro.removeAttribute('src');
+    };
+    const esconderTudo = () => {
+      grande.hidden = true;
+      [video, quadro, pdfQuadro, aCarregar, pdfLink, zoomBtn, erroEl].forEach((el) => { if (el) el.hidden = true; });
     };
 
     // Zoom: a imagem passa ao tamanho real e o palco passa a deslizar (útil para ler folhetos)
     const emZoom = () => dialogo.classList.contains('zoom');
-    const definirZoom = (ligado: boolean, fx = 0.5, fy = 0) => {
+    const definirZoom = (ligado, fx = 0.5, fy = 0) => {
       dialogo.classList.toggle('zoom', ligado);
-      zoomBtn?.setAttribute('aria-pressed', String(ligado));
-      zoomBtn?.setAttribute('aria-label', ligado ? 'Reduzir imagem' : 'Ampliar imagem');
+      if (zoomBtn) {
+        zoomBtn.setAttribute('aria-pressed', String(ligado));
+        zoomBtn.setAttribute('aria-label', ligado ? 'Reduzir imagem' : 'Ampliar imagem');
+      }
       if (ligado) requestAnimationFrame(() => {
         // centra a vista no ponto onde se clicou (pelo botão da lupa: ao centro, no topo)
         palco.scrollLeft = grande.offsetLeft + fx * grande.offsetWidth - palco.clientWidth / 2;
@@ -115,46 +165,167 @@ const legenda = (tipo: string, i: number) =>
       else palco.scrollTo(0, 0);
     };
 
-    let atual = 0;
-    const mostrar = (i: number, efeito: 'abre' | 'seg' | 'ant') => {
-      atual = (i + botoes.length) % botoes.length;
-      const b = botoes[atual];
-      const tipo = b.dataset.tipo ?? 'imagem';
-      parar();
-      definirZoom(false);
-      if (zoomBtn) zoomBtn.hidden = tipo !== 'imagem';
-      grande.hidden = tipo !== 'imagem';
-      if (video) video.hidden = tipo !== 'video';
-      if (quadro) quadro.hidden = tipo !== 'youtube';
-
-      let ativo: HTMLElement = grande;
-      if (tipo === 'video' && video) {
-        video.poster = b.dataset.poster ?? '';
-        video.src = b.dataset.src ?? '';
-        video.setAttribute('aria-label', b.dataset.alt ?? '');
-        video.play().catch(() => {});
-        ativo = video;
-      } else if (tipo === 'youtube' && quadro) {
-        quadro.title = b.dataset.alt ?? '';
-        quadro.src = 'https://www.youtube-nocookie.com/embed/' + (b.dataset.src ?? '') + '?autoplay=1&rel=0';
-        ativo = quadro;
-      } else {
-        grande.src = b.dataset.src ?? '';
-        grande.alt = b.dataset.alt ?? '';
+    // ---- PDF: cada página passa a ser um slide ----
+    const renderizarPagina = (s) => {
+      if (!s.promessa) {
+        s.promessa = (async () => {
+          const pag = await s.doc.getPage(s.n);
+          const v1 = pag.getViewport({ scale: 1 });
+          const largura = Math.min(2400, Math.max(1600, v1.width * 2));
+          const vp = pag.getViewport({ scale: largura / v1.width });
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.floor(vp.width);
+          canvas.height = Math.floor(vp.height);
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          await pag.render({ canvasContext: ctx, canvas, viewport: vp }).promise;
+          const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.92));
+          pag.cleanup();
+          return URL.createObjectURL(blob);
+        })();
       }
-      if (atualEl) atualEl.textContent = String(atual + 1);
-      ativo.classList.remove('de-abre', 'de-seg', 'de-ant');
-      void ativo.offsetWidth;
-      ativo.classList.add('de-' + efeito);
+      return s.promessa;
+    };
+    const expandirPdf = (s) => {
+      if (!s.expansao) {
+        s.expansao = (async () => {
+          const pdfjs = await carregarPdfjs();
+          // wasmUrl: descodifica imagens JPEG 2000 e JBIG2 (comuns nas fotografias dos PDF de catálogos);
+          // iccUrl: cores CMYK com perfil; standardFontDataUrl: tipos de letra padrão quando não vêm incluídos no PDF
+          const doc = await pdfjs.getDocument({
+            url: s.src,
+            wasmUrl: recursos,
+            iccUrl: recursos,
+            standardFontDataUrl: recursos,
+          }).promise;
+          const paginas = [];
+          for (let n = 1; n <= doc.numPages; n++) {
+            paginas.push({
+              tipo: 'pdfpag', doc, n, pdfUrl: s.src,
+              alt: s.alt + (doc.numPages > 1 ? ', página ' + n : ''),
+              botao: n === 1 ? s.botao : null,
+            });
+          }
+          const i = slides.indexOf(s);
+          if (i >= 0) slides.splice(i, 1, ...paginas);
+          s.paginas = paginas;
+          return paginas;
+        })();
+      }
+      return s.expansao;
+    };
+    // A primeira página passa a ser a miniatura quando o PDF não tem imagem de capa
+    const atualizarCapa = (s, url) => {
+      const b = s.botao;
+      if (!b || b.querySelector('img')) return;
+      const tile = b.querySelector('.galeria-tile');
+      if (!tile) return;
+      const img = document.createElement('img');
+      img.alt = '';
+      img.src = url;
+      tile.replaceWith(img);
+    };
+    const falhaPdf = (s, erro) => {
+      // Sem PDF.js (ficheiros em falta, navegador antigo): usa o leitor do próprio navegador, simplificado
+      if (aCarregar) aCarregar.hidden = true;
+      // Em desenvolvimento (npm run dev) mostra o motivo no ecrã, para ser fácil de diagnosticar
+      if (erroEl && import.meta.env && import.meta.env.DEV) {
+        erroEl.textContent = 'PDF.js: ' + ((erro && erro.message) || erro || 'sem resposta');
+        erroEl.hidden = false;
+      }
+      const url = s.pdfUrl || s.src;
+      if (pdfQuadro) {
+        pdfQuadro.hidden = false;
+        pdfQuadro.title = s.alt;
+        pdfQuadro.src = url + '#toolbar=0&navpanes=0&view=FitH';
+      }
+      if (pdfLink) { pdfLink.href = url; pdfLink.hidden = false; }
     };
 
-    botoes.forEach((b, i) => b.addEventListener('click', () => {
-      mostrar(i, 'abre');
+    // Texto do indicador de progresso (também ajuda a perceber em que passo está um PDF pesado)
+    const estado = (texto) => { if (aCarregar) aCarregar.textContent = texto; };
+
+    const atualizarNavegacao = (atual) => {
+      const varias = slides.length > 1;
+      setas.forEach((b) => { b.hidden = !varias; });
+      if (contagem) contagem.hidden = !varias;
+      if (atualEl) atualEl.textContent = String(atual + 1);
+      if (totalEl) totalEl.textContent = String(slides.length);
+    };
+
+    let atual = 0;
+    let pedido = 0;
+    const animar = (el, efeito) => {
+      el.classList.remove('de-abre', 'de-seg', 'de-ant');
+      void el.offsetWidth;
+      el.classList.add('de-' + efeito);
+    };
+    const mostrar = (i, efeito) => {
+      atual = (i + slides.length) % slides.length;
+      const meu = ++pedido;
+      const s = slides[atual];
+      parar();
+      definirZoom(false);
+      esconderTudo();
+      atualizarNavegacao(atual);
+
+      if (s.tipo === 'video' && video) {
+        video.hidden = false;
+        video.poster = s.poster;
+        video.src = s.src;
+        video.setAttribute('aria-label', s.alt);
+        video.play().catch(() => {});
+        animar(video, efeito);
+      } else if (s.tipo === 'youtube' && quadro) {
+        quadro.hidden = false;
+        quadro.title = s.alt;
+        quadro.src = 'https://www.youtube-nocookie.com/embed/' + s.src + '?autoplay=1&rel=0';
+        animar(quadro, efeito);
+      } else if (s.tipo === 'pdf') {
+        // PDF ainda por abrir: carrega o documento e passa a mostrar a primeira página
+        if (aCarregar) aCarregar.hidden = false;
+        estado('A abrir o folheto…');
+        if (pdfLink) { pdfLink.href = s.src; pdfLink.hidden = false; }
+        setTimeout(() => { if (pedido === meu && aCarregar && !aCarregar.hidden) falhaPdf(s, new Error('tempo excedido a abrir o PDF')); }, 25000);
+        expandirPdf(s).then((paginas) => {
+          if (pedido === meu) mostrar(slides.indexOf(paginas[0]), efeito);
+          else atualizarNavegacao(atual);
+        }).catch((erro) => { console.warn('[galeria] Não foi possível abrir o PDF com o PDF.js:', erro); if (pedido === meu) falhaPdf(s, erro); });
+      } else if (s.tipo === 'pdfpag') {
+        if (aCarregar) aCarregar.hidden = false;
+        estado('A desenhar a página ' + s.n + '…');
+        if (pdfLink) { pdfLink.href = s.pdfUrl; pdfLink.hidden = false; }
+        setTimeout(() => { if (pedido === meu && aCarregar && !aCarregar.hidden) falhaPdf(s, new Error('tempo excedido a desenhar a página')); }, 25000);
+        renderizarPagina(s).then((url) => {
+          atualizarCapa(s, url);
+          const seguinte = slides[atual + 1];
+          if (seguinte && seguinte.tipo === 'pdfpag') renderizarPagina(seguinte).catch(() => {});
+          if (pedido !== meu) return;
+          if (aCarregar) aCarregar.hidden = true;
+          grande.src = url;
+          grande.alt = s.alt;
+          grande.hidden = false;
+          if (zoomBtn) zoomBtn.hidden = false;
+          animar(grande, efeito);
+        }).catch((erro) => { console.warn('[galeria] Não foi possível desenhar a página do PDF:', erro); if (pedido === meu) falhaPdf(s, erro); });
+      } else {
+        grande.hidden = false;
+        if (zoomBtn) zoomBtn.hidden = false;
+        grande.src = s.src;
+        grande.alt = s.alt;
+        animar(grande, efeito);
+      }
+    };
+
+    botoes.forEach((b) => b.addEventListener('click', () => {
+      const i = slides.findIndex((s) => s.botao === b);
+      mostrar(i < 0 ? 0 : i, 'abre');
       dialogo.showModal();
       fechar.focus();
     }));
-    dialogo.addEventListener('close', () => { parar(); definirZoom(false); });
-    zoomBtn?.addEventListener('click', () => definirZoom(!emZoom()));
+    dialogo.addEventListener('close', () => { pedido++; parar(); definirZoom(false); });
+    if (zoomBtn) zoomBtn.addEventListener('click', () => definirZoom(!emZoom()));
 
     // arrastar com o rato para mover a imagem ampliada; clique simples alterna o zoom
     let pan = false, panMoveu = false, px = 0, py = 0, sl = 0, st = 0;
@@ -179,26 +350,28 @@ const legenda = (tipo: string, i: number) =>
       const r = grande.getBoundingClientRect();
       definirZoom(true, (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
     });
-    g.querySelector('.galeria-ant')?.addEventListener('click', () => mostrar(atual - 1, 'ant'));
-    g.querySelector('.galeria-seg')?.addEventListener('click', () => mostrar(atual + 1, 'seg'));
+    const anterior = dialogo.querySelector('.galeria-ant');
+    const seguinte = dialogo.querySelector('.galeria-seg');
+    if (anterior) anterior.addEventListener('click', () => mostrar(atual - 1, 'ant'));
+    if (seguinte) seguinte.addEventListener('click', () => mostrar(atual + 1, 'seg'));
 
     dialogo.addEventListener('keydown', (e) => {
-      if (botoes.length < 2 || emZoom()) return; // com zoom, as setas deslocam a imagem
-      if ((e.target as HTMLElement).tagName === 'VIDEO') return; // as setas avançam/recuam o vídeo
+      if (slides.length < 2 || emZoom()) return; // com zoom, as setas deslocam a imagem
+      if (e.target && e.target.tagName === 'VIDEO') return; // as setas avançam/recuam o vídeo
       if (e.key === 'ArrowLeft') { e.preventDefault(); mostrar(atual - 1, 'ant'); }
       if (e.key === 'ArrowRight') { e.preventDefault(); mostrar(atual + 1, 'seg'); }
     });
     dialogo.addEventListener('click', (e) => {
-      const alvo = e.target as HTMLElement;
-      if (alvo === dialogo || (alvo === palco && !emZoom()) || alvo.closest('.galeria-fechar')) dialogo.close();
+      const alvo = e.target;
+      if (alvo === dialogo || (alvo === palco && !emZoom()) || (alvo.closest && alvo.closest('.galeria-fechar'))) dialogo.close();
     });
 
-    let x0: number | null = null;
+    let x0 = null;
     dialogo.addEventListener('touchstart', (e) => {
-      x0 = (e.target as HTMLElement).closest('video, iframe') || emZoom() ? null : e.touches[0].clientX;
+      x0 = e.target.closest('video, iframe') || emZoom() ? null : e.touches[0].clientX;
     }, { passive: true });
     dialogo.addEventListener('touchend', (e) => {
-      if (x0 === null || botoes.length < 2) return;
+      if (x0 === null || slides.length < 2) return;
       const dx = e.changedTouches[0].clientX - x0;
       if (Math.abs(dx) > 50) mostrar(atual + (dx < 0 ? 1 : -1), dx < 0 ? 'seg' : 'ant');
       x0 = null;
