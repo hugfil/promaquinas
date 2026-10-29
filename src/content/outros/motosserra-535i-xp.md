@@ -4,6 +4,8 @@ marca: "Husqvarna"
 tipo: "Motosserra"
 resumo: "Para utilizadores profissionais que pretendem uma motosserra leve e de alto desempenho."
 imagem: "/imagens/motosserra-535i-xp-000.jpg"
+preco: 2.11
+precoCampanha: 2.00
 destaque: true
 ordem: 1
 ---

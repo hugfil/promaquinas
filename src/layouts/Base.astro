@@ -6,10 +6,10 @@ import '../styles/global.css';
 import { campanhasAtivas } from '../lib/campanhas';
 import { u, data } from '../lib/url';
 import Logo from '../components/Logo.astro';
-import MapaRodape from '../components/MapaRodape.astro';
+import Rodape from '../components/Rodape.astro';
 
 interface Props { titulo: string; descricao?: string; }
-const { titulo, descricao = 'Robots corta-relva Husqvarna e outros equipamentos para o jardim. Representante oficial Husqvarna.' } = Astro.props;
+const { titulo, descricao = 'Robots corta-relva Husqvarna e outros equipamentos para o jardim. Revendedor oficial Husqvarna®, especialista Automower® e assistência técnica.' } = Astro.props;
 
 const ativas = await campanhasAtivas();
 const destaque = ativas[0];
@@ -75,26 +75,8 @@ const nav = [
       </div>
     </header>
     <main><slot /></main>
-    <footer class="rodape">
-      <div class="wrap rodape-grade">
-        <div class="rodape-info">
-        <a class="logo-rodape" href={u('/')} aria-label="Promáquinas, página inicial"><Logo variante="rodape" /></a>
-        <p>Revendedor oficial Husqvarna® | Assistência técnica</p>
-        <p>
-          Este site apresenta produtos e campanhas. Não efetuamos vendas online: peça um orçamento e entramos em contacto.
-        </p>
-        <p>Av. do Casal, 94 · 4730-570 Soutelo</p>
-        <p>Horário Funcionamento:</p>
-        <p>Segunda a sexta-feira - 08:30-12:30 e 14:00-19:00</p>
-        <p>
-          <!-- SUBSTITUIR pelos dados reais -->
-          Email: <a href="mailto:sergiojngoncalves@sapo.pt">sergiojngoncalves@sapo.pt</a> · Telefone: 253 312 094 ·{' '}
-          <a href={u('/privacidade/')}>Política de privacidade</a>
-        </p>
-        </div>
-        <MapaRodape />
-      </div>
-    </footer>
+    <!-- Rodapé: dados (contactos, horário, redes, ligações legais) em src/lib/empresa.ts -->
+    <Rodape />
     <button type="button" class="topo-voltar" id="topo-voltar" aria-label="Voltar ao topo">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 15l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
     </button>

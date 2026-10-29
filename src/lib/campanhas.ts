@@ -43,7 +43,8 @@ export async function resolverProdutos(chaves: string[], campanha: string) {
       marca: entrada.data.marca,
       resumo: entrada.data.resumo,
       imagem: entrada.data.imagem,
-      preco: entrada.data.preco,
+      // dados completos da ficha (preco, precoDesde, precoCampanha) para o componente Preco
+      dados: entrada.data,
     });
   }
   return resultado;

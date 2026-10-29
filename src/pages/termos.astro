@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import { u } from '../lib/url';
+---
+<Base titulo="Termos e condições">
+  <div class="wrap prosa">
+    <h1>Termos e condições</h1>
+    <p><strong>Texto provisório: deve ser revisto e completado antes de publicar o site.</strong></p>
+    <h2>Utilização do site</h2>
+    <p>Este site apresenta produtos e campanhas. Não efetuamos vendas online: os pedidos de orçamento não constituem compra nem reserva.</p>
+    <h2>Pedidos de orçamento</h2>
+    <p>Depois de recebermos o pedido, entramos em contacto com uma proposta. [Indicar validade dos orçamentos, condições de instalação, deslocação e pagamento.]</p>
+    <h2>Campanhas</h2>
+    <p>As campanhas são válidas no período indicado e enquanto houver stock. [Indicar outras condições aplicáveis.]</p>
+    <h2>Garantia e assistência técnica</h2>
+    <p>[Indicar condições de garantia e de assistência técnica.]</p>
+    <h2>Dados pessoais</h2>
+    <p>Ver a <a href={u('/privacidade/')}>política de privacidade</a>.</p>
+  </div>
+</Base>

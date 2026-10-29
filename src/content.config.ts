@@ -12,7 +12,9 @@ const robots = defineCollection({
     areaMaxima: z.number(),      // m²
     decliveMaximo: z.number(),   // %
     ligacao: z.array(z.string()).default([]),
-    preco: z.string().optional(), // opcional, ex.: "desde 1.800 €". Sem este campo, o preço não aparece.
+    preco: z.union([z.number(), z.string()]).optional(), // opcional, ex.: 1234.97. Sem este campo, o preço não aparece.
+    precoDesde: z.boolean().default(false), // true = mostra "desde 1.234,97€"
+    precoCampanha: z.union([z.number(), z.string()]).optional(), // preço em campanha (vermelho, com "antes" riscado); só aparece enquanto o produto estiver numa campanha ativa
     imagem: z.string().optional(), // ex.: /imagens/automower-305.jpg (ficheiro em /public)
     galeria: z.array(z.string()).default([]), // imagens extra, mostradas na ficha
     destaque: z.boolean().default(false),
@@ -27,7 +29,9 @@ const outros = defineCollection({
     marca: z.string(),           // ex.: Husqvarna
     tipo: z.string().optional(), // ex.: Motosserra, Corta-sebes
     resumo: z.string(),
-    preco: z.string().optional(), // opcional, ex.: "desde 350 €"
+    preco: z.union([z.number(), z.string()]).optional(), // opcional, ex.: 350
+    precoDesde: z.boolean().default(false), // true = mostra "desde 350,00€"
+    precoCampanha: z.union([z.number(), z.string()]).optional(), // preço em campanha; só aparece enquanto o produto estiver numa campanha ativa
     imagem: z.string().optional(),
     galeria: z.array(z.string()).default([]),
     destaque: z.boolean().default(false),

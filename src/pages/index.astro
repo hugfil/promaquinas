@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { campanhasAtivas, produtosEmCampanha } from '../lib/campanhas';
 import EmCampanha from '../components/EmCampanha.astro';
+import Preco from '../components/Preco.astro';
 import Carrossel from '../components/Carrossel.astro';
 import { testemunhos as obterTestemunhos } from '../lib/testemunhos';
 import { u, data } from '../lib/url';
@@ -47,7 +48,7 @@ const emCampanha = await produtosEmCampanha();
     <div class="wrap hero-texto">
       <h1>O futuro da manutenção do seu jardim começa aqui</h1>
       <p class="sub">Robots corta-relva inteligentes para jardins de qualquer dimensão.</p>
-      <p class="pequeno">Representante oficial Husqvarna.</p>
+      <p class="pequeno">Revendedor oficial Husqvarna<sup class="reg">®</sup> · Especialista Automower<sup class="reg">®</sup> · Assistência técnica</p>
       <p class="acoes">
         <a class="botao" href={u('/orcamento/')}>Pedir Orçamento</a>
         <a class="botao sec" href={u('/robots/')}>Ver Robots</a>
@@ -79,7 +80,7 @@ const emCampanha = await produtosEmCampanha();
   <section class={fundo()}>
     <div class="wrap split">
       <div>
-        <h2>Robots corta-relva Husqvarna</h2>
+        <h2>Robots corta-relva Husqvarna<sup class="reg">®</sup></h2>
         <p>Instalação profissional, assistência técnica e acompanhamento especializado.</p>
         <p><a class="botao" href={u('/robots/')}>Ver Robots</a></p>
       </div>
@@ -92,7 +93,7 @@ const emCampanha = await produtosEmCampanha();
               <a class="cobre" href={u(`/robots/${r.id}/`)}><h3>{r.data.nome}</h3></a>
               <p>{r.data.resumo}</p>
               <p class="etiqueta">Até {r.data.areaMaxima} m²</p>
-              {r.data.preco && <p class="preco">{r.data.preco}</p>}
+              <Preco dados={r.data} emCampanha={emCampanha.has('robots/' + r.id)} />
             </div>
           </li>
         ))}
@@ -111,8 +112,8 @@ const emCampanha = await produtosEmCampanha();
     <div class="wrap split inverso">
       <div>
         <h2>Outros produtos</h2>
-        <p>Equipamentos de várias marcas para o jardim e a floresta.</p>
-        <p><a class="botao sec" href={u('/produtos/')}>Ver Outros Produtos</a></p>
+        <p>Equipamentos Husqvarna<sup class="reg">®</sup> e outras marcas para o jardim e floresta.</p>
+        <p><a class="botao sec" href={u('/produtos/')}>Ver Outros produtos</a></p>
       </div>
       <Carrossel rotulo="Outros produtos em destaque">
         {outrosCarrossel.map((p) => (
@@ -123,7 +124,7 @@ const emCampanha = await produtosEmCampanha();
               <p class="etiqueta">{p.data.marca}{p.data.tipo ? `, ${p.data.tipo}` : ''}</p>
               <a class="cobre" href={u(`/produtos/${p.id}/`)}><h3>{p.data.nome}</h3></a>
               <p>{p.data.resumo}</p>
-              {p.data.preco && <p class="preco">{p.data.preco}</p>}
+              <Preco dados={p.data} emCampanha={emCampanha.has('produtos/' + p.id)} />
             </div>
           </li>
         ))}
@@ -141,7 +142,7 @@ const emCampanha = await produtosEmCampanha();
   {testemunhos.length > 0 && (
     <section class={fundo()}>
       <div class="wrap">
-        <h2>O que dizem os clientes</h2>
+        <h2>O que dizem os nossos clientes</h2>
         <div class="testemunhos">
           {testemunhos.map((t) => (
             <figure class="testemunho">

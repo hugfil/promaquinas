@@ -5,6 +5,7 @@ import { campanhasAtivas, resolverProdutos } from '../lib/campanhas';
 import { u, data } from '../lib/url';
 import EmCampanha from '../components/EmCampanha.astro';
 import Galeria from '../components/Galeria.astro';
+import Preco from '../components/Preco.astro';
 
 const ativas = await campanhasAtivas();
 const itens = await Promise.all(
@@ -26,7 +27,7 @@ const itens = await Promise.all(
   </section>
   <div class="wrap">
     {itens.length === 0 && (
-      <p>Neste momento não há campanhas ativas. Volte em breve ou <a href={u('/orcamento/')}>peça um orçamento</a>.</p>
+      <p>Neste momento não há campanhas ativas. Volte em breve ou continue a explorar a nossa <a href={u('/')}>loja</a>.</p>
     )}
     {itens.map(({ c, Content, produtos, folhetos, videos }) => (
       <article class="prosa campanha" id={c.id}>
@@ -39,7 +40,7 @@ const itens = await Promise.all(
             <Content />
           </div>
           {folhetos.length > 0 && (
-            <aside class="campanha-folheto" aria-label="Folheto da campanha">
+            <aside class="campanha-folheto" id={`folheto-${c.id}`} aria-label="Folheto da campanha">
               <Galeria imagens={folhetos} nome={c.data.titulo} variante="folheto" />
               {c.data.folhetoPdf && !folhetos.includes(c.data.folhetoPdf) && <a class="folheto-pdf" href={u(c.data.folhetoPdf)} target="_blank" rel="noopener">Abrir folheto em PDF</a>}
             </aside>
@@ -62,15 +63,27 @@ const itens = await Promise.all(
                     <p class="etiqueta">{p.marca}</p>
                     <a class="cobre" href={u(p.href)}><h3>{p.nome}</h3></a>
                     <p>{p.resumo}</p>
-                    {p.preco && <p class="preco">{p.preco}</p>}
+                    <Preco dados={p.dados} emCampanha />
                   </div>
                 </li>
               ))}
             </ul>
           </>
         )}
-        {c.data.link && <p><a href={u(c.data.link)}>{produtos.length > 0 ? 'Saber mais' : 'Ver produtos desta campanha'}</a></p>}
+        {folhetos.length > 0 && <p><a href={`#folheto-${c.id}`} data-abrir-folheto>Saber mais</a></p>}
       </article>
     ))}
   </div>
 </Base>
+<script>
+  // "Saber mais" abre o folheto da campanha na galeria, tal como clicar no próprio folheto.
+  // Sem JavaScript, a ligação limita-se a saltar para o folheto na página.
+  document.querySelectorAll('a[data-abrir-folheto]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const alvo = document.querySelector(a.getAttribute('href') + ' .galeria-abrir');
+      if (!alvo) return;
+      e.preventDefault();
+      alvo.click();
+    });
+  });
+</script>

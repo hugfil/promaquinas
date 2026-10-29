@@ -7,7 +7,8 @@ galeria: ["/videos/automower-305E-nera-310E-nera.mp4", "/imagens/automower-305-0
 areaMaxima: 600
 decliveMaximo: 40
 ligacao: ["Bluetooth", "Wi-Fi"]
-preco: "desde 1.234,97€"
+preco: 1234.97
+precoCampanha: 1234.00
 destaque: true
 ordem: 1
 ---
