@@ -1,0 +1,32 @@
+---
+// Preço de um produto, em três formatos:
+//   "1.234,97€"            -> preco
+//   "desde 1.234,97€"      -> preco + precoDesde: true
+//   campanha (vermelho) + "antes ~~1.499,00€~~" -> precoCampanha, enquanto o produto estiver numa campanha ativa
+import { resolverPreco, formatarPreco, type DadosPreco } from '../lib/preco';
+
+interface Props {
+  dados: DadosPreco;
+  emCampanha?: boolean;
+  ficha?: boolean; // página do produto: acrescenta "Preço indicativo" e a nota
+  nota?: string;
+}
+const { dados, emCampanha = false, ficha = false, nota } = Astro.props;
+const { normal, campanha, desde } = resolverPreco(dados, emCampanha);
+const prefixo = desde ? 'desde ' : '';
+const valor = normal ?? campanha; // sem preço normal, mostra só o de campanha (sem "antes")
+---
+{valor !== null && (
+  <div class:list={['preco', { 'preco-ficha': ficha, 'com-campanha': campanha !== null }]}>
+    {ficha && <span class="preco-rotulo">Preço indicativo</span>}
+    {campanha !== null && normal !== null ? (
+      <>
+        <span class="preco-campanha">{prefixo}{formatarPreco(campanha)}</span>
+        <span class="preco-antes">antes <s><span class="sr-only">preço anterior: </span>{formatarPreco(normal)}</s></span>
+      </>
+    ) : (
+      <span class:list={['preco-valor', { 'preco-campanha': normal === null }]}>{prefixo}{formatarPreco(valor)}</span>
+    )}
+    {ficha && nota && <small>{nota}</small>}
+  </div>
+)}

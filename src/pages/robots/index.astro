@@ -3,12 +3,13 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { u } from '../../lib/url';
 import { produtosEmCampanha } from '../../lib/campanhas';
-import { precoNumero } from '../../lib/preco';
+import { resolverPreco } from '../../lib/preco';
+import Preco from '../../components/Preco.astro';
 import EmCampanha from '../../components/EmCampanha.astro';
 
 const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.data.ordem);
-const lista = robots.map((r, i) => ({ r, i, valor: precoNumero(r.data.preco) }));
 const emCampanha = await produtosEmCampanha();
+const lista = robots.map((r, i) => ({ r, i, valor: resolverPreco(r.data, emCampanha.has('robots/' + r.id)).atual }));
 
 // Opções dos filtros: cada valor que existe nas fichas (areaMaxima, decliveMaximo) vira uma opção "Até N"
 const unicos = (valores: number[]) => [...new Set(valores)].sort((a, b) => a - b);
@@ -93,7 +94,7 @@ const temFiltros = robots.length > 1;
             <a class="cobre" href={u(`/robots/${r.id}/`)}><h3>{r.data.nome}</h3></a>
             <p>{r.data.resumo}</p>
             <p class="etiqueta">Até {r.data.areaMaxima} m², declive até {r.data.decliveMaximo}%</p>
-            {r.data.preco && <p class="preco">{r.data.preco}</p>}
+            <Preco dados={r.data} emCampanha={emCampanha.has('robots/' + r.id)} />
           </div>
         </li>
       ))}

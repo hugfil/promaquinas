@@ -7,9 +7,10 @@ galeria: ["/imagens/automower-305e-nera-000.jpg", "/imagens/automower-305e-nera-
 areaMaxima: 600
 decliveMaximo: 30
 ligacao: ["Bluetooth", "Wi-Fi"]
-preco: "desde 1.499,00€"
+preco: 1499.00
+precoDesde: true
 destaque: true
-ordem: 2
+ordem: 3
 ---
 
 O Husqvarna Automower 305E NERA é um corta-relva robotizado para jardins até 600 m². Possui EdgeCut para reduzir o corte manual das margens e permite escolher entre a instalação com fios tradicional ou limites virtuais utilizando o EPOS.

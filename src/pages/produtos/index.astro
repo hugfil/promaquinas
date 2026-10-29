@@ -3,21 +3,22 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { u } from '../../lib/url';
 import { produtosEmCampanha } from '../../lib/campanhas';
-import { precoNumero } from '../../lib/preco';
+import { resolverPreco } from '../../lib/preco';
+import Preco from '../../components/Preco.astro';
 import EmCampanha from '../../components/EmCampanha.astro';
 
 const produtos = (await getCollection('outros')).sort((a, b) => a.data.nome.localeCompare(b.data.nome, 'pt'));
-const lista = produtos.map((p, i) => ({ p, i, valor: precoNumero(p.data.preco) }));
+const emCampanha = await produtosEmCampanha();
+const lista = produtos.map((p, i) => ({ p, i, valor: resolverPreco(p.data, emCampanha.has('produtos/' + p.id)).atual }));
 const marcas = [...new Set(produtos.map((p) => p.data.marca))].sort((a, b) => a.localeCompare(b, 'pt'));
 const tipos = [...new Set(produtos.map((p) => p.data.tipo).filter((t): t is string => Boolean(t)))].sort((a, b) => a.localeCompare(b, 'pt'));
-const emCampanha = await produtosEmCampanha();
 const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
 ---
 <Base titulo="Outros produtos">
   <section class="hero claro">
     <div class="wrap">
       <h1>Outros produtos</h1>
-      <p>Equipamentos de várias marcas para o jardim e floresta.</p>
+      <p>Equipamentos Husqvarna<sup class="reg">®</sup> e outras marcas para o jardim e floresta.</p>
     </div>
   </section>
   <div class="wrap" data-sem-anim>
@@ -89,7 +90,7 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
             <p class="etiqueta">{p.data.marca}{p.data.tipo ? `, ${p.data.tipo}` : ''}</p>
             <a class="cobre" href={u(`/produtos/${p.id}/`)}><h3>{p.data.nome}</h3></a>
             <p>{p.data.resumo}</p>
-            {p.data.preco && <p class="preco">{p.data.preco}</p>}
+            <Preco dados={p.data} emCampanha={emCampanha.has('produtos/' + p.id)} />
           </div>
         </li>
       ))}

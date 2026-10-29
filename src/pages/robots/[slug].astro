@@ -4,6 +4,7 @@ import { getCollection, render } from 'astro:content';
 import { u } from '../../lib/url';
 import Galeria from '../../components/Galeria.astro';
 import EmCampanha from '../../components/EmCampanha.astro';
+import Preco from '../../components/Preco.astro';
 import { produtosEmCampanha } from '../../lib/campanhas';
 
 export async function getStaticPaths() {
@@ -32,7 +33,7 @@ const emCampanha = (await produtosEmCampanha()).has('robots/' + robot.id);
         {d.ligacao.length > 0 && <tr><th>Ligação</th><td>{d.ligacao.join(', ')}</td></tr>}
       </tbody>
     </table>
-    {d.preco && <p class="preco">Preço indicativo: {d.preco}<small>Valor sujeito a confirmação no orçamento.</small></p>}
+    <Preco dados={d} emCampanha={emCampanha} ficha nota="Valor sujeito a confirmação no orçamento." />
     <div class="prosa"><Content /></div>
     <Galeria imagens={d.galeria} nome={d.nome} />
     <p><a class="botao" href={u(`/orcamento/?modelo=${encodeURIComponent(d.nome)}`)}>Pedir Orçamento para este modelo</a></p>

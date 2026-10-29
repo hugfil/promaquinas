@@ -21,7 +21,10 @@ Montserrat, Inter e Manrope vêm dos pacotes @fontsource-variable (instalados co
 - Campanha: ficheiro em `src/content/campanhas/` com `dataInicio` e `dataFim`.
   Para remover antes do fim, apaga o ficheiro (ou muda `dataFim`).
 - Imagens: colocar em `public/imagens/` e referir como `/imagens/nome.jpg`.
-- Preço (opcional): campo `preco` na ficha do robot ou produto, ex.: `preco: "desde 1.800 €"`. Sem o campo, não aparece nada.
+- Preço (opcional): na ficha do robot ou produto. Sem o campo `preco`, não aparece nada.
+  - Só o preço: `preco: 1499` → **1.499,00€**
+  - Com "desde": `preco: 1499` + `precoDesde: true` → **desde 1.499,00€**
+  - Em campanha: `precoCampanha: 1299` → **1.299,00€** a vermelho e, por baixo, "antes ~~1.499,00€~~". O preço de campanha só aparece enquanto o produto estiver numa campanha ativa (lista `produtos` da campanha); quando a campanha termina, volta sozinho ao preço normal.
 - Marca: campo `marca` nos outros produtos (o filtro por marca aparece quando há mais de uma). Os robots são Husqvarna por defeito.
 - Testemunhos: um ficheiro por testemunho em `src/content/testemunhos/`. O de exemplo tem `exemplo: true`
   e é provisório: **substituir por testemunhos reais antes de publicar** (o build avisa enquanto existirem provisórios).

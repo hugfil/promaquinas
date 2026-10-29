@@ -1,0 +1,156 @@
+---
+import { u } from '../lib/url';
+import { local } from '../lib/local';
+import { contactos, horario, feriadosExtra, redes, legais } from '../lib/empresa';
+import Logo from './Logo.astro';
+import MapaRodape from './MapaRodape.astro';
+
+const ano = new Date().getFullYear();
+const intervalo = (p: [string, string][]) => p.map(([a, f]) => `${a}–${f}`);
+---
+<footer class="rodape">
+  <div class="wrap rodape-grade">
+    <div class="rodape-marca">
+      <a class="logo-rodape" href={u('/')} aria-label="Promáquinas, página inicial"><Logo variante="rodape" /></a>
+      <p class="rodape-lema">Revendedor oficial Husqvarna<sup class="reg">®</sup> · Especialista Automower<sup class="reg">®</sup> · Assistência técnica</p>
+      <p class="rodape-nota">Este site apresenta produtos e campanhas, não efetuamos vendas online. Vendas apenas na loja física ou entre em contacto.</p>
+      <p class="rodape-morada">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 21s-7-6.3-7-11.5A7 7 0 0 1 19 9.5C19 14.7 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8" /></svg>
+        {local.morada}
+      </p>
+      <div class="rodape-redes" aria-label="Redes sociais">
+        {redes.map((r) => {
+          const icone = r.nome === 'Instagram'
+            ? <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" /></svg>
+            : <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor" /></svg>;
+          return r.url
+            ? <a class="rede" href={r.url} target="_blank" rel="noopener" aria-label={r.nome + ' (novo separador)'} title={r.nome}>{icone}</a>
+            : <span class="rede rede-breve" role="img" aria-label={r.nome + ': brevemente'} title={r.nome + ' · brevemente'}>{icone}</span>;
+        })}
+      </div>
+    </div>
+
+    <section class="rodape-caixa" aria-labelledby="rodape-horario-titulo" data-horario={JSON.stringify(horario)} data-feriados-extra={JSON.stringify(feriadosExtra)}>
+      <div class="caixa-cabeca">
+        <h2 id="rodape-horario-titulo" class="caixa-titulo">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          Horário
+        </h2>
+        <span class="estado" data-estado hidden><span class="estado-ponto" aria-hidden="true"></span><span data-estado-texto></span></span>
+      </div>
+      <dl class="horario">
+        {horario.map((h) => (
+          <div class="horario-linha" data-dias={h.diasSemana.join(',')} data-feriado={h.feriados ? '' : undefined}>
+            <dt>{h.dias}</dt>
+            <dd>{h.periodos.length ? intervalo(h.periodos).map((t) => <span>{t}</span>) : <span class="encerrado">Encerrado</span>}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="rodape-caixa" aria-labelledby="rodape-contactos-titulo">
+      <div class="caixa-cabeca">
+        <h2 id="rodape-contactos-titulo" class="caixa-titulo">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 6.5h16v11H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /><path d="M4.5 7l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
+          Contactos
+        </h2>
+      </div>
+      <ul class="contactos">
+        <li>
+          <a class="contacto" href={'tel:' + contactos.telefoneLigacao}>
+            <span class="contacto-icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M6.6 3.5h2.6l1.4 4-2 1.4a11 11 0 0 0 6.5 6.5l1.4-2 4 1.4v2.6a2 2 0 0 1-2 2A16.5 16.5 0 0 1 4.6 5.5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg></span>
+            <span class="contacto-texto"><b>{contactos.telefone}</b><small>{contactos.telefoneNota}</small></span>
+          </a>
+        </li>
+        <li>
+          <a class="contacto" href={'mailto:' + contactos.email}>
+            <span class="contacto-icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M4 6.5h16v11H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /><path d="M4.5 7l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg></span>
+            <span class="contacto-texto"><b>{contactos.email}</b><small>Respondemos em horário de funcionamento</small></span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <div class="rodape-mapa"><MapaRodape /></div>
+  </div>
+
+  <div class="rodape-base">
+    <div class="wrap rodape-base-linha">
+      <p>© {ano} Promáquinas. Todos os direitos reservados.</p>
+      <nav aria-label="Informação legal">
+        <ul class="legais">
+          {legais.map((l) => <li><a href={u(l.href)}>{l.texto}</a></li>)}
+          <li><a href="https://www.livroreclamacoes.pt/" target="_blank" rel="noopener">Livro de Reclamações</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Indicador "Aberto agora / Fechado", calculado na hora de Lisboa e com os feriados nacionais
+  // (sem JavaScript fica só a tabela)
+  const caixa = document.querySelector<HTMLElement>('[data-horario]');
+  if (caixa) {
+    type Dia = { dias: string; diasSemana: number[]; periodos: [string, string][] };
+    const horario: Dia[] = JSON.parse(caixa.dataset.horario || '[]');
+    const extra: string[] = JSON.parse(caixa.dataset.feriadosExtra || '[]');
+    const min = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+    const doisDig = (n: number) => String(n).padStart(2, '0');
+
+    // Feriados nacionais de Portugal para um ano (formato 'MM-DD')
+    const cache: Record<number, Set<string>> = {};
+    const feriadosDoAno = (ano: number) => {
+      if (cache[ano]) return cache[ano];
+      // Domingo de Páscoa (algoritmo de Meeus/Jones/Butcher)
+      const a = ano % 19, b = Math.floor(ano / 100), c = ano % 100, d = Math.floor(b / 4), e = b % 4;
+      const f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+      const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+      const mes = Math.floor((h + l - 7 * m + 114) / 31), dia = ((h + l - 7 * m + 114) % 31) + 1;
+      const pascoa = Date.UTC(ano, mes - 1, dia);
+      const relativo = (dias: number) => { const x = new Date(pascoa + dias * 86400000); return doisDig(x.getUTCMonth() + 1) + '-' + doisDig(x.getUTCDate()); };
+      return (cache[ano] = new Set([
+        '01-01', '04-25', '05-01', '06-10', '08-15', '10-05', '11-01', '12-01', '12-08', '12-25',
+        relativo(-2), relativo(0), relativo(60), // Sexta-feira Santa, Páscoa, Corpo de Deus
+      ]));
+    };
+    const eFeriado = (ano: number, mes: number, dia: number) => {
+      const md = doisDig(mes) + '-' + doisDig(dia);
+      return feriadosDoAno(ano).has(md) || extra.includes(md) || extra.includes(ano + '-' + md);
+    };
+
+    const estado = caixa.querySelector<HTMLElement>('[data-estado]')!;
+    const texto = caixa.querySelector<HTMLElement>('[data-estado-texto]')!;
+
+    const atualizar = () => {
+      const partes = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Lisbon', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+      const v = (t: string) => Number(partes.find((p) => p.type === t)?.value ?? 0);
+      const hojeUTC = Date.UTC(v('year'), v('month') - 1, v('day'));
+      const agora = v('hour') * 60 + v('minute');
+      // Informação de um dia, "i" dias a partir de hoje
+      const diaInfo = (i: number) => {
+        const x = new Date(hojeUTC + i * 86400000);
+        const semana = x.getUTCDay();
+        const feriado = eFeriado(x.getUTCFullYear(), x.getUTCMonth() + 1, x.getUTCDate());
+        const periodos = feriado ? [] : horario.find((h) => h.diasSemana.includes(semana))?.periodos ?? [];
+        return { semana, feriado, periodos };
+      };
+      const hoje = diaInfo(0);
+
+      caixa.querySelectorAll<HTMLElement>('.horario-linha').forEach((l) => {
+        // Num feriado destaca a linha dos feriados; nos outros dias, a linha do dia da semana
+        const destacar = hoje.feriado
+          ? l.hasAttribute('data-feriado')
+          : (l.dataset.dias || '').split(',').map(Number).includes(hoje.semana);
+        l.classList.toggle('hoje', destacar);
+      });
+
+      const atual = hoje.periodos.find(([a, f]) => agora >= min(a) && agora < min(f));
+      estado.classList.toggle('aberto', !!atual);
+      texto.textContent = atual ? 'Aberto agora' : 'Fechado';
+      estado.hidden = false;
+    };
+    atualizar();
+    setInterval(atualizar, 60000);
+  }
+</script>
