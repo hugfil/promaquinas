@@ -6,6 +6,7 @@ import { u, data } from '../lib/url';
 import EmCampanha from '../components/EmCampanha.astro';
 import Galeria from '../components/Galeria.astro';
 import Preco from '../components/Preco.astro';
+import { lerItem } from '../lib/media';
 
 const ativas = await campanhasAtivas();
 const itens = await Promise.all(
@@ -42,7 +43,7 @@ const itens = await Promise.all(
           {folhetos.length > 0 && (
             <aside class="campanha-folheto" id={`folheto-${c.id}`} aria-label="Folheto da campanha">
               <Galeria imagens={folhetos} nome={c.data.titulo} variante="folheto" />
-              {c.data.folhetoPdf && !folhetos.includes(c.data.folhetoPdf) && <a class="folheto-pdf" href={u(c.data.folhetoPdf)} target="_blank" rel="noopener">Abrir folheto em PDF</a>}
+              {c.data.folhetoPdf && !folhetos.some((f) => lerItem(f).caminho === c.data.folhetoPdf) && <a class="folheto-pdf" href={u(c.data.folhetoPdf)} target="_blank" rel="noopener">Abrir folheto em PDF</a>}
             </aside>
           )}
         </div>

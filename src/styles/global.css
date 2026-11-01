@@ -294,6 +294,11 @@ html:has(.galeria-dialogo[open]) { overflow: hidden; }
 .galeria-dialogo :focus-visible { outline: 3px solid var(--banner-fundo); outline-offset: 3px; }
 .galeria-palco { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 4.5rem 6rem; }
 .galeria-palco img { display: block; max-width: calc(100vw - 12rem); max-height: calc(100dvh - 9rem); object-fit: contain; border-radius: 8px; background: #fff; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+.galeria-dialogo.com-legenda .galeria-palco { padding-bottom: 7.5rem; }
+.galeria-dialogo.com-legenda .galeria-palco img, .galeria-dialogo.com-legenda .galeria-video { max-height: calc(100dvh - 12rem); }
+.galeria-legenda { position: absolute; left: 50%; bottom: 4.1rem; z-index: 3; width: max-content; max-width: min(46rem, calc(100vw - 2rem)); margin: 0; padding: .45rem 1rem; transform: translateX(-50%); color: #fff; font-size: .9375rem; line-height: 1.4; text-align: center; background: rgba(0, 0, 0, .55); border-radius: 10px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.galeria-dialogo.zoom .galeria-legenda { display: none; }
+.galeria-legenda-mini { margin: .4rem 0 0; max-width: none; color: var(--cinza); font-size: .8125rem; line-height: 1.35; }
 .galeria-video { display: block; max-width: calc(100vw - 12rem); max-height: calc(100dvh - 9rem); border-radius: 8px; background: #000; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
 .galeria-pdf { display: block; width: min(calc(100vw - 12rem), 62rem); height: calc(100dvh - 9rem); background: #fff; border: 0; border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
 .galeria-pdf-link { position: absolute; top: 1rem; right: 8.2rem; z-index: 3; text-decoration: none; }
@@ -347,6 +352,9 @@ html:has(.galeria-dialogo[open]) { overflow: hidden; }
 @media (max-width: 640px) {
   .galeria-palco { padding: 4rem 1rem 4.5rem; }
   .galeria-palco img, .galeria-video { max-width: calc(100vw - 2rem); max-height: calc(100dvh - 8.5rem); }
+  .galeria-dialogo.com-legenda .galeria-palco { padding-bottom: 7rem; }
+  .galeria-dialogo.com-legenda .galeria-palco img, .galeria-dialogo.com-legenda .galeria-video { max-height: calc(100dvh - 11rem); }
+  .galeria-legenda { bottom: 3.7rem; font-size: .875rem; }
   .galeria-pdf { width: calc(100vw - 2rem); height: calc(100dvh - 9.5rem); }
   .galeria-pdf-link { right: .75rem; bottom: .75rem; }
   .galeria-iframe { width: calc(100vw - 2rem); }

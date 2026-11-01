@@ -10,7 +10,7 @@ ligacao: ["Bluetooth", "Wi-Fi"]
 preco: 1599.00
 precoDesde: true
 destaque: true
-ordem: 2
+ordem: 5
 ---
 
 O modelo 310 Mark II é o novo robot corta-relva da Husqvarna concebido para trabalhar em jardins complexos de tamanho pequeno ou superfícies médias e simples. Este novo modelo destaca-se por superar encostas de até 40%, passagens estreitas e obstáculos. Além disso, o 310 Mark II caracteriza-se pela sua grande capacidade de corte (até 1000 m²). Tal como os outros modelos da gama, este Automower® opera de forma totalmente autónoma para que não tenha que fazer nada.
