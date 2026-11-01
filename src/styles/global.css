@@ -313,20 +313,20 @@ html:has(.galeria-dialogo[open]) { overflow: hidden; }
 .galeria-iframe { display: block; width: min(calc(100vw - 12rem), calc((100dvh - 9rem) * 16 / 9)); aspect-ratio: 16 / 9; border: 0; border-radius: 8px; background: #000; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
 /* Botões de vidro: ficam âmbar ao passar o rato */
 .galeria-fechar, .galeria-zoom, .galeria-pdf-link, .galeria-seta { display: flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; padding: 0; color: #fff; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .28); border-radius: 50%; cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background .2s, color .2s, border-color .2s, transform .25s ease-out; }
-.galeria-fechar:hover, .galeria-zoom:hover, .galeria-pdf-link:hover, .galeria-seta:hover { color: var(--verde); background: var(--banner-fundo); border-color: var(--banner-fundo); }
+@media (hover: hover) { .galeria-fechar:hover, .galeria-zoom:hover, .galeria-pdf-link:hover, .galeria-seta:hover { color: var(--verde); background: var(--banner-fundo); border-color: var(--banner-fundo); } }
 .galeria-fechar { position: absolute; top: 1rem; right: 1rem; z-index: 3; }
 .galeria-fechar svg { transition: transform .3s ease-out; }
-.galeria-fechar:hover svg { transform: rotate(90deg); }
+@media (hover: hover) { .galeria-fechar:hover svg { transform: rotate(90deg); } }
 .galeria-fechar:active { transform: scale(.94); }
 .galeria-seta { position: absolute; top: 50%; transform: translateY(-50%); }
-.galeria-seta:hover { transform: translateY(-50%) scale(1.08); }
+@media (hover: hover) { .galeria-seta:hover { transform: translateY(-50%) scale(1.08); } }
 .galeria-seta:active { transform: translateY(-50%) scale(.94); }
 .galeria-seta svg { transition: transform .2s ease-out; }
 .galeria-seta { background: rgba(0, 0, 0, .45); border-color: rgba(255, 255, 255, .4); }
 .galeria-ant { left: 1.25rem; }
 .galeria-seg { right: 1.25rem; }
-.galeria-ant:hover svg { transform: translateX(-3px); }
-.galeria-seg:hover svg { transform: translateX(3px); }
+@media (hover: hover) { .galeria-ant:hover svg { transform: translateX(-3px); } }
+@media (hover: hover) { .galeria-seg:hover svg { transform: translateX(3px); } }
 .galeria-zoom { position: absolute; top: 1rem; right: 4.6rem; z-index: 3; }
 .galeria-zoom .ic-menos { display: none; }
 .galeria-zoom[aria-pressed="true"] .ic-mais { display: none; }
@@ -337,7 +337,9 @@ html:has(.galeria-dialogo[open]) { overflow: hidden; }
 .galeria-dialogo.zoom .galeria-palco img { flex: none; max-width: none; max-height: none; margin: auto; cursor: zoom-out; }
 .galeria-dialogo.zoom .galeria-seta { position: fixed; }
 .galeria-dialogo.zoom .galeria-seta, .galeria-dialogo.zoom .galeria-contagem { background: rgba(0, 0, 0, .6); border-color: rgba(255, 255, 255, .4); }
-.galeria-dialogo.zoom .galeria-seta:hover { background: var(--banner-fundo); border-color: var(--banner-fundo); }
+@media (hover: hover) { .galeria-dialogo.zoom .galeria-seta:hover { background: var(--banner-fundo); border-color: var(--banner-fundo); } }
+/* Em ecrãs táteis o :hover fica "preso" depois de tocar; aí o âmbar aparece só enquanto o dedo está no botão */
+@media (hover: none) { .galeria-fechar:active, .galeria-zoom:active, .galeria-pdf-link:active, .galeria-seta:active { color: var(--verde); background: var(--banner-fundo); border-color: var(--banner-fundo); } }
 /* Contador em baixo, ao centro */
 .galeria-contagem { position: absolute; bottom: 1.25rem; left: 50%; z-index: 3; margin: 0; padding: .4rem 1.1rem; transform: translateX(-50%); font-family: var(--f-sub); font-weight: 600; font-size: .9375rem; letter-spacing: .02em; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .28); border-radius: 999px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .g-atual { color: var(--banner-fundo); font-size: 1.1em; }
