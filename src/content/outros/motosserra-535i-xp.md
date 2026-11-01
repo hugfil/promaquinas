@@ -1,13 +1,13 @@
 ---
 nome: "Motosserra 535i XP®"
 marca: "Husqvarna"
-tipo: "Motosserra"
+tipo: "Motosserras"
 resumo: "Para utilizadores profissionais que pretendem uma motosserra leve e de alto desempenho."
 imagem: "/imagens/motosserra-535i-xp-000.jpg"
-preco: 2.11
-precoCampanha: 2.00
-destaque: true
-ordem: 1
+preco: 534.57
+precoCampanha: 469
+destaque: false
+ordem: 100
 ---
 
 Para utilizadores profissionais que pretendem uma **motosserra leve e de alto desempenho**. Perfeita para carpinteiros, empreiteiros, arboricultores e agricultores de olivais. Apresenta **excelente ergonomia, alto desempenho e alta velocidade da corrente**.

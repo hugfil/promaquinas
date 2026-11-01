@@ -1,5 +1,6 @@
 ---
-nome: "Robot corta-relva Automower® 305"
+nome: "Robot Automower® 305"
+marca: "Husqvarna®"
 gama: "Jardins pequenos"
 resumo: "O Husqvarna Automower® 305 é um robot corta-relva compacto ideal para jardins mais pequenos e complexos de até 600 m²."
 imagem: "/imagens/automower-305-000.jpg"
@@ -10,7 +11,7 @@ ligacao: ["Bluetooth", "Wi-Fi"]
 preco: 1234.97
 precoCampanha: 1234.00
 destaque: true
-ordem: 1
+ordem: 3
 ---
 
 O Husqvarna Automower® 305 é um robot corta-relva compacto ideal para jardins mais pequenos e complexos de até 600 m², que lida facilmente com declives com uma inclinação de 40%. Em passagens estreitas, muda para o modo de corte sistemático para reduzir as curvas e minimizar os rastos das rodas. O robot corta-relva é fácil de usar e de limpar, e inclui uma proteção contra gelo e um temporizador de clima, que ajustam os tempos de corte conforme a estação e interrompem o programa de corte em caso de gelo. Isto significa que não ocorre desgaste desnecessário da relva. Use a Automower® Connect para um controlo cómodo do corta-relva a partir do seu telemóvel.
