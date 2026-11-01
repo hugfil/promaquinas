@@ -6,7 +6,7 @@ resumo: "Para jardins de média a grande dimensão. Corte BioClip® ou descarga 
 preco: 6178.97
 precoCampanha: 4799
 imagem: "/imagens/corta-relva-rider-r-214tc-000.jpg"
-galeria: ["/imagens/corta-relva-rider-r-214tc-000.jpg", "/imagens/corta-relva-rider-214tc-001.jpg", "/imagens/corta-relva-rider-r-214tc-002.jpg", "/imagens/corta-relva-rider-214tc-003.jpg"]
+galeria: ["/imagens/corta-relva-rider-r-214tc-000.jpg", "/imagens/corta-relva-rider-r-214tc-001.jpg", "/imagens/corta-relva-rider-r-214tc-002.jpg", "/imagens/corta-relva-rider-r-214tc-003.jpg"]
 destaque: false
 ordem: 30
 ---
