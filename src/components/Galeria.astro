@@ -1,13 +1,13 @@
 ---
 import { u } from '../lib/url';
-import { resolverMidia, capaYoutube } from '../lib/media';
+import { resolverMidia, capaYoutube, type ItemGaleria } from '../lib/media';
 
-interface Props { imagens: string[]; nome: string; titulo?: string; variante?: 'galeria' | 'folheto'; }
+interface Props { imagens: ItemGaleria[]; nome: string; titulo?: string; variante?: 'galeria' | 'folheto'; }
 const { imagens, nome, titulo = 'Galeria', variante = 'galeria' } = Astro.props;
 const folheto = variante === 'folheto';
 // Miniatura: a imagem de capa própria (se existir) ou, nos vídeos do YouTube, a capa do próprio vídeo
-const itens = await Promise.all(imagens.map(async (caminho) => {
-  const m = resolverMidia(caminho);
+const itens = await Promise.all(imagens.map(async (item) => {
+  const m = resolverMidia(item);
   const miniatura = m.poster ? u(m.poster) : m.tipo === 'youtube' && m.id ? await capaYoutube(m.id) : undefined;
   return { ...m, miniatura };
 }));
@@ -16,11 +16,14 @@ const temVideo = itens.some((m) => m.tipo === 'video' || m.tipo === 'youtube');
 const temPdf = itens.some((m) => m.tipo === 'pdf');
 // Com PDF o número de páginas só se sabe ao abrir, por isso as setas e o contador existem sempre
 const mostrarNav = varias || temPdf;
-const legenda = (tipo: string, i: number) =>
+const descricao = (tipo: string, i: number) =>
   tipo === 'pdf' ? (folheto ? `Folheto da campanha ${nome}` : `${nome}, PDF`)
   : tipo !== 'imagem' ? `${nome}, vídeo`
   : folheto ? `Folheto da campanha ${nome}${itens.length > 1 ? ', página ' + (i + 1) : ''}`
   : `${nome}, imagem ${i + 1}`;
+// Texto alternativo: a legenda, quando existe; senão, a descrição automática
+const alt = (m: { tipo: string; legenda?: string }, i: number) => m.legenda ?? descricao(m.tipo, i);
+const temLegendas = itens.some((m) => m.legenda);
 ---
 {itens.length > 0 && (
   <div class={folheto ? 'galeria galeria-folheto' : 'galeria'} data-pdfjs={u('/vendor/pdfjs/')}>
@@ -34,10 +37,11 @@ const legenda = (tipo: string, i: number) =>
             data-tipo={m.tipo}
             data-src={m.tipo === 'youtube' ? m.id : u(m.src)}
             data-poster={m.poster ? u(m.poster) : ''}
-            data-alt={legenda(m.tipo, i)}
-            aria-label={folheto ? `Ampliar: ${legenda(m.tipo, i)}` : m.tipo === 'imagem' ? undefined : legenda(m.tipo, i)}
+            data-alt={alt(m, i)}
+            data-legenda={m.legenda ?? ''}
+            aria-label={folheto ? `Ampliar: ${alt(m, i)}` : m.tipo === 'imagem' ? undefined : alt(m, i)}
           >
-            {m.tipo === 'imagem' && <img loading="lazy" decoding="async" src={u(m.src)} alt={legenda(m.tipo, i)} />}
+            {m.tipo === 'imagem' && <img loading="lazy" decoding="async" src={u(m.src)} alt={alt(m, i)} />}
             {m.tipo !== 'imagem' && m.miniatura && <img loading="lazy" decoding="async" src={m.miniatura} alt="" />}
             {m.tipo !== 'imagem' && !m.miniatura && (m.tipo === 'pdf'
               ? <span class="galeria-tile galeria-tile-pdf" aria-hidden="true"><svg viewBox="0 0 24 24" width="44" height="44"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /><path d="M14 3v5h5M9 13h6M9 16.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg><b>PDF</b></span>
@@ -56,6 +60,7 @@ const legenda = (tipo: string, i: number) =>
               </span>
             )}
           </button>
+          {!folheto && m.legenda && <p class="galeria-legenda-mini">{m.legenda}</p>}
         </li>
       ))}
     </ul>
@@ -89,6 +94,7 @@ const legenda = (tipo: string, i: number) =>
           </button>
         )}
       </div>
+      {temLegendas && <p class="galeria-legenda" hidden aria-live="polite"></p>}
       {temPdf && <p class="galeria-erro" hidden></p>}
       {mostrarNav && (
         <p class="galeria-contagem" aria-live="polite" hidden={!varias}><b class="g-atual">1</b> / <span class="g-total">{itens.length}</span></p>
@@ -127,6 +133,7 @@ const legenda = (tipo: string, i: number) =>
     const zoomBtn = dialogo && dialogo.querySelector('.galeria-zoom');
     const pdfLink = dialogo && dialogo.querySelector('.galeria-pdf-link');
     const erroEl = dialogo && dialogo.querySelector('.galeria-erro');
+    const legendaEl = dialogo && dialogo.querySelector('.galeria-legenda');
     const setas = dialogo ? Array.from(dialogo.querySelectorAll('.galeria-seta')) : [];
     const botoes = Array.from(g.querySelectorAll('.galeria-abrir'));
     if (!dialogo || !palco || !grande || !fechar || botoes.length === 0) return;
@@ -136,7 +143,7 @@ const legenda = (tipo: string, i: number) =>
 
     const slides = botoes.map((b) => ({
       tipo: b.dataset.tipo || 'imagem', src: b.dataset.src || '', poster: b.dataset.poster || '',
-      alt: b.dataset.alt || '', botao: b,
+      alt: b.dataset.alt || '', legenda: b.dataset.legenda || '', botao: b,
     }));
 
     const parar = () => {
@@ -209,6 +216,7 @@ const legenda = (tipo: string, i: number) =>
             paginas.push({
               tipo: 'pdfpag', doc, n, pdfUrl: s.src,
               alt: s.alt + (doc.numPages > 1 ? ', página ' + n : ''),
+              legenda: s.legenda,
               botao: n === 1 ? s.botao : null,
             });
           }
@@ -274,6 +282,12 @@ const legenda = (tipo: string, i: number) =>
       definirZoom(false);
       esconderTudo();
       atualizarNavegacao(atual);
+      // legenda do item (as páginas de um PDF mostram a legenda do PDF)
+      if (legendaEl) {
+        legendaEl.textContent = s.legenda || '';
+        legendaEl.hidden = !s.legenda;
+      }
+      dialogo.classList.toggle('com-legenda', Boolean(s.legenda));
 
       if (s.tipo === 'video' && video) {
         video.hidden = false;

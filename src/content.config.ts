@@ -2,6 +2,9 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
+// Item de galeria: "/imagens/a.jpg", "/imagens/a.jpg | Legenda" ou { src: "/imagens/a.jpg", legenda: "Legenda" }
+const itemGaleria = z.union([z.string(), z.object({ src: z.string(), legenda: z.string().optional() })]);
+
 const robots = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/robots' }),
   schema: z.object({
@@ -16,7 +19,7 @@ const robots = defineCollection({
     precoDesde: z.boolean().default(false), // true = mostra "desde 1.234,97€"
     precoCampanha: z.union([z.number(), z.string()]).optional(), // preço em campanha (vermelho, com "antes" riscado); só aparece enquanto o produto estiver numa campanha ativa
     imagem: z.string().optional(), // ex.: /imagens/automower-305.jpg (ficheiro em /public)
-    galeria: z.array(z.string()).default([]), // imagens extra, mostradas na ficha
+    galeria: z.array(itemGaleria).default([]), // imagens extra, mostradas na ficha
     destaque: z.boolean().default(false),
     ordem: z.number().default(100),
   }),
@@ -33,7 +36,7 @@ const outros = defineCollection({
     precoDesde: z.boolean().default(false), // true = mostra "desde 350,00€"
     precoCampanha: z.union([z.number(), z.string()]).optional(), // preço em campanha; só aparece enquanto o produto estiver numa campanha ativa
     imagem: z.string().optional(),
-    galeria: z.array(z.string()).default([]),
+    galeria: z.array(itemGaleria).default([]),
     destaque: z.boolean().default(false),
     ordem: z.number().default(100), // menor aparece primeiro no carrossel da página inicial
   }),
@@ -49,9 +52,9 @@ const campanhas = defineCollection({
     imagem: z.string().optional(),
     produtos: z.array(z.string()).default([]), // ex.: ["robots/automower-exemplo", "produtos/exemplo"]
     link: z.string().optional(), // destino à medida (opcional), ex.: /robots/automower-exemplo/
-    folheto: z.union([z.string(), z.array(z.string())]).optional(), // imagem do folheto, ou lista (frente e verso)
+    folheto: z.union([itemGaleria, z.array(itemGaleria)]).optional(), // imagem do folheto, ou lista (frente e verso)
     folhetoPdf: z.string().optional(),
-    video: z.union([z.string(), z.array(z.string())]).optional(), // ficheiro em /videos/ ou ligação do YouTube (um ou vários)
+    video: z.union([itemGaleria, z.array(itemGaleria)]).optional(), // ficheiro em /videos/ ou ligação do YouTube (um ou vários)
  // ex.: /folhetos/campanha.pdf (opcional, para abrir ou descarregar)
   }),
 });

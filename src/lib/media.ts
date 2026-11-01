@@ -5,10 +5,25 @@ export type Midia = {
   src: string;
   poster?: string; // capa do vídeo ou do PDF (ficheiro com o mesmo nome, em .jpg/.png/.webp)
   id?: string;     // identificador do vídeo do YouTube
+  legenda?: string;
 };
 
+// Um item de galeria pode ser só o caminho, "caminho | legenda", ou { src, legenda }.
+export type ItemGaleria = string | { src: string; legenda?: string };
+export function lerItem(item: ItemGaleria): { caminho: string; legenda?: string } {
+  if (typeof item !== 'string') return { caminho: item.src.trim(), legenda: item.legenda?.trim() || undefined };
+  const i = item.indexOf(' | ');
+  return i < 0 ? { caminho: item.trim() } : { caminho: item.slice(0, i).trim(), legenda: item.slice(i + 3).trim() || undefined };
+}
+
+// Reconhece o tipo de um item de galeria e junta a legenda, se houver.
+export function resolverMidia(item: ItemGaleria): Midia {
+  const { caminho, legenda } = lerItem(item);
+  return { ...resolverCaminho(caminho), legenda };
+}
+
 // Reconhece, pelo texto, se um item da galeria é uma imagem, um vídeo (.mp4/.webm) ou uma ligação do YouTube.
-export function resolverMidia(caminho: string): Midia {
+function resolverCaminho(caminho: string): Midia {
   const yt = caminho.match(/(?:youtube\.com\/watch\?(?:[^#]*&)?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([\w-]{11})/);
   if (yt) {
     const base = '/videos/' + yt[1];
