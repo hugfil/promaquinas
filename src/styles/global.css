@@ -332,6 +332,7 @@ html:has(.galeria-dialogo[open]) { overflow: hidden; }
 .galeria-zoom[aria-pressed="true"] .ic-mais { display: none; }
 .galeria-zoom[aria-pressed="true"] .ic-menos { display: block; }
 .galeria-palco img { cursor: zoom-in; user-select: none; -webkit-user-drag: none; }
+.galeria-dialogo.sem-zoom .galeria-palco img { cursor: default; } /* imagens pequenas: sem zoom */
 /* Imagem ampliada: tamanho real, o palco desliza; as setas e o contador ficam fixos */
 .galeria-dialogo.zoom .galeria-palco { overflow: auto; align-items: flex-start; justify-content: flex-start; padding: 4.5rem 1rem; }
 .galeria-dialogo.zoom .galeria-palco img { flex: none; max-width: none; max-height: none; margin: auto; cursor: zoom-out; }

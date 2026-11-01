@@ -163,7 +163,25 @@ const temLegendas = itens.some((m) => m.legenda);
 
     // Zoom: a imagem passa ao tamanho real e o palco passa a deslizar (útil para ler folhetos)
     const emZoom = () => dialogo.classList.contains('zoom');
+    // Só vale a pena ampliar quando a imagem real é maior do que aparece no ecrã.
+    // Nas imagens pequenas não há zoom: assim um toque na imagem não "prende" a galeria (setas e deslizar continuam a funcionar).
+    const podeAmpliar = () => grande.naturalWidth > grande.clientWidth * 1.1 || grande.naturalHeight > grande.clientHeight * 1.1;
+    const atualizarZoom = () => {
+      if (grande.hidden || !grande.naturalWidth) return;
+      const pode = podeAmpliar();
+      if (zoomBtn) zoomBtn.hidden = !pode;
+      dialogo.classList.toggle('sem-zoom', !pode);
+    };
+    // depois de mudar de imagem: decide quando ela estiver carregada (ou já, se vier da cache)
+    const prepararZoom = () => {
+      if (zoomBtn) zoomBtn.hidden = true;
+      if (grande.complete && grande.naturalWidth) requestAnimationFrame(atualizarZoom);
+    };
+    grande.addEventListener('load', atualizarZoom);
+    window.addEventListener('resize', () => { if (dialogo.open && !dialogo.classList.contains('zoom')) atualizarZoom(); });
+
     const definirZoom = (ligado, fx = 0.5, fy = 0) => {
+      if (ligado && !podeAmpliar()) return;
       dialogo.classList.toggle('zoom', ligado);
       if (zoomBtn) {
         zoomBtn.setAttribute('aria-pressed', String(ligado));
@@ -325,14 +343,14 @@ const temLegendas = itens.some((m) => m.legenda);
           grande.src = url;
           grande.alt = s.alt;
           grande.hidden = false;
-          if (zoomBtn) zoomBtn.hidden = false;
+          prepararZoom();
           animar(grande, efeito);
         }).catch((erro) => { console.warn('[galeria] Não foi possível desenhar a página do PDF:', erro); if (pedido === meu) falhaPdf(s, erro); });
       } else {
         grande.hidden = false;
-        if (zoomBtn) zoomBtn.hidden = false;
         grande.src = s.src;
         grande.alt = s.alt;
+        prepararZoom();
         animar(grande, efeito);
       }
     };
