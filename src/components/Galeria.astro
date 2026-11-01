@@ -1,11 +1,16 @@
 ---
 import { u } from '../lib/url';
-import { resolverMidia } from '../lib/media';
+import { resolverMidia, capaYoutube } from '../lib/media';
 
 interface Props { imagens: string[]; nome: string; titulo?: string; variante?: 'galeria' | 'folheto'; }
 const { imagens, nome, titulo = 'Galeria', variante = 'galeria' } = Astro.props;
 const folheto = variante === 'folheto';
-const itens = imagens.map(resolverMidia);
+// Miniatura: a imagem de capa própria (se existir) ou, nos vídeos do YouTube, a capa do próprio vídeo
+const itens = await Promise.all(imagens.map(async (caminho) => {
+  const m = resolverMidia(caminho);
+  const miniatura = m.poster ? u(m.poster) : m.tipo === 'youtube' && m.id ? await capaYoutube(m.id) : undefined;
+  return { ...m, miniatura };
+}));
 const varias = itens.length > 1;
 const temVideo = itens.some((m) => m.tipo === 'video' || m.tipo === 'youtube');
 const temPdf = itens.some((m) => m.tipo === 'pdf');
@@ -33,8 +38,8 @@ const legenda = (tipo: string, i: number) =>
             aria-label={folheto ? `Ampliar: ${legenda(m.tipo, i)}` : m.tipo === 'imagem' ? undefined : legenda(m.tipo, i)}
           >
             {m.tipo === 'imagem' && <img loading="lazy" decoding="async" src={u(m.src)} alt={legenda(m.tipo, i)} />}
-            {m.tipo !== 'imagem' && m.poster && <img loading="lazy" decoding="async" src={u(m.poster)} alt="" />}
-            {m.tipo !== 'imagem' && !m.poster && (m.tipo === 'pdf'
+            {m.tipo !== 'imagem' && m.miniatura && <img loading="lazy" decoding="async" src={m.miniatura} alt="" />}
+            {m.tipo !== 'imagem' && !m.miniatura && (m.tipo === 'pdf'
               ? <span class="galeria-tile galeria-tile-pdf" aria-hidden="true"><svg viewBox="0 0 24 24" width="44" height="44"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /><path d="M14 3v5h5M9 13h6M9 16.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg><b>PDF</b></span>
               : <span class="galeria-tile" aria-hidden="true"></span>)}
             {m.tipo === 'pdf' && !(folheto && i === 0 && itens.length > 1) && <span class="galeria-selo" aria-hidden="true">PDF</span>}
