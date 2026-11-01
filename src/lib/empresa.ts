@@ -34,8 +34,8 @@ export const feriadosExtra: string[] = [
 // Redes sociais: preencha o endereço quando a página existir.
 // Enquanto o endereço estiver vazio, o ícone aparece esbatido, com a indicação "Brevemente".
 export const redes: { nome: 'Instagram' | 'YouTube'; url: string }[] = [
-  { nome: 'Instagram', url: '' }, // ex.: 'https://www.instagram.com/promaquinas'
-  { nome: 'YouTube', url: '' },   // ex.: 'https://www.youtube.com/@promaquinas'
+  { nome: 'Instagram', url: 'https://www.instagram.com/lojapromaquinas' },
+  { nome: 'YouTube', url: 'https://www.youtube.com/@lojapromaquinas' },  
 ];
 
 // Ligações legais da última linha do rodapé
