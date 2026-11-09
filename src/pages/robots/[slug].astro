@@ -6,6 +6,7 @@ import Galeria from '../../components/Galeria.astro';
 import EmCampanha from '../../components/EmCampanha.astro';
 import Preco from '../../components/Preco.astro';
 import { produtosEmCampanha } from '../../lib/campanhas';
+import NomeMarca from '../../components/NomeMarca.astro';
 
 export async function getStaticPaths() {
   const robots = await getCollection('robots');
@@ -20,7 +21,7 @@ const emCampanha = (await produtosEmCampanha()).has('robots/' + robot.id);
   <div class="wrap">
     <p><a href={u('/robots/')}>Voltar aos robots</a></p>
     {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}
-    <h1>{d.nome}</h1>
+    <h1><NomeMarca texto={d.nome} /></h1>
     <p>{d.resumo}</p>
     {d.imagem && <img src={u(d.imagem)} alt={d.nome} style="max-width:100%;border-radius:6px" />}
     <h2>Ficha técnica</h2>

@@ -1,0 +1,8 @@
+---
+// Escreve um nome das fichas (texto simples) com o ® e o ™ elevados, como no resto do site.
+// Usa o estilo sup.reg que já existe no global.css.
+interface Props { texto: string }
+const { texto } = Astro.props;
+const partes = texto.split(/([®™])/);
+---
+{partes.map((p) => (p === '®' || p === '™' ? <sup class="reg">{p}</sup> : p))}

@@ -2,89 +2,300 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { u } from '../lib/url';
+import { contactos } from '../lib/empresa';
+import NomeMarca from '../components/NomeMarca.astro';
 
 const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.data.ordem);
 // SUBSTITUIR pelo endereço do teu formulário (ex.: Formspree: https://formspree.io/f/xxxxxxxx)
 const ACAO = 'https://formspree.io/f/SEU_ID';
+
+const declives = ['Praticamente plano (até 10%)', 'Moderado (10% a 25%)', 'Acentuado (25% a 40%)', 'Muito acentuado (mais de 40%)', 'Não sei'];
+const redes = ['Não sei', 'Wi-Fi chega ao jardim', 'Só cobertura móvel', 'Sem rede'];
+const milhares = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 ---
 <Base titulo="Pedir Orçamento" descricao="Peça um orçamento para um robot corta-relva Husqvarna®.">
   <section class="hero claro">
     <div class="wrap">
       <h1>Pedir Orçamento</h1>
-      <p>Quanto mais souber do seu jardim, mais rigoroso será o orçamento. Os campos com * são obrigatórios. Respondemos por email ou telefone.</p>
+      <p>Quanto mais souber do seu jardim, mais rigoroso será o orçamento. Respondemos por email ou telefone.</p>
     </div>
   </section>
-  <div class="wrap">
-    <form class="orcamento" method="POST" action={ACAO}>
+
+  <div class="wrap orc">
+    <aside class="orc-painel" aria-label="Como funciona o pedido de orçamento">
+      <h2>Como funciona</h2>
+      <ol class="orc-passos">
+        <li><b>Conte-nos sobre o seu jardim</b><span>Leva poucos minutos. Quanto mais detalhe, mais rigoroso o orçamento.</span></li>
+        <li><b>Analisamos o pedido</b><span>Respondemos por email ou telefone e, se for preciso, combinamos uma visita.</span></li>
+        <li><b>Recebe o orçamento</b><span>Sem compromisso, com instalação e configuração, se quiser.</span></li>
+      </ol>
+      <div class="orc-contactos">
+        <p>Prefere falar connosco?</p>
+        <a href={`tel:${contactos.telefoneLigacao}`}><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg>{contactos.telefone}</a>
+        <small>{contactos.telefoneNota}</small>
+        <a href={`mailto:${contactos.email}`}><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2" /><path d="M3.5 6.5L12 13l8.5-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg>{contactos.email}</a>
+      </div>
+    </aside>
+
+    <form class="orc-cartao" method="POST" action={ACAO}>
       <input type="hidden" name="_subject" value="Novo pedido de orçamento (robot corta-relva)" />
-      <p class="oculto" aria-hidden="true"><label>Não preencher<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <p class="orc-oculto" aria-hidden="true"><label>Não preencher<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
 
       <fieldset>
-        <legend>Os seus dados</legend>
-        <label>Nome *<input name="nome" required autocomplete="name" /></label>
-        <div class="duas">
-          <label>Email *<input type="email" name="email" required autocomplete="email" /></label>
-          <label>Telefone *<input type="tel" name="telefone" required autocomplete="tel" /></label>
+        <legend><span class="num">1</span>Os seus dados</legend>
+        <div class="orc-duas">
+          <label class="orc-campo">Nome *<input name="nome" required autocomplete="given-name" /></label>
+          <label class="orc-campo">Apelido *<input name="apelido" required autocomplete="family-name" /></label>
         </div>
-        <div class="duas">
-          <label>Código postal *<input name="codigo_postal" required pattern="[0-9]{4}-[0-9]{3}" placeholder="0000-000" autocomplete="postal-code" /></label>
-          <label>Localidade *<input name="localidade" required autocomplete="address-level2" /></label>
+        <div class="orc-duas">
+          <label class="orc-campo">Email *<input type="email" name="email" required autocomplete="email" /></label>
+          <label class="orc-campo">Telefone *<input type="tel" name="telefone" required autocomplete="tel" /></label>
+        </div>
+        <div class="orc-duas">
+          <label class="orc-campo">Código postal *<input name="codigo_postal" required pattern="[0-9]{4}-[0-9]{3}" placeholder="0000-000" title="Formato 0000-000" inputmode="numeric" autocomplete="postal-code" /></label>
+          <label class="orc-campo">Localidade *<input name="localidade" required autocomplete="address-level2" /></label>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>O seu jardim</legend>
-        <label>Modelo de interesse
-          <select name="modelo" id="modelo">
-            <option value="Ainda não sei">Ainda não sei, preciso de aconselhamento</option>
-            {robots.map((r) => <option value={r.data.nome}>{r.data.nome}</option>)}
-          </select>
-        </label>
-        <div class="duas">
-          <label>Área do relvado (m²) *<input type="number" name="area_m2" min="1" required /></label>
-          <label>Zonas de relva separadas *
-            <input type="number" name="zonas" min="1" value="1" required />
-            <span class="ajuda">Áreas ligadas apenas por passagens ou separadas por obstáculos.</span>
+        <legend><span class="num">2</span>Modelo de interesse</legend>
+        <div class="orc-modelos">
+          <label class="orc-modelo">
+            <input type="radio" name="modelo" value="Ainda não sei" checked />
+            <span class="orc-sem-img" aria-hidden="true"><svg viewBox="0 0 24 24" width="40" height="40"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" /><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle cx="12" cy="17.3" r="1.1" fill="currentColor" /></svg></span>
+            <b>Ainda não sei</b>
+            <small>Preciso de aconselhamento</small>
+          </label>
+          {robots.map((r) => (
+            <label class="orc-modelo">
+              <input type="radio" name="modelo" value={r.data.nome} />
+              {r.data.imagem
+                ? <img src={u(r.data.imagem)} alt="" loading="lazy" decoding="async" />
+                : <span class="orc-sem-img" aria-hidden="true"><svg viewBox="0 0 24 24" width="40" height="40"><rect x="3" y="8" width="18" height="9" rx="4.5" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="7" cy="17" r="2" fill="currentColor" /><circle cx="17" cy="17" r="2" fill="currentColor" /></svg></span>}
+              <b><NomeMarca texto={r.data.nome} /></b>
+              <small>Até {milhares(r.data.areaMaxima)} m²</small>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">3</span>O seu jardim</legend>
+        <div class="orc-duas">
+          <label class="orc-campo">Área do relvado (m²) *<input type="number" name="area_m2" min="1" required inputmode="numeric" /></label>
+          <label class="orc-campo">Zonas de relva separadas *
+            <input type="number" name="zonas" min="1" value="1" required inputmode="numeric" />
+            <span class="orc-ajuda">Áreas ligadas apenas por passagens ou separadas por obstáculos.</span>
           </label>
         </div>
-        <label>Declive máximo *
-          <select name="declive" required>
-            <option value="">Escolha</option>
-            <option>Praticamente plano (até 10%)</option>
-            <option>Moderado (10% a 25%)</option>
-            <option>Acentuado (25% a 40%)</option>
-            <option>Muito acentuado (mais de 40%)</option>
-            <option>Não sei</option>
-          </select>
-        </label>
-        <label>Passagens estreitas ou obstáculos
+        <div class="orc-grupo" role="radiogroup" aria-labelledby="orc-declive">
+          <span id="orc-declive">Declive máximo *</span>
+          <div class="orc-pilulas">
+            {declives.map((d) => <label class="orc-pilula"><input type="radio" name="declive" value={d} required /><span>{d}</span></label>)}
+          </div>
+        </div>
+        <div class="orc-grupo" role="radiogroup" aria-labelledby="orc-rede">
+          <span id="orc-rede">Cobertura de rede no jardim</span>
+          <div class="orc-pilulas">
+            {redes.map((r) => <label class="orc-pilula"><input type="radio" name="rede" value={r} checked={r === 'Não sei'} /><span>{r}</span></label>)}
+          </div>
+        </div>
+        <label class="orc-campo"><span>Passagens estreitas ou obstáculos <span class="opc">(opcional)</span></span>
           <textarea name="obstaculos" rows="3" placeholder="Ex.: passagem de 1 m entre a casa e o muro, piscina, árvores, canteiros"></textarea>
         </label>
-        <label>Cobertura de rede no jardim
-          <select name="rede">
-            <option>Não sei</option>
-            <option>Wi-Fi chega ao jardim</option>
-            <option>Só cobertura móvel</option>
-            <option>Sem rede</option>
-          </select>
+        <label class="orc-opcao">
+          <input type="checkbox" name="instalacao" value="sim" />
+          <span><b>Quero instalação e configuração incluídas</b><small>Tratamos da instalação e deixamos o robot a funcionar no seu jardim.</small></span>
         </label>
-        <label class="check"><input type="checkbox" name="instalacao" value="sim" /> Quero instalação e configuração incluídas</label>
       </fieldset>
 
-      <label>Mais informações<textarea name="mensagem" rows="4"></textarea></label>
+      <fieldset>
+        <legend><span class="num">4</span>Mais informações</legend>
+        <label class="orc-campo"><span>Algo mais que devamos saber? <span class="opc">(opcional)</span></span>
+          <textarea name="mensagem" rows="4"></textarea>
+        </label>
+        <label class="orc-opcao">
+          <input type="checkbox" name="consentimento" value="sim" required />
+          <span>Aceito que os meus dados sejam usados para responder a este pedido, conforme a <a href={u('/privacidade/')}>política de privacidade</a>. *</span>
+        </label>
+      </fieldset>
 
-      <label class="check">
-        <input type="checkbox" name="consentimento" value="sim" required />
-        <span>Aceito que os meus dados sejam usados para responder a este pedido, conforme a <a href={u('/privacidade/')}>política de privacidade</a>. *</span>
-      </label>
-
-      <p><button class="botao" type="submit">Enviar Pedido</button></p>
+      <div class="orc-enviar">
+        <p>Os campos com * são obrigatórios.</p>
+        <button class="botao" type="submit">Enviar pedido</button>
+      </div>
     </form>
   </div>
+
   <script>
     // Pré-seleciona o modelo quando se chega da ficha de um robot (?modelo=...)
-    const m = new URLSearchParams(location.search).get('modelo');
-    const sel = document.getElementById('modelo') as HTMLSelectElement | null;
-    if (m && sel) sel.value = m;
+    const form = document.querySelector<HTMLFormElement>('.orc-cartao');
+    const modelo = new URLSearchParams(location.search).get('modelo');
+    const botao = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (form && modelo) {
+      const opcao = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="modelo"]')).find((i) => i.value === modelo);
+      if (opcao) opcao.checked = true;
+    }
+
+    // Mensagens de erro em português, por baixo de cada campo (o browser mostrava-as no idioma dele).
+    // Sem JavaScript, continua a valer a validação normal do browser.
+    type Campo = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+    const mensagem = (c: Campo): string => {
+      const v = c.validity;
+      if (v.valid) return '';
+      if (c instanceof HTMLInputElement && c.type === 'checkbox') return 'Para enviar o pedido, tem de aceitar a política de privacidade.';
+      if (c instanceof HTMLInputElement && c.type === 'radio') return 'Escolha uma das opções.';
+      if (v.valueMissing) return c.type === 'email' ? 'Indique o seu email.' : 'Preencha este campo.';
+      if (v.typeMismatch && c.type === 'email') return 'Indique um email válido, por exemplo nome@exemplo.pt.';
+      if (v.patternMismatch && c.name === 'codigo_postal') return 'Use o formato 0000-000.';
+      if (v.badInput) return 'Indique um número.';
+      if (v.rangeUnderflow) return 'O valor tem de ser pelo menos ' + (c as HTMLInputElement).min + '.';
+      return 'Verifique este campo.';
+    };
+    // onde mostrar a mensagem: no grupo de opções, na caixa de seleção, ou dentro do próprio campo
+    const zona = (c: Campo): HTMLElement => (c.closest('.orc-grupo') || c.closest('.orc-opcao') || c.closest('.orc-campo') || c.parentElement) as HTMLElement;
+    const mostrar = (c: Campo) => {
+      const z = zona(c);
+      const texto = mensagem(c);
+      // procura pela identificação: a mensagem do consentimento fica a seguir à caixa, e não dentro dela
+      let erro = document.getElementById('erro-' + c.name);
+      if (!texto) {
+        erro?.remove();
+        z.classList.remove('com-erro');
+        form?.querySelectorAll<Campo>(`[name="${c.name}"]`).forEach((x) => x.removeAttribute('aria-invalid'));
+        return;
+      }
+      if (!erro) {
+        erro = document.createElement('span');
+        erro.className = 'orc-erro';
+        erro.id = 'erro-' + c.name;
+        if (z.classList.contains('orc-opcao')) z.after(erro); else z.append(erro);
+      }
+      erro.textContent = texto;
+      z.classList.add('com-erro');
+      form?.querySelectorAll<Campo>(`[name="${c.name}"]`).forEach((x) => {
+        x.setAttribute('aria-invalid', 'true');
+        x.setAttribute('aria-describedby', erro!.id);
+      });
+    };
+    if (form) {
+      form.noValidate = true;
+      const campos = () => Array.from(form.querySelectorAll<Campo>('input:not([type=hidden]), textarea, select')).filter((c) => !c.closest('.orc-oculto'));
+      // depois de um erro aparecer, desaparece assim que o campo fica bem preenchido
+      form.addEventListener('input', (e) => { const c = e.target as Campo; if (zona(c).classList.contains('com-erro')) mostrar(c); });
+      form.addEventListener('change', (e) => { const c = e.target as Campo; if (zona(c).classList.contains('com-erro')) mostrar(c); });
+      form.addEventListener('focusout', (e) => { const c = e.target as Campo; if (c.value && c.type !== 'radio' && c.type !== 'checkbox') mostrar(c); });
+      form.addEventListener('submit', (e) => {
+        const invalidos = campos().filter((c) => !c.checkValidity());
+        if (invalidos.length) {
+          e.preventDefault();
+          const vistos = new Set<string>();
+          invalidos.forEach((c) => { if (!vistos.has(c.name)) { vistos.add(c.name); mostrar(c); } });
+          invalidos[0].focus();
+          invalidos[0].closest('.orc-grupo, .orc-opcao, .orc-campo')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        // Evita envios repetidos: o botão passa a "A enviar…" (e volta ao normal se a página for reaberta com "voltar")
+        if (botao) { botao.disabled = true; botao.textContent = 'A enviar…'; }
+      });
+    }
+    window.addEventListener('pageshow', () => {
+      if (botao) { botao.disabled = false; botao.textContent = 'Enviar pedido'; }
+    });
   </script>
+
+  <style>
+/* ---------- Página de orçamento ---------- */
+.orc { display: grid; gap: 1.75rem; align-items: start; padding-block: 2.5rem 4rem; }
+@media (min-width: 960px) { .orc { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); gap: 2.5rem; } }
+
+/* painel verde: como funciona e contactos */
+.orc-painel { position: relative; overflow: hidden; padding: 1.8rem 1.6rem; color: #fff; background: linear-gradient(160deg, #1d4a39 0%, var(--verde) 60%, #0f2a20 100%); border-radius: 16px; box-shadow: 0 14px 34px rgba(22, 58, 45, .22); }
+@media (min-width: 960px) { .orc-painel { position: sticky; top: 6.5rem; } }
+.orc-painel::after { content: ''; position: absolute; right: -5rem; top: -5rem; width: 12rem; height: 12rem; border: 2px solid rgba(245, 179, 1, .25); border-radius: 50%; pointer-events: none; }
+.orc-painel h2 { margin: 0 0 1.2rem; color: #fff; font-size: 1.25rem; }
+.orc-passos { display: grid; gap: 1.1rem; margin: 0 0 1.6rem; padding: 0; list-style: none; counter-reset: passo; }
+.orc-passos li { position: relative; display: grid; gap: .15rem; padding-left: 2.6rem; counter-increment: passo; }
+.orc-passos li::before { content: counter(passo); position: absolute; left: 0; top: -.1rem; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; color: var(--verde); font-family: var(--f-sub); font-weight: 800; font-size: .875rem; background: var(--banner-fundo); border-radius: 50%; }
+.orc-passos b { font-family: var(--f-sub); font-size: 1rem; }
+.orc-passos span { color: #cfe0d7; font-size: .875rem; line-height: 1.45; }
+.orc-contactos { display: grid; gap: .35rem; padding-top: 1.2rem; border-top: 1px solid rgba(255, 255, 255, .18); }
+.orc-contactos p { margin: 0 0 .2rem; max-width: none; color: #cfe0d7; font-size: .875rem; }
+.orc-contactos a { display: inline-flex; min-width: 0; overflow-wrap: anywhere; align-items: center; gap: .55rem; color: #fff; font-family: var(--f-sub); font-weight: 700; text-decoration: none; }
+.orc-contactos a[href^="mailto"] { font-size: .875rem; }
+.orc-contactos a svg { flex: none; color: var(--banner-fundo); }
+.orc-contactos small { margin: -.2rem 0 .3rem 1.75rem; color: #a9c2b6; font-size: .75rem; }
+@media (hover: hover) { .orc-contactos a:hover { color: var(--banner-fundo); } }
+
+/* cartão do formulário */
+.orc-cartao { display: grid; gap: 2rem; padding: clamp(1.4rem, 3vw, 2.2rem); background: #fff; border: 1px solid var(--linha); border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, .06); }
+.orc-cartao fieldset { display: grid; gap: 1rem; min-width: 0; margin: 0; padding: 0; border: 0; }
+.orc-cartao legend { display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; padding: 0; color: var(--tinta); font-family: var(--f-sub); font-weight: 800; font-size: 1.125rem; }
+.orc-cartao legend .num { display: grid; place-items: center; width: 1.9rem; height: 1.9rem; color: #fff; font-size: .875rem; background: var(--verde); border-radius: 50%; }
+.orc-duas { display: grid; gap: 1rem; align-items: start; }
+@media (min-width: 640px) { .orc-duas { grid-template-columns: 1fr 1fr; } }
+.orc-campo { display: grid; gap: .4rem; align-content: start; color: var(--tinta); font-weight: 600; font-size: .9375rem; }
+.orc-campo .opc { color: var(--cinza); font-weight: 400; font-size: .8125rem; }
+.orc-campo input, .orc-campo textarea, .orc-campo select { width: 100%; box-sizing: border-box; padding: .75rem .9rem; color: var(--tinta); font: inherit; font-weight: 400; background: #fafbfa; border: 1.5px solid #d6dbd8; border-radius: 10px; transition: border-color .2s, box-shadow .2s, background .2s; }
+.orc-campo textarea { resize: vertical; min-height: 6rem; }
+.orc-campo input:focus, .orc-campo textarea:focus, .orc-campo select:focus { outline: none; background: #fff; border-color: var(--verde); box-shadow: 0 0 0 4px rgba(22, 58, 45, .12); }
+.orc-campo input:user-invalid, .orc-campo textarea:user-invalid { border-color: #b00506; background: #fff7f7; }
+.orc-ajuda { color: var(--cinza); font-weight: 400; font-size: .8125rem; line-height: 1.4; }
+
+/* modelos: cartões com imagem */
+.orc-modelos { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); }
+.orc-modelo { position: relative; display: grid; gap: .25rem; align-content: start; padding: .7rem .7rem .85rem; text-align: center; background: #fff; border: 1.5px solid #d6dbd8; border-radius: 12px; cursor: pointer; transition: border-color .2s, box-shadow .2s, transform .2s; }
+.orc-modelo input { position: absolute; opacity: 0; pointer-events: none; }
+.orc-modelo img, .orc-modelo .orc-sem-img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; }
+.orc-modelo .orc-sem-img { display: grid; place-items: center; color: var(--verde); background: #f1f5f2; border-radius: 8px; }
+.orc-modelo b { color: var(--tinta); font-family: var(--f-sub); font-size: .875rem; line-height: 1.25; }
+.orc-modelo small { color: var(--cinza); font-size: .75rem; }
+.orc-modelo::after { content: ''; position: absolute; top: .5rem; right: .5rem; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--banner-fundo) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23163a2d' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 75% no-repeat; opacity: 0; transform: scale(.6); transition: opacity .2s, transform .2s; }
+.orc-modelo:has(input:checked) { border-color: var(--banner-fundo); box-shadow: 0 0 0 3px rgba(245, 179, 1, .3); }
+.orc-modelo:has(input:checked)::after { opacity: 1; transform: none; }
+.orc-modelo:has(input:focus-visible) { outline: 3px solid var(--verde); outline-offset: 2px; }
+@media (hover: hover) { .orc-modelo:hover { border-color: var(--verde); transform: translateY(-2px); } }
+
+/* opções em "pílulas" (declive, rede) */
+.orc-grupo { display: grid; gap: .55rem; margin: 0; padding: 0; border: 0; }
+.orc-grupo > span:not(.orc-erro) { color: var(--tinta); font-weight: 600; font-size: .9375rem; }
+.orc-pilulas { display: flex; flex-wrap: wrap; gap: .5rem; }
+.orc-pilula { position: relative; }
+.orc-pilula input { position: absolute; opacity: 0; pointer-events: none; }
+.orc-pilula span { display: inline-flex; align-items: center; padding: .55rem 1rem; color: var(--tinta); font-size: .875rem; background: #fafbfa; border: 1.5px solid #d6dbd8; border-radius: 999px; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+.orc-pilula input:checked + span { color: #fff; background: var(--verde); border-color: var(--verde); }
+.orc-pilula input:focus-visible + span { outline: 3px solid var(--banner-fundo); outline-offset: 2px; }
+@media (hover: hover) { .orc-pilula span:hover { border-color: var(--verde); } }
+
+/* caixas de seleção grandes (instalação, consentimento) */
+.orc-opcao { display: flex; align-items: flex-start; gap: .8rem; padding: .9rem 1rem; color: var(--tinta); font-size: .9375rem; line-height: 1.45; background: #fafbfa; border: 1.5px solid #d6dbd8; border-radius: 12px; cursor: pointer; transition: border-color .2s, background .2s; }
+.orc-opcao input { flex: none; width: 1.25rem; height: 1.25rem; margin: .1rem 0 0; accent-color: var(--verde); }
+.orc-opcao:has(input:checked) { background: #f1f7f3; border-color: var(--verde); }
+.orc-opcao b { font-family: var(--f-sub); }
+.orc-opcao small { display: block; color: var(--cinza); font-size: .8125rem; }
+
+.orc-enviar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-top: .5rem; border-top: 1px solid var(--linha); }
+.orc-enviar p { margin: 0; max-width: none; color: var(--cinza); font-size: .8125rem; }
+.orc-enviar .botao { min-width: 12rem; padding-inline: 2rem; }
+.orc-enviar .botao[disabled] { opacity: .7; cursor: progress; }
+@media (max-width: 639px) { .orc-enviar .botao { width: 100%; } }
+/* mensagens de erro: letra pequena, normal, na mesma cor do contorno do campo em erro.
+   :global porque são criadas pelo JavaScript e os estilos desta página só se aplicam ao HTML escrito nela */
+:global(.orc-erro) { display: flex; align-items: flex-start; gap: .35rem; color: #b00506; font-size: .75rem; font-weight: 400; line-height: 1.35; }
+:global(.orc-erro)::before { content: '!'; flex: none; display: grid; place-items: center; width: .9rem; height: .9rem; margin-top: .05rem; color: #fff; font-size: .5625rem; font-weight: 700; background: #b00506; border-radius: 50%; }
+.orc-campo [aria-invalid="true"] { border-color: #b00506; background: #fff7f7; }
+.orc-grupo.com-erro .orc-pilula span { border-color: #e3a5a5; }
+.orc-opcao.com-erro { border-color: #b00506; background: #fff7f7; }
+.orc-oculto { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+@media (max-width: 639px) {
+  .orc { padding-block: 1.5rem 3rem; gap: 1.25rem; }
+  .orc-painel { padding: 1.3rem 1.2rem; }
+  .orc-painel h2 { margin-bottom: .9rem; font-size: 1.125rem; }
+  .orc-passos { gap: .7rem; margin-bottom: 1.1rem; }
+  .orc-passos span { display: none; } /* no telemóvel ficam só os títulos dos passos */
+  .orc-modelos { grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .orc-modelo { padding: .55rem .5rem .7rem; }
+  .orc-modelo b { font-size: .8125rem; }
+}
+  </style>
 </Base>

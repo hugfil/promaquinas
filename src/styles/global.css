@@ -126,7 +126,8 @@ header.topo nav a.nav-cta[aria-current] { color: var(--verde); background: #fff;
 .grelha { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); padding: 0; margin: 0; list-style: none; }
 .cartao { background: #fff; border: 1px solid var(--linha); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: transform .2s ease-out, box-shadow .2s, border-color .2s; }
 .cartao:hover { transform: scale(1.02); border-color: var(--verde); box-shadow: 0 12px 32px rgba(22, 58, 45, .12); }
-.cartao img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: var(--cinza-claro); }
+/* Imagem do produto inteira dentro do cartão (sem cortes), centrada sobre branco, como nas fotografias de catálogo */
+.cartao img { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: #fff; }
 .cartao .corpo { padding: 1.4rem 1.5rem 1.7rem; }
 .cartao p { margin: 0 0 .6rem; color: var(--cinza); }
 .cartao a.cobre { text-decoration: none; }
@@ -293,7 +294,9 @@ html:has(.galeria-dialogo[open]) { overflow: hidden; }
 .galeria-dialogo::backdrop { background: #050e0a; }
 .galeria-dialogo :focus-visible { outline: 3px solid var(--banner-fundo); outline-offset: 3px; }
 .galeria-palco { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 4.5rem 6rem; }
-.galeria-palco img { display: block; max-width: calc(100vw - 12rem); max-height: calc(100dvh - 9rem); object-fit: contain; border-radius: 8px; background: #fff; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+.galeria-palco img { display: block; max-width: calc(100vw - 12rem); max-height: calc(100dvh - 9rem); object-fit: contain; border-radius: 8px; background: transparent; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+/* Fundo branco só nas imagens que podem ter transparência; nas fotografias deixava um rebordo branco nos cantos arredondados */
+.galeria-palco img.fundo-branco { background: #fff; }
 .galeria-dialogo.com-legenda .galeria-palco { padding-bottom: 7.5rem; }
 .galeria-dialogo.com-legenda .galeria-palco img, .galeria-dialogo.com-legenda .galeria-video { max-height: calc(100dvh - 12rem); }
 .galeria-legenda { position: absolute; left: 50%; bottom: 4.1rem; z-index: 3; width: max-content; max-width: min(46rem, calc(100vw - 2rem)); margin: 0; padding: .45rem 1rem; transform: translateX(-50%); color: #fff; font-size: .9375rem; line-height: 1.4; text-align: center; background: rgba(0, 0, 0, .55); border-radius: 10px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
