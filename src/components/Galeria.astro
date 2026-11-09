@@ -340,6 +340,7 @@ const temLegendas = itens.some((m) => m.legenda);
           if (seguinte && seguinte.tipo === 'pdfpag') renderizarPagina(seguinte).catch(() => {});
           if (pedido !== meu) return;
           if (aCarregar) aCarregar.hidden = true;
+          grande.classList.remove('fundo-branco'); // as páginas do PDF já vêm com fundo branco
           grande.src = url;
           grande.alt = s.alt;
           grande.hidden = false;
@@ -348,6 +349,8 @@ const temLegendas = itens.some((m) => m.legenda);
         }).catch((erro) => { console.warn('[galeria] Não foi possível desenhar a página do PDF:', erro); if (pedido === meu) falhaPdf(s, erro); });
       } else {
         grande.hidden = false;
+        // fundo branco só para imagens que podem ter transparência (PNG, WebP, GIF, SVG)
+        grande.classList.toggle('fundo-branco', /\.(png|webp|gif|svg)(\?|#|$)/i.test(s.src));
         grande.src = s.src;
         grande.alt = s.alt;
         prepararZoom();

@@ -294,7 +294,9 @@ html:has(.galeria-dialogo[open]) { overflow: hidden; }
 .galeria-dialogo::backdrop { background: #050e0a; }
 .galeria-dialogo :focus-visible { outline: 3px solid var(--banner-fundo); outline-offset: 3px; }
 .galeria-palco { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 4.5rem 6rem; }
-.galeria-palco img { display: block; max-width: calc(100vw - 12rem); max-height: calc(100dvh - 9rem); object-fit: contain; border-radius: 8px; background: #fff; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+.galeria-palco img { display: block; max-width: calc(100vw - 12rem); max-height: calc(100dvh - 9rem); object-fit: contain; border-radius: 8px; background: transparent; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+/* Fundo branco só nas imagens que podem ter transparência; nas fotografias deixava um rebordo branco nos cantos arredondados */
+.galeria-palco img.fundo-branco { background: #fff; }
 .galeria-dialogo.com-legenda .galeria-palco { padding-bottom: 7.5rem; }
 .galeria-dialogo.com-legenda .galeria-palco img, .galeria-dialogo.com-legenda .galeria-video { max-height: calc(100dvh - 12rem); }
 .galeria-legenda { position: absolute; left: 50%; bottom: 4.1rem; z-index: 3; width: max-content; max-width: min(46rem, calc(100vw - 2rem)); margin: 0; padding: .45rem 1rem; transform: translateX(-50%); color: #fff; font-size: .9375rem; line-height: 1.4; text-align: center; background: rgba(0, 0, 0, .55); border-radius: 10px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
