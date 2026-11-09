@@ -6,11 +6,18 @@ import { contactos } from '../lib/empresa';
 import NomeMarca from '../components/NomeMarca.astro';
 
 const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.data.ordem);
-// SUBSTITUIR pelo endereço do teu formulário (ex.: Formspree: https://formspree.io/f/xxxxxxxx)
-const ACAO = 'https://formspree.io/f/SEU_ID';
+// Envio do formulário: QList (https://qlist.io), FRISEMA d.o.o., Eslovénia; dados guardados na UE.
+// Os pedidos chegam ao email configurado no painel do QList e ficam no histórico do formulário.
+const ACAO = 'https://api.qlist.io/api/formsubmit';
+const FORM_ID = '54fdb105-3224-4102-882c-cd528733ba39';
+// Página de agradecimento, em endereço completo (o QList precisa dele). Calculada a partir do endereço desta página:
+// em "npm run dev" fica em localhost (para testar), no site publicado usa o "site" e o "base" do astro.config.mjs,
+// por isso continua certa se passares para um domínio próprio.
+const OBRIGADO = new URL(u('/obrigado/'), Astro.url).href;
 
 const declives = ['Praticamente plano (até 10%)', 'Moderado (10% a 25%)', 'Acentuado (25% a 40%)', 'Muito acentuado (mais de 40%)', 'Não sei'];
 const redes = ['Não sei', 'Wi-Fi chega ao jardim', 'Só cobertura móvel', 'Sem rede'];
+const zonas = ['1', '2', '3 ou mais', 'Não sei'];
 const milhares = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 ---
 <Base titulo="Pedir Orçamento" descricao="Peça um orçamento para um robot corta-relva Husqvarna®.">
@@ -38,8 +45,11 @@ const milhares = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     </aside>
 
     <form class="orc-cartao" method="POST" action={ACAO}>
+      <input type="hidden" name="jg_id" value={FORM_ID} />
+      <input type="hidden" name="jg_redirect" value={OBRIGADO} />
       <input type="hidden" name="_subject" value="Novo pedido de orçamento (robot corta-relva)" />
-      <p class="orc-oculto" aria-hidden="true"><label>Não preencher<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <!-- Armadilha para robôs de spam: escondida das pessoas; se for marcada, o QList descarta o pedido -->
+      <input type="checkbox" name="jg_botcheck" class="orc-oculto" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
       <fieldset>
         <legend><span class="num">1</span>Os seus dados</legend>
@@ -81,12 +91,13 @@ const milhares = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
       <fieldset>
         <legend><span class="num">3</span>O seu jardim</legend>
-        <div class="orc-duas">
-          <label class="orc-campo">Área do relvado (m²) *<input type="number" name="area_m2" min="1" required inputmode="numeric" /></label>
-          <label class="orc-campo">Zonas de relva separadas *
-            <input type="number" name="zonas" min="1" value="1" required inputmode="numeric" />
-            <span class="orc-ajuda">Áreas ligadas apenas por passagens ou separadas por obstáculos.</span>
-          </label>
+        <label class="orc-campo orc-curto">Área do relvado (m²) *<input type="number" name="area_m2" min="1" required inputmode="numeric" /></label>
+        <div class="orc-grupo" role="radiogroup" aria-labelledby="orc-zonas">
+          <span id="orc-zonas">Zonas de relva separadas</span>
+          <div class="orc-pilulas">
+            {zonas.map((z) => <label class="orc-pilula"><input type="radio" name="zonas" value={z} checked={z === '1'} /><span>{z}</span></label>)}
+          </div>
+          <span class="orc-ajuda">Áreas ligadas apenas por passagens ou separadas por obstáculos.</span>
         </div>
         <div class="orc-grupo" role="radiogroup" aria-labelledby="orc-declive">
           <span id="orc-declive">Declive máximo *</span>
@@ -240,6 +251,7 @@ const milhares = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 .orc-campo textarea { resize: vertical; min-height: 6rem; }
 .orc-campo input:focus, .orc-campo textarea:focus, .orc-campo select:focus { outline: none; background: #fff; border-color: var(--verde); box-shadow: 0 0 0 4px rgba(22, 58, 45, .12); }
 .orc-campo input:user-invalid, .orc-campo textarea:user-invalid { border-color: #b00506; background: #fff7f7; }
+.orc-curto { max-width: 18rem; }
 .orc-ajuda { color: var(--cinza); font-weight: 400; font-size: .8125rem; line-height: 1.4; }
 
 /* modelos: cartões com imagem */
@@ -258,11 +270,12 @@ const milhares = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 /* opções em "pílulas" (declive, rede) */
 .orc-grupo { display: grid; gap: .55rem; margin: 0; padding: 0; border: 0; }
-.orc-grupo > span:not(.orc-erro) { color: var(--tinta); font-weight: 600; font-size: .9375rem; }
+.orc-grupo > span:first-child { color: var(--tinta); font-weight: 600; font-size: .9375rem; }
 .orc-pilulas { display: flex; flex-wrap: wrap; gap: .5rem; }
 .orc-pilula { position: relative; }
 .orc-pilula input { position: absolute; opacity: 0; pointer-events: none; }
-.orc-pilula span { display: inline-flex; align-items: center; padding: .55rem 1rem; color: var(--tinta); font-size: .875rem; background: #fafbfa; border: 1.5px solid #d6dbd8; border-radius: 999px; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+/* altura fixa e largura mínima igual à altura: as opções de um só carácter (1, 2) ficam círculos perfeitos e iguais */
+.orc-pilula span { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; min-height: 2.75rem; padding: 0 .95rem; color: var(--tinta); font-size: .875rem; background: #fafbfa; border: 1.5px solid #d6dbd8; border-radius: 999px; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
 .orc-pilula input:checked + span { color: #fff; background: var(--verde); border-color: var(--verde); }
 .orc-pilula input:focus-visible + span { outline: 3px solid var(--banner-fundo); outline-offset: 2px; }
 @media (hover: hover) { .orc-pilula span:hover { border-color: var(--verde); } }
