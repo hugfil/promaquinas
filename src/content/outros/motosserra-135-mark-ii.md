@@ -20,7 +20,7 @@ No se refere às motosserras projetadas para uso residencial, é improvável que
 
 A Motosserra Husqvarna 135 Mark II é a escolha perfeita para utilizadores domésticos que procuram potência, facilidade de uso e segurança numa só ferramenta. Projetada para trabalhos de corte ocasionais, como corte de lenha ou manutenção do jardim, esta motosserra combina eficiência energética com tecnologia avançada para oferecer um desempenho confiável e duradouro em cada tarefa.
 
-## Características em Destaque
+## Características em destaque
 
 - Motor X-Torq®: Oferece uma excelente potência de 1,6 kW com um baixo consumo de combustível e emissões reduzidas, cumprindo as normas ambientais mais exigentes.
 - Tecnologia Smart Start®: Arranque fácil e rápido com menor esforço, ideal para utilizadores que não querem complicações ao ligar a máquina.
@@ -29,7 +29,7 @@ A Motosserra Husqvarna 135 Mark II é a escolha perfeita para utilizadores domé
 - Travão de corrente por inércia: Maior segurança graças à ativação automática do travão em caso de coice.
 - Tensor lateral da corrente: Ajuste rápido e simples da corrente sem necessidade de ferramentas complexas.
 
-## Especificações Técnicas
+## Especificações técnicas
 
 - **Cilindrada**: 38 cm³
 - **Potência**: 1,6 kW

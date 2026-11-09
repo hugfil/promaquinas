@@ -10,14 +10,16 @@ destaque: false
 ordem: 270
 ---
 
-Motosserra de poda leve, potente e muito equilibrada. Motor X-Torq®.
+- Cilindrada: 35,2 cm³
+- Potência: 1,5 kW
+- Velocidade da corrente à potência máx.: 25,4 m/s
 
-## Características
+Husqvarna T435 Motosserra de poda com excelente rácio potência-peso. O peso reduzido e o design compacto tornam-a ideal para operações em plataformas elevatórias. Apetrechada com o sistema Low Vib e carburador com amortecimento das vibrações para reduzir o esforço. A T435 tem um motor X-Torq® que aumenta o débito de potência a baixos regimes e reduz as emissões e o consumo de combustível.
 
-- Cilindrada: 35,2 cc
-- Peso: 3,4 kg
-- Corrente: 3/8" mini
-- Lâmina: 30 cm
+Nova motosserra de poda X-Torq®.
+Leve e potente para podar tanto a partir do solo ou de posições elevadas.
+O seu baixo peso e o seu alto equilíbrio tornam-a muito simples de utilizar.
+Um ponto de fixação para apertar uma corda, tornando mais fácil içar a serra numa árvore.
 
 ## Opções
 

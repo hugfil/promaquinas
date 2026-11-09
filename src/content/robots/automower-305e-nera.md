@@ -7,8 +7,8 @@ galeria: ["/imagens/automower-305e-nera-000.jpg", "/imagens/automower-305e-nera-
 areaMaxima: 600
 decliveMaximo: 30
 ligacao: ["Bluetooth", "Wi-Fi"]
-preco: 1499.00
-precoDesde: true
+preco: 2213.47
+precoCampanha: 1499.00
 destaque: true
 ordem: 4
 ---
@@ -25,7 +25,7 @@ O Plug-in EPOS permite a instalação utilizando limites virtuais, eliminando a 
 
 Não tem Wi-Fi em todo o seu jardim? Não há problema. Compre o **módulo de conectividade 2G + 4G** que proporciona conectividade móvel sem a necessidade de cobertura Wi-Fi em todo o ambiente de trabalho.
 
-## Principais Características:
+## Características em destaque
 
 ✅ Plug-in EPOS GRATUITO, adicionado automaticamente ao seu carrinho com a compra do robot <br>
 ✅ Função EdgeCut: Minimiza a necessidade de corte manual nas bordas do relvado, garantindo um acabamento limpo e uniforme. <br>
@@ -36,20 +36,20 @@ Não tem Wi-Fi em todo o seu jardim? Não há problema. Compre o **módulo de co
 ✅ Controlo e configuração via Automower Connect. <br>
 ✅ Compatível com Amazon Alexa, Google Home e IFTTT.
 
-## Especificações Técnicas:
+## Especificações técnicas
 
-- Capacidade de área de trabalho: Até 600 m²
-- Altura de corte ajustável: 20-55 mm (elétrico)
-- Largura de corte: 22 cm
-- Tempo de corte por ciclo: 50 min
-- Tempo de carga típico: 40 min
-- Inclinação máxima: 30%
-- Peso: 12,2 kg
-- Nível de ruído: 60 dB(A)
-- Bateria: Li-Ion 2 Ah
-- Resistência à água: IPX5 (lavável com mangueira)
-- Conectividade: Bluetooth® e Wi-Fi
-- Sistema de carregamento: Automático
+- **Capacidade de área de trabalho**: Até 600 m²
+- **Altura de corte ajustável**: 20-55 mm (elétrico)
+- **Largura de corte**: 22 cm
+- **Tempo de corte por ciclo**: 50 min
+- **Tempo de carga típico**: 40 min
+- **Inclinação máxima**: 30%
+- **Peso**: 12,2 kg
+- **Nível de ruído**: 60 dB(A)
+- **Bateria**: Li-Ion 2 Ah
+- **Resistência à água**: IPX5 (lavável com mangueira)
+- **Conectividade**: Bluetooth® e Wi-Fi
+- **Sistema de carregamento**: Automático
 
 Este robot corta-relva para jardins até 600 m² combina EdgeCut, controlo inteligente e a liberdade de escolher o tipo de instalação. Além disso, durante esta promoção, ao comprar o robot recebe o EPOS Plug-in GRÁTIS, facilitando a instalação sem fios perimetral.
 

@@ -1,10 +1,11 @@
 ---
-nome: "Produto de exemplo de outra marca"
-marca: "Outra marca"
-tipo: "Corta-sebes"
-resumo: "Produto fictício para testar o filtro por marca. Sem preço: o campo é opcional."
-preco: 1.00
+nome: "Produtos de outras marcas"
+marca: "Outras marcas"
+tipo: "Motosserras"
+resumo: "Temos também disponíveis produtos de outras marcas."
+preco: 0
 destaque: false
-ordem: 101
+ordem: 1000
 ---
-Descrição do produto.
+
+Temos também disponíveis produtos de outras marcas.
