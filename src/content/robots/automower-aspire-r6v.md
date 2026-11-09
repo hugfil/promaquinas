@@ -14,13 +14,11 @@ destaque: true
 ordem: 2
 ---
 
-## Automower® Aspire™ R6V
-
-### Robot corta-relva sem fios com navegação por satélite e IA
+## Robot corta-relva sem fios com navegação por satélite e IA
 
 O Husqvarna Automower Aspire R6V é um robot corta-relva que elimina completamente os cabos e as instalações complexas. Configura-se através do telemóvel em poucos minutos e corta a relva de forma automática, utilizando navegação por satélite e tecnologia de inteligência artificial para se deslocar com precisão pelo seu jardim.
 
-#### Características chave
+## Características chave
 
 - Sem cabo perimetral: tudo se configura através do telemóvel.
 - **Navegação por satélite com apoio de inteligência artificial**.
@@ -34,7 +32,7 @@ O Husqvarna Automower Aspire R6V é um robot corta-relva que elimina completamen
 - Corte automático e silencioso.
 - **Para jardins de até 600 m²**.
 
-### Como funciona o sistema sem fios
+## Como funciona o sistema sem fios
 
 Este robot não necessita de fio perimetral porque se guia através de sinal de satélite e da app.
 
@@ -53,7 +51,7 @@ Para se adaptar a cada caso, tem estas opções:
 4. **Estação de referência (opção profissional)**
     Para uma precisão máxima e total independência da rede, existe a opção de instalar uma antena EPOS através de um revendedor.
 
-### O que pode fazer com ele
+## O que pode fazer com ele
 
 - **Criar zonas** diferentes **com ajustes distintos**.
 - **Excluir áreas temporariamente** (piscina, mobiliário de jardim, obras, etc.).
@@ -61,26 +59,26 @@ Para se adaptar a cada caso, tem estas opções:
 - **Programar horários** de acordo com o crescimento da relva.
 - **Controlá-lo a partir de qualquer lugar**.
 
-### Especificações Técnicas
+## Especificações técnicas
 
-- Capacidade da área de trabalho: até 600 m²
-- Área de trabalho irregular: 400 m²
-- Tipo de delimitação: fio virtual por satélite
-- Inclinação máxima dentro da instalação: 40%
-- Sistema de corte: 3 lâminas pivotantes
-- Largura de corte: 22 cm
-- Altura de corte: 20 – 50 mm
-- Tempo de corte por ciclo: 100 min
-- Tempo de carga típico: 200 min
-- Bateria: Li-Ion 4 Ah
-- Nível sonoro: 63 dB(A)
-- Conectividade: Bluetooth® e Wi-Fi
-- Controlo: teclado e aplicação Automower® Connect
-- Peso: 9,9 kg
-- Dimensões: 59 × 45 × 25 cm
-- Proteção: IPX6
+- **Capacidade da área de trabalho**: até 600 m²
+- **Área de trabalho irregular**: 400 m²
+- **Tipo de delimitação**: fio virtual por satélite
+- **Inclinação máxima dentro da instalação**: 40%
+- **Sistema de corte**: 3 lâminas pivotantes
+- **Largura de corte**: 22 cm
+- **Altura de corte**: 20 – 50 mm
+- **Tempo de corte por ciclo**: 100 min
+- **Tempo de carga típico**: 200 min
+- **Bateria**: Li-Ion 4 Ah
+- **Nível sonoro**: 63 dB(A)
+- **Conectividade**: Bluetooth® e Wi-Fi
+- **Controlo**: teclado e aplicação Automower® Connect
+- **Peso**: 9,9 kg
+- **Dimensões**: 59 × 45 × 25 cm
+- **Proteção**: IPX6
 
-### Perguntas frequentes
+## Perguntas frequentes
 
 **Como posso planear a instalação num jardim sem fios perimetrais?**
 Os robots corta-relva sem fios precisam de uma vista desimpedida para o céu para receber o sinal de satélite. Os modelos com tecnologia de visão por IA combinam-se com a navegação por satélite para funcionar mesmo em zonas com sinais de satélite fracos.

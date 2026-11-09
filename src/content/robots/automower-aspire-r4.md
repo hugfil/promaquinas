@@ -14,8 +14,6 @@ destaque: true
 ordem: 1
 ---
 
-## Automower® Aspire™ R4
-
 *Este produto requer instalação*
 
 ### Robot corta-relva Husqvarna AUTOMOWER® ASPIRE™ R4: potência compacta e inteligência para o seu jardim
@@ -30,22 +28,22 @@ O Husqvarna AUTOMOWER® ASPIRE™ R4 é o robot corta-relva ideal para quem pret
 - **Limpeza simples e segura**: Com certificação IPX5, este robot corta-relva pode ser facilmente limpo com uma mangueira, mantendo o seu desempenho e durabilidade com manutenção mínima.
 - **Funcionamento silencioso**: Com um nível de ruído de apenas 59 dB(A), o Husqvarna AUTOMOWER® ASPIRE™ R4 trabalha de forma discreta, de dia e de noite, sem incomodar o ambiente envolvente.
 
-### Especificações técnicas do AUTOMOWER® ASPIRE™ R4
+### Especificações técnicas
 
-- Área de trabalho recomendada: 400 m²
-- Inclinação máxima: 25 %
-- Sistema de corte: 3 lâminas pivotantes
-- Altura de corte: 20–45 mm (ajuste manual)
-- Largura de corte: 16 cm
-- Tipo de bateria: Li-Ion (2 Ah)
-- Autonomia por ciclo: 70 minutos
-- Tempo de carregamento: 75 minutos
-- Consumo energético médio: 3 kWh
-- Nível sonoro: 59 dB(A)
-- Peso: 5,9 kg
-- Conectividade: Bluetooth®, Wi-Fi
-- Controlo remoto: aplicação Automower® Connect
-- Proteção contra água: IPX5
+- **Área de trabalho recomendada**: 400 m²
+- **Inclinação máxima**: 25 %
+- **Sistema de corte**: 3 lâminas pivotantes
+- **Altura de corte**: 20–45 mm (ajuste manual)
+- **Largura de corte**: 16 cm
+- **Tipo de bateria**: Li-Ion (2 Ah)
+- **Autonomia por ciclo**: 70 minutos
+- **Tempo de carregamento**: 75 minutos
+- **Consumo energético médio**: 3 kWh
+- **Nível sonoro**: 59 dB(A)
+- **Peso**: 5,9 kg
+- **Conectividade**: Bluetooth®, Wi-Fi
+- **Controlo remoto**: aplicação Automower® Connect
+- **Proteção contra água**: IPX5
 
 O Husqvarna AUTOMOWER® ASPIRE™ R4 combina design inteligente, desempenho e comodidade. Perfeito para quem procura um robot corta-relva compacto, eficiente e fácil de controlar, capaz de manter o jardim impecável durante os 7 dias da semana, sem esforço.
 

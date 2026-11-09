@@ -23,7 +23,7 @@ Com a tecnologia X-Torq da Husqvarna, a 130 melhora a eficiência de combustíve
 
 A motosserra Husqvarna 130 é uma **motosserra compacta e versátil**, concebida para utilizadores particulares que procuram **desempenho profissional** em tarefas ocasionais como abater árvores pequenas ou cortar lenha. O seu equilíbrio entre **potência, leveza e facilidade de uso** torna-a a ferramenta ideal para a manutenção doméstica e trabalhos de jardinagem, com resultados precisos e seguros.
 
-## Características:
+## Características em destaque
 
 - **Motor X-Torq®** de baixo consumo e emissões reduzidas, com excelente relação entre potência e eficiência.
 - **Sistema LowVib®**, que reduz as vibrações e melhora o conforto durante longas jornadas de trabalho.
@@ -32,7 +32,7 @@ A motosserra Husqvarna 130 é uma **motosserra compacta e versátil**, concebida
 - **Design ergonómico e equilibrado**, que facilita o manuseamento e proporciona maior controlo em cada corte.
 - **Barra de 35 cm / 14”** ideal para tarefas de poda, corte e abate ligeiro, com corrente H37 de alto desempenho.
 
-## Especificações Técnicas:
+## Especificações Técnicas
 
 - **Cilindrada**: 38 cm³
 - **Potência**: 1,5 kW
