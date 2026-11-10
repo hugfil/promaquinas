@@ -581,3 +581,8 @@ sup.reg { font-size: .55em; line-height: 0; vertical-align: super; margin-left: 
 .legais { align-items: center; }
 .legais li.legais-lr::before { content: none; } /* sem o ponto separador antes do logótipo */
 .legais li.legais-lr { margin-left: .9rem; }
+/* Espaço à direita da barra de baixo do rodapé para o botão "voltar ao topo" (fixo no canto) não tapar o Livro de Reclamações.
+   O botão ocupa cerca de 5,25rem a contar da margem direita do ecrã; o espaço extra só aparece quando a margem do ecrã não chega
+   (em ecrãs largos fica a margem normal). No telemóvel a barra fica em coluna e não é preciso. */
+@media (min-width: 641px) { .rodape-base-linha { padding-right: max(1.25rem, calc(5.25rem - max(0px, (100vw - var(--largura)) / 2))); } }
+@media (min-width: 1024px) { .rodape-base-linha { padding-right: max(2rem, calc(5.25rem - max(0px, (100vw - var(--largura)) / 2))); } }
