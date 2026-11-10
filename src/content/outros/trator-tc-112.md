@@ -1,5 +1,5 @@
 ---
-nome: "Trator TC 112"
+nome: "Husqvarna® Trator TC 112"
 marca: "Husqvarna"
 tipo: "Tratores corta-relva"
 resumo: "Modelo com saco coletor para trabalhar em áreas grandes e jardins complexos com passagens estreitas."

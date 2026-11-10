@@ -1,5 +1,5 @@
 ---
-nome: "Motosserra 535i XP®"
+nome: "Husqvarna® 535i XP®"
 marca: "Husqvarna"
 tipo: "Motosserras"
 resumo: "Para utilizadores profissionais que pretendem uma motosserra leve e de alto desempenho."

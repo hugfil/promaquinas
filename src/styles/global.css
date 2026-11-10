@@ -436,11 +436,13 @@ a.rede:hover { background: #fff; color: var(--tinta); border-color: #fff; transf
 .caixa-cabeca { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
 .caixa-titulo { display: flex; align-items: center; gap: .45rem; margin: 0; font-family: var(--f-sub); font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #fff; }
 .caixa-titulo svg { color: #2FB57A; }
-.estado { display: inline-flex; align-items: center; gap: .4rem; padding: .15rem .6rem; font-family: var(--f-sub); font-size: .75rem; font-weight: 600; color: #e9b7b0; border: 1px solid rgba(233, 183, 176, .35); border-radius: 999px; }
-.estado-ponto { width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; }
+.estado { display: inline-flex; align-items: center; gap: .45rem; padding: .15rem .6rem .15rem .65rem; font-family: var(--f-sub); font-size: .75rem; font-weight: 600; color: #e9b7b0; border: 1px solid rgba(233, 183, 176, .35); border-radius: 999px; }
+/* ponto com tamanho em píxeis inteiros (desenha-se redondo e centrado em qualquer ecrã) */
+.estado-ponto { position: relative; flex: none; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 .estado.aberto { color: #6fdcaa; border-color: rgba(111, 220, 170, .4); }
-.estado.aberto .estado-ponto { animation: estado-pulso 2s ease-out infinite; }
-@keyframes estado-pulso { 0% { box-shadow: 0 0 0 0 rgba(111, 220, 170, .6); } 100% { box-shadow: 0 0 0 .45rem rgba(111, 220, 170, 0); } }
+/* onda que se espalha por igual à volta do ponto, sem tocar no contorno, com uma pausa entre ondas (como no banner) */
+.estado.aberto .estado-ponto::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: currentColor; animation: estado-onda 2s ease-out infinite; }
+@keyframes estado-onda { 0% { transform: scale(1); opacity: .55; } 70%, 100% { transform: scale(2.4); opacity: 0; } }
 .horario { display: grid; gap: .5rem; margin: 0; }
 .horario-linha { display: grid; gap: .1rem; padding: .45rem .6rem; margin: 0 -.6rem; border-radius: 8px; }
 .horario-linha.hoje { background: rgba(255, 255, 255, .06); }
@@ -466,7 +468,7 @@ footer.rodape .legais a:hover { color: #fff; text-decoration: underline; text-un
   .legais { gap: .35rem 1.1rem; }
   .legais li + li::before { content: none; }
 }
-@media (prefers-reduced-motion: reduce) { .estado.aberto .estado-ponto { animation: none; } .rede { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .estado.aberto .estado-ponto::after { animation: none; opacity: 0; } .rede { transition: none; } }
 /* Texto escrito em Markdown (fichas, campanhas, privacidade): usa mais largura.
    Para ajustar, mude --prosa-largura (ex.: 56rem mais estreito, 80rem mais largo, 100% toda a largura) */
 :root { --prosa-largura: 64rem; }
@@ -579,3 +581,8 @@ sup.reg { font-size: .55em; line-height: 0; vertical-align: super; margin-left: 
 .legais { align-items: center; }
 .legais li.legais-lr::before { content: none; } /* sem o ponto separador antes do logótipo */
 .legais li.legais-lr { margin-left: .9rem; }
+/* Espaço à direita da barra de baixo do rodapé para o botão "voltar ao topo" (fixo no canto) não tapar o Livro de Reclamações.
+   O botão ocupa cerca de 5,25rem a contar da margem direita do ecrã; o espaço extra só aparece quando a margem do ecrã não chega
+   (em ecrãs largos fica a margem normal). No telemóvel a barra fica em coluna e não é preciso. */
+@media (min-width: 641px) { .rodape-base-linha { padding-right: max(1.25rem, calc(5.25rem - max(0px, (100vw - var(--largura)) / 2))); } }
+@media (min-width: 1024px) { .rodape-base-linha { padding-right: max(2rem, calc(5.25rem - max(0px, (100vw - var(--largura)) / 2))); } }
