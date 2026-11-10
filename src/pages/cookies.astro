@@ -2,16 +2,27 @@
 import Base from '../layouts/Base.astro';
 import { u } from '../lib/url';
 ---
-<Base titulo="Política de cookies">
+<Base titulo="Política de cookies" descricao="Que cookies e serviços de terceiros são usados neste site.">
   <div class="wrap prosa">
     <h1>Política de cookies</h1>
-    <p><strong>Texto provisório: deve ser revisto e completado antes de publicar o site.</strong></p>
+    <p><small>Última atualização: 10 de novembro de 2026.</small></p>
+
     <h2>O que são cookies</h2>
     <p>Cookies são pequenos ficheiros guardados no seu dispositivo quando visita um site, usados para o fazer funcionar ou para recolher informação sobre a utilização.</p>
+
     <h2>Que cookies usamos</h2>
-    <p>Neste momento, este site não utiliza cookies de publicidade nem de análise. As letras são servidas pelo próprio site e o mapa do rodapé só carrega conteúdo do OpenStreetMap quando o visitante o abre.</p>
-    <p>[Se no futuro forem usadas ferramentas de estatística, vídeos incorporados (YouTube) ou outros serviços de terceiros, indicar aqui quais, a finalidade e a duração, e pedir consentimento antes de os ativar.]</p>
+    <p>Este site não usa cookies próprios, nem cookies de publicidade ou de análise de visitas. Os tipos de letra e o leitor de PDF são servidos pelo próprio site.</p>
+
+    <h2>Conteúdos de terceiros</h2>
+    <p>Alguns conteúdos vêm de serviços externos e só são carregados quando o visitante os pede. A partir desse momento, esses serviços podem guardar cookies ou dados semelhantes no seu dispositivo, de acordo com as suas próprias políticas:</p>
+    <ul>
+      <li><strong>Mapa (OpenStreetMap):</strong> só é carregado quando abre o mapa no rodapé.</li>
+      <li><strong>Vídeos (YouTube):</strong> só são carregados quando carrega para ver um vídeo, a partir do domínio youtube-nocookie.com, da Google.</li>
+      <li><strong>Google Maps:</strong> as ligações "Google Maps" e "Como chegar" abrem num novo separador, no site da Google.</li>
+      <li><strong>Formulário de orçamento (QList):</strong> os dados são enviados para o QList quando envia o formulário; este site não guarda cookies nesse processo.</li>
+    </ul>
+
     <h2>Como gerir os cookies</h2>
-    <p>Pode apagar ou bloquear cookies nas definições do seu navegador. Para saber como tratamos os seus dados, consulte a <a href={u('/privacidade/')}>política de privacidade</a>.</p>
+    <p>Pode apagar ou bloquear cookies nas definições do seu navegador. Se bloquear os cookies de terceiros, o mapa e os vídeos podem não funcionar. Para saber como tratamos os seus dados, consulte a <a href={u('/privacidade/')}>política de privacidade</a>.</p>
   </div>
 </Base>
