@@ -9,6 +9,20 @@ imagem: "/imagens/corta-sebes-122hd45-000.jpg"
 galeria: ["/imagens/corta-sebes-122hd45-000.jpg | Motor silencioso", "/imagens/corta-sebes-122hd45-001.jpg | Smart Start®", "/imagens/corta-sebes-122hd45-002.jpg | Interruptor de paragem com auto return", "/imagens/corta-sebes-122hd45-003.jpg | Bomba de combustível", "/imagens/corta-sebes-122hd45-004.jpg | LowVib®", "https://www.youtube.com/watch?v=h2Nd-fi0bG4&t=16s"]
 destaque: true
 ordem: 5
+destaques:
+  - "4050 cortes/min | Velocidade de corte"
+  - "28 mm | Largura dos dentes"
+caracteristicas:
+  - texto: "Motor silencioso"
+    imagem: 1
+  - texto: "Smart Start®"
+    imagem: 2    
+  - texto: "Interruptor de paragem com auto return"
+    imagem: 3    
+  - texto: "Bomba de combustível"
+    imagem: 4    
+  - texto: "LowVib®"
+    imagem: 5 
 ---
 
 O Corta sebes Husqvarna 122HD45 é um corta sebes leve e pouco ruidoso para uso particular, muito simples de manusear graças a funções como o Smart Start®.

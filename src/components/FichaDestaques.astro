@@ -1,0 +1,60 @@
+---
+// Bloco da ficha do produto: números principais (destaques) e características com visto.
+// Uma característica pode abrir a galeria do produto numa imagem (botão "Ver" com miniatura).
+import { u } from '../lib/url';
+import { lerItem, resolverMidia, type ItemGaleria } from '../lib/media';
+import NomeMarca from './NomeMarca.astro';
+
+type Caracteristica = string | { texto: string; imagem?: string | number };
+interface Props {
+  destaques: string[];
+  caracteristicas: Caracteristica[];
+  galeria: ItemGaleria[];
+  galeriaId: string; // o id da Galeria da página, para os botões "Ver" a abrirem
+  produto: string;   // só para os avisos no terminal
+}
+const { destaques, caracteristicas, galeria, galeriaId, produto } = Astro.props;
+
+const numeros = destaques.map((t) => {
+  const i = t.indexOf(' | ');
+  return i < 0 ? { valor: t.trim(), rotulo: '' } : { valor: t.slice(0, i).trim(), rotulo: t.slice(i + 3).trim() };
+});
+
+const linhas = caracteristicas.map((c) => {
+  const texto = typeof c === 'string' ? c : c.texto;
+  const ref = typeof c === 'string' ? undefined : c.imagem;
+  if (ref === undefined) return { texto };
+  // a imagem pode ser o número na galeria (1 = primeira) ou o caminho de uma imagem que está na galeria
+  const indice = typeof ref === 'number' ? ref - 1 : galeria.findIndex((g) => lerItem(g).caminho === ref.trim());
+  if (indice < 0 || indice >= galeria.length) {
+    console.warn(`\n[AVISO] ${produto}: a característica "${texto}" aponta para uma imagem que não está na galeria (${ref}).\n`);
+    return { texto };
+  }
+  const m = resolverMidia(galeria[indice]);
+  return { texto, indice, miniatura: m.tipo === 'imagem' ? u(m.src) : undefined };
+});
+---
+{numeros.length > 0 && (
+  <ul class="ficha-destaques">
+    {numeros.map((n) => (
+      <li><strong><NomeMarca texto={n.valor} /></strong>{n.rotulo && <span><NomeMarca texto={n.rotulo} /></span>}</li>
+    ))}
+  </ul>
+)}
+{linhas.length > 0 && (
+  <ul class="ficha-caracteristicas">
+    {linhas.map((l) => (
+      <li>
+        <span><NomeMarca texto={l.texto} /></span>
+        {l.indice !== undefined && (
+          <button type="button" class="ver-imagem" data-abrir-galeria={galeriaId} data-item={l.indice} aria-label={'Ver imagem: ' + l.texto}>
+            {l.miniatura
+              ? <img src={l.miniatura} alt="" loading="lazy" decoding="async" />
+              : <span class="ver-imagem-icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="9" cy="10" r="1.6" fill="currentColor" /><path d="M5 17l5-5 4 4 2-2 3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg></span>}
+            <span class="ver-imagem-texto">Ver</span>
+          </button>
+        )}
+      </li>
+    ))}
+  </ul>
+)}
