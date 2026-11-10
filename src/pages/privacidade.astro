@@ -1,19 +1,55 @@
 ---
 import Base from '../layouts/Base.astro';
+import { contactos } from '../lib/empresa';
 ---
-<Base titulo="Política de privacidade">
+<Base titulo="Política de privacidade" descricao="Como tratamos os dados pessoais recolhidos neste site.">
   <div class="wrap prosa">
     <h1>Política de privacidade</h1>
-    <p><strong>Texto provisório: deve ser revisto e completado antes de publicar o site.</strong></p>
+    <p><small>Última atualização: 10 de novembro de 2026.</small></p>
+    <!-- SUBSTITUIR: completar os dados do responsável e depois apagar este aviso -->
+    <p><strong>Texto provisório: falta completar os dados do responsável pelo tratamento.</strong></p>
+
     <h2>Quem é o responsável</h2>
-    <p>[Nome ou firma, NIF, morada e contacto]</p>
-    <h2>Que dados recolhemos e porquê</h2>
-    <p>Através do formulário de orçamento recolhemos nome, email, telefone, localização e características do jardim, apenas para preparar e enviar o orçamento pedido.</p>
+    <p>
+      [Nome ou firma, NIF e morada]<br />
+      Email: <a href={`mailto:${contactos.email}`}>{contactos.email}</a><br />
+      Telefone: <a href={`tel:${contactos.telefoneLigacao}`}>{contactos.telefone}</a> <small>({contactos.telefoneNota})</small>
+    </p>
+
+    <h2>Pedidos de orçamento</h2>
+    <p>
+      Quando preenche o formulário de pedido de orçamento, recolhemos os dados que indica: nome, apelido, email, telefone,
+      código postal, localidade, informações sobre o jardim (área, zonas, declive, cobertura de rede, obstáculos), o modelo de
+      interesse e a mensagem. Usamos estes dados apenas para analisar e responder ao seu pedido, com base nas diligências
+      pré-contratuais que nos solicita e no consentimento que dá ao enviar o formulário.
+    </p>
+    <p>
+      O envio do formulário é processado pelo serviço QList, da FRISEMA d.o.o. (Domžale, Eslovénia), que nos reencaminha o
+      pedido por email e guarda um histórico dos pedidos em servidores na União Europeia. Não usamos estes dados para outros
+      fins, nem os partilhamos com terceiros.
+    </p>
+
     <h2>Quanto tempo guardamos</h2>
-    <p>[Indicar prazo]</p>
+    <p>
+      Guardamos os pedidos de orçamento durante 12 meses após a última resposta. Se o pedido der origem a uma compra, os dados
+      são conservados pelo tempo necessário à relação comercial e ao cumprimento das obrigações legais (por exemplo, faturação
+      e garantia).
+    </p>
+
     <h2>Os seus direitos</h2>
-    <p>Pode pedir acesso, retificação ou apagamento dos seus dados, e apresentar reclamação à CNPD (www.cnpd.pt).</p>
+    <p>
+      Pode pedir para consultar, corrigir ou apagar os seus dados, opor-se ao seu tratamento ou retirar o consentimento, através
+      do email <a href={`mailto:${contactos.email}`}>{contactos.email}</a>. Tem também o direito de apresentar reclamação à
+      Comissão Nacional de Proteção de Dados (<a href="https://www.cnpd.pt" target="_blank" rel="noopener">www.cnpd.pt</a>).
+    </p>
+
     <h2>Serviços de terceiros</h2>
-    <p>O formulário é processado por [nome do serviço, ex.: Formspree] e o site é alojado no GitHub Pages. O mapa do rodapé só carrega conteúdo do OpenStreetMap quando o visitante o abre; as ligações "Google Maps" e "Como chegar" abrem num novo separador, em serviços da Google.</p>
+    <ul>
+      <li><strong>Formulário:</strong> processado pelo QList (FRISEMA d.o.o., Eslovénia), com os dados guardados na União Europeia, como descrito acima.</li>
+      <li><strong>Alojamento:</strong> o site é alojado no GitHub Pages (GitHub, Inc.), que pode registar dados técnicos de acesso, como o endereço IP, para funcionamento e segurança do serviço.</li>
+      <li><strong>Mapa:</strong> o mapa do rodapé só carrega conteúdo do OpenStreetMap quando o visitante o abre; as ligações "Google Maps" e "Como chegar" abrem num novo separador, em serviços da Google.</li>
+      <li><strong>Vídeos:</strong> os vídeos do YouTube só são carregados quando o visitante carrega para os ver, a partir do domínio youtube-nocookie.com, da Google.</li>
+      <li><strong>Tipos de letra e leitor de PDF:</strong> são servidos pelo próprio site, sem pedidos a serviços externos.</li>
+    </ul>
   </div>
 </Base>

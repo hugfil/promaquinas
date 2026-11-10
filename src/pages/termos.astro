@@ -2,19 +2,32 @@
 import Base from '../layouts/Base.astro';
 import { u } from '../lib/url';
 ---
-<Base titulo="Termos e condições">
+<Base titulo="Termos e condições" descricao="Condições de utilização do site, dos pedidos de orçamento e das campanhas.">
   <div class="wrap prosa">
     <h1>Termos e condições</h1>
-    <p><strong>Texto provisório: deve ser revisto e completado antes de publicar o site.</strong></p>
+    <p><small>Última atualização: 10 de novembro de 2026.</small></p>
+    <!-- SUBSTITUIR: completar as condições entre [ ] e depois apagar este aviso -->
+    <p><strong>Texto provisório: faltam completar algumas condições comerciais.</strong></p>
+
     <h2>Utilização do site</h2>
     <p>Este site apresenta produtos e campanhas. Não efetuamos vendas online: os pedidos de orçamento não constituem compra nem reserva.</p>
+
+    <h2>Preços</h2>
+    <p>Os preços indicados incluem IVA à taxa legal em vigor e são meramente indicativos. Salvo erro tipográfico, as condições finais são as que constam do orçamento.</p>
+
     <h2>Pedidos de orçamento</h2>
-    <p>Depois de recebermos o pedido, entramos em contacto com uma proposta. [Indicar validade dos orçamentos, condições de instalação, deslocação e pagamento.]</p>
+    <p>Depois de recebermos o pedido, entramos em contacto com uma proposta. Os orçamentos são válidos por [prazo, ex.: 30 dias]. [Indicar condições de instalação, de deslocação e de pagamento.]</p>
+
     <h2>Campanhas</h2>
-    <p>As campanhas são válidas no período indicado e enquanto houver stock. [Indicar outras condições aplicáveis.]</p>
+    <p>Os preços de campanha são válidos apenas no período indicado em cada campanha e enquanto houver stock, salvo erro tipográfico. [Indicar outras condições aplicáveis, se existirem.]</p>
+
     <h2>Garantia e assistência técnica</h2>
-    <p>[Indicar condições de garantia e de assistência técnica.]</p>
+    <p>Os produtos novos vendidos a consumidores beneficiam da garantia legal de 3 anos a contar da entrega, nos termos do Decreto-Lei n.º 84/2021, de 18 de outubro. [Indicar se existe garantia comercial adicional do fabricante, e as condições de assistência técnica e manutenção.]</p>
+
+    <h2>Reclamações e litígios</h2>
+    <p>Consulte o <a href={u('/aviso-legal/')}>aviso legal</a> para o Livro de Reclamações e a entidade de resolução alternativa de litígios.</p>
+
     <h2>Dados pessoais</h2>
-    <p>Ver a <a href={u('/privacidade/')}>política de privacidade</a>.</p>
+    <p>Consulte a <a href={u('/privacidade/')}>política de privacidade</a>.</p>
   </div>
 </Base>

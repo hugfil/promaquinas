@@ -1,17 +1,38 @@
 ---
 import Base from '../layouts/Base.astro';
+import { contactos } from '../lib/empresa';
 ---
-<Base titulo="Aviso legal">
+<Base titulo="Aviso legal" descricao="Identificação da empresa, condições de utilização da informação e resolução de litígios.">
   <div class="wrap prosa">
     <h1>Aviso legal</h1>
-    <p><strong>Texto provisório: deve ser revisto e completado antes de publicar o site.</strong></p>
+    <p><small>Última atualização: 10 de novembro de 2026.</small></p>
+    <!-- SUBSTITUIR: completar a identificação e confirmar a entidade de resolução de litígios; depois apagar este aviso -->
+    <p><strong>Texto provisório: falta completar a identificação da empresa.</strong></p>
+
     <h2>Identificação</h2>
-    <p>[Firma, NIF, morada da sede, registo comercial e contacto]</p>
+    <p>
+      [Firma ou denominação]<br />
+      NIPC: [número] · Sede: [morada completa]<br />
+      [Conservatória do Registo Comercial e número de matrícula; capital social, se for uma sociedade]<br />
+      Email: <a href={`mailto:${contactos.email}`}>{contactos.email}</a> · Telefone: <a href={`tel:${contactos.telefoneLigacao}`}>{contactos.telefone}</a> <small>({contactos.telefoneNota})</small>
+    </p>
+
     <h2>Informação apresentada</h2>
     <p>Os conteúdos deste site têm caráter informativo. Procuramos manter a informação sobre produtos, preços e campanhas atualizada, mas podem existir erros ou alterações sem aviso prévio. As condições finais são as indicadas no orçamento.</p>
+
     <h2>Marcas e propriedade intelectual</h2>
-    <p>Husqvarna® é marca registada do respetivo titular. As restantes marcas, imagens e textos pertencem aos seus proprietários e não podem ser reproduzidos sem autorização.</p>
-    <h2>Resolução de litígios</h2>
-    <p>Em caso de litígio de consumo, o consumidor pode recorrer a uma entidade de resolução alternativa de litígios: [indicar a entidade competente, ex.: Centro de Informação de Consumo e Arbitragem do Porto] — mais informação no Portal do Consumidor (www.consumidor.gov.pt).</p>
+    <p>Husqvarna® e Automower® são marcas registadas da Husqvarna AB. As restantes marcas, bem como as imagens e descrições dos produtos, pertencem aos respetivos titulares e são usadas apenas para identificar os produtos apresentados. Os conteúdos deste site não podem ser reproduzidos sem autorização.</p>
+
+    <h2>Livro de Reclamações</h2>
+    <p>Pode apresentar uma reclamação no <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener">Livro de Reclamações Eletrónico</a>{' '}ou no livro de reclamações físico disponível no nosso estabelecimento.</p>
+
+    <h2>Resolução alternativa de litígios</h2>
+    <!-- SUBSTITUIR: confirmar a entidade competente para o município da loja (CIAB para Braga e Minho; TRIAVE para o Vale do Ave, ex.: Guimarães e Vila Nova de Famalicão) -->
+    <p>Em caso de litígio de consumo, o consumidor pode recorrer a uma entidade de resolução alternativa de litígios de consumo:</p>
+    <p>
+      <strong>CIAB – Centro de Informação, Mediação e Arbitragem de Consumo (Tribunal Arbitral de Consumo)</strong><br />
+      Rua D. Afonso Henriques, n.º 1, 4700-030 Braga · <a href="https://www.ciab.pt" target="_blank" rel="noopener">www.ciab.pt</a>
+    </p>
+    <p>Mais informações no Portal do Consumidor (<a href="https://www.consumidor.gov.pt" target="_blank" rel="noopener">www.consumidor.gov.pt</a>).</p>
   </div>
 </Base>
