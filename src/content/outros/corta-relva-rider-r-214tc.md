@@ -1,5 +1,5 @@
 ---
-nome: "Rider Corta-Relva R 214TC"
+nome: "Husqvarna® Rider R 214TC"
 marca: "Husqvarna"
 tipo: "Tratores corta-relva"
 resumo: "Para jardins de média a grande dimensão. Corte BioClip® ou descarga traseira."

@@ -1,5 +1,5 @@
 ---
-nome: "Kit Husqvarna® LC 137i"
+nome: "Husqvarna® Kit LC 137i"
 marca: "Husqvarna"
 tipo: "Corta-relvas"
 resumo: "Corta-relva a bateria, manual, de 37 cm. Modo savE™, BioClip® opcional e descarga traseira."
