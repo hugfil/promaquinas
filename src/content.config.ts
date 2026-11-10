@@ -37,6 +37,11 @@ const outros = defineCollection({
     precoCampanha: z.union([z.number(), z.string()]).optional(), // preço em campanha; só aparece enquanto o produto estiver numa campanha ativa
     imagem: z.string().optional(),
     galeria: z.array(itemGaleria).default([]),
+    // Ficha do produto, logo a seguir ao preço (opcionais):
+    // destaques: números principais, ex.: "38,2 cm³ | Cilindrada"
+    destaques: z.array(z.string()).default([]),
+    // caracteristicas: linhas com visto; "imagem" (caminho de uma imagem da galeria, ou o número dela) mostra o botão "Ver"
+    caracteristicas: z.array(z.union([z.string(), z.object({ texto: z.string(), imagem: z.union([z.string(), z.number()]).optional() })])).default([]),
     destaque: z.boolean().default(false),
     ordem: z.number().default(100), // menor aparece primeiro no carrossel da página inicial
   }),

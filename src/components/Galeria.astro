@@ -2,8 +2,8 @@
 import { u } from '../lib/url';
 import { resolverMidia, capaYoutube, type ItemGaleria } from '../lib/media';
 
-interface Props { imagens: ItemGaleria[]; nome: string; titulo?: string; variante?: 'galeria' | 'folheto'; }
-const { imagens, nome, titulo = 'Galeria', variante = 'galeria' } = Astro.props;
+interface Props { imagens: ItemGaleria[]; nome: string; titulo?: string; variante?: 'galeria' | 'folheto'; id?: string; }
+const { imagens, nome, titulo = 'Galeria', variante = 'galeria', id } = Astro.props;
 const folheto = variante === 'folheto';
 // Miniatura: a imagem de capa própria (se existir) ou, nos vídeos do YouTube, a capa do próprio vídeo
 const itens = await Promise.all(imagens.map(async (item) => {
@@ -26,7 +26,7 @@ const alt = (m: { tipo: string; legenda?: string }, i: number) => m.legenda ?? d
 const temLegendas = itens.some((m) => m.legenda);
 ---
 {itens.length > 0 && (
-  <div class={folheto ? 'galeria galeria-folheto' : 'galeria'} data-pdfjs={u('/vendor/pdfjs/')}>
+  <div class={folheto ? 'galeria galeria-folheto' : 'galeria'} id={id} data-pdfjs={u('/vendor/pdfjs/')}>
     {!folheto && <h2>{titulo}</h2>}
     <ul class="galeria-lista">
       {itens.map((m, i) => (
@@ -357,6 +357,13 @@ const temLegendas = itens.some((m) => m.legenda);
         animar(grande, efeito);
       }
     };
+
+    // Botões fora da galeria (ex.: "Ver" nas características do produto) que a abrem numa imagem
+    if (g.id) {
+      document.querySelectorAll<HTMLElement>(`[data-abrir-galeria="${g.id}"]`).forEach((el) => {
+        el.addEventListener('click', () => { botoes[Number(el.dataset.item)]?.click(); });
+      });
+    }
 
     botoes.forEach((b) => b.addEventListener('click', () => {
       const i = slides.findIndex((s) => s.botao === b);
