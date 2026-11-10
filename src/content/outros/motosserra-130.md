@@ -8,9 +8,15 @@ precoCampanha: 259
 imagem: "/imagens/motosserra-130-000.jpg"
 destaque: true
 ordem: 1
+destaques:
+  - "38 cm³ | Cilindrada"
+  - "1,5 kW | Potência"
+  - "22,3 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Motor X-TORQ® potente e eficiente"
+  - texto: "Tecnologia LowVib®"
+  - texto: "Bomba de combustível"
 ---
-
-Concebida para utilização ocasional. Motor X-Torq® e bomba de óleo automática.
 
 A Husqvarna 130 é **fácil de arrancar** e de manusear — e pode cortar **lenha com facilidade**, ajudar na poda e até mesmo derrubar uma ou outra árvore. Vem com uma lâmina guia de 35cm de comprimento.
 
