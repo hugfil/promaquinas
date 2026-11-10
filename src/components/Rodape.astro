@@ -80,7 +80,7 @@ const intervalo = (p: [string, string][]) => p.map(([a, f]) => `${a}–${f}`);
       <nav aria-label="Informação legal">
         <ul class="legais">
           {legais.map((l) => <li><a href={u(l.href)}>{l.texto}</a></li>)}
-          <li><a href="https://www.livroreclamacoes.pt/" target="_blank" rel="noopener">Livro de Reclamações</a></li>
+          <li class="legais-lr"><a class="livro-reclamacoes" href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener" aria-label="Livro de Reclamações Eletrónico (abre num novo separador)"><img src={u('/imagens/livro-reclamacoes.svg')} alt="Livro de Reclamações" width="125" height="50" /></a></li>
         </ul>
       </nav>
     </div>

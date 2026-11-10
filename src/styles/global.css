@@ -570,3 +570,12 @@ footer.rodape .legais a:hover { color: #fff; text-decoration: underline; text-un
 
 /* Símbolo ® em expoente, sem alterar a altura da linha */
 sup.reg { font-size: .55em; line-height: 0; vertical-align: super; margin-left: .05em; font-weight: inherit; }
+
+/* Livro de Reclamações no rodapé: logótipo oficial em branco (regras da Direção-Geral do Consumidor) */
+.livro-reclamacoes { display: inline-flex; line-height: 0; border-radius: 6px; }
+.livro-reclamacoes img { display: block; width: auto; height: 2.5rem; }
+.livro-reclamacoes:focus-visible { outline: 2px solid var(--banner-fundo); outline-offset: 4px; }
+@media (hover: hover) { .livro-reclamacoes:hover img { opacity: .85; } }
+.legais { align-items: center; }
+.legais li.legais-lr::before { content: none; } /* sem o ponto separador antes do logótipo */
+.legais li.legais-lr { margin-left: .9rem; }
