@@ -2,8 +2,8 @@
 import { u } from '../lib/url';
 import { resolverMidia, capaYoutube, type ItemGaleria } from '../lib/media';
 
-interface Props { imagens: ItemGaleria[]; nome: string; titulo?: string; variante?: 'galeria' | 'folheto'; id?: string; }
-const { imagens, nome, titulo = 'Galeria', variante = 'galeria', id } = Astro.props;
+interface Props { imagens: ItemGaleria[]; nome: string; titulo?: string; semTitulo?: boolean; variante?: 'galeria' | 'folheto'; id?: string; }
+const { imagens, nome, titulo = 'Galeria', semTitulo = false, variante = 'galeria', id } = Astro.props;
 const folheto = variante === 'folheto';
 // Miniatura: a imagem de capa própria (se existir) ou, nos vídeos do YouTube, a capa do próprio vídeo
 const itens = await Promise.all(imagens.map(async (item) => {
@@ -27,7 +27,7 @@ const temLegendas = itens.some((m) => m.legenda);
 ---
 {itens.length > 0 && (
   <div class={folheto ? 'galeria galeria-folheto' : 'galeria'} id={id} data-pdfjs={u('/vendor/pdfjs/')}>
-    {!folheto && <h2>{titulo}</h2>}
+    {!folheto && !semTitulo && <h2>{titulo}</h2>}
     <ul class="galeria-lista">
       {itens.map((m, i) => (
         <li hidden={folheto && i > 0}>
