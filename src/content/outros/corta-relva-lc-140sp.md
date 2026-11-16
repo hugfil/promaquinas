@@ -8,10 +8,10 @@ precoCampanha: 459
 imagem: "/imagens/corta-relva-lc-140sp-000.jpg"
 destaque: false
 ordem: 10
+destaques:
+  - "1,95 kW | Potência (kW)"
+  - "Autopropulsado | Propulsão"
 ---
-
-- Potência (kW): 1,95 kW
-- Autopropulsado: Propulsão
 
 O LC 140SP é um corta-relvas automotriz fácil de usar, adequado para relvados um pouco menores. Construído com uma plataforma de corte de aço robusta e um motor Husqvarna confiável e de arranque fácil, oferece excelente desempenho de corte e recolha. O punho macio, o guiador dobrável, o ajuste central da altura de corte e as rodas com rolamentos de esferas proporcionam uma experiência de corte ergonómica e confortável.
 

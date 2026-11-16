@@ -8,6 +8,15 @@ preco: 534.57
 precoCampanha: 469
 destaque: false
 ordem: 100
+destaques:
+  - "20 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Motor eficaz sem escovas"
+  - texto: "Um sistema flexível de bateria"
+  - texto: "Tampa do tanque Flip-up"
+  - texto: "Travão de corrente acionado por inércia"
+  - texto: "Desempenho semelhante à gasolina"
+  - texto: "Preparado para um funcionamento ininterrupto"
 ---
 
 Para utilizadores profissionais que pretendem uma **motosserra leve e de alto desempenho**. Perfeita para carpinteiros, empreiteiros, arboricultores e agricultores de olivais. Apresenta **excelente ergonomia, alto desempenho e alta velocidade da corrente**.

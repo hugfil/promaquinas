@@ -9,11 +9,18 @@ imagem: "/imagens/motosserra-372-xp-000.jpg"
 galeria: ["/imagens/motosserra-372-xp-000.jpg", "/imagens/motosserra-372-xp-001.jpg | Injeção por ar, menos limpezas do filtro com a injeção de ar", "/imagens/motosserra-372-xp-002.jpg | Sistema de centrifugação de limpeza do ar para um desgaste reduzido e um período de tempo mais longo entre as limpezas do filtro", "/imagens/motosserra-372-xp-003.jpg | Motor X-TORQ® potente e eficiente", "/imagens/motosserra-372-xp-004.jpg | LowVib®: Amortecedores antivibração eficazes para moderar o cansaço nas mãos e braços", "/imagens/motosserra-372-xp-005.jpg | Tensor da corrente lateral para um ajuste rápido e fácil de corrente", "/imagens/motosserra-372-xp-006.jpg | Cambota produzida em três peças forjadas, conferindo excecional durabilidade nas aplicações mais severas", "/imagens/motosserra-372-xp-007.jpg | Cárter de magnésio concebido para uso profissional", "/imagens/motosserra-372-xp-008.jpg | Bomba de óleo automática e regulável", "/imagens/motosserra-372-xp-009.jpg | Fecho de acção rápida no filtro de ar"]
 destaque: false
 ordem: 250
+destaques:
+  - "70,7 cm³ | Cilindrada"
+  - "4,1 kW | Potência"
+  - "30,2 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Injeção por ar"
+  - texto: "Motor X-TORQ® potente e eficiente"
+  - texto: "Bomba de óleo regulável"
+  - texto: "Fecho de acção rápida no filtro de ar"
+  - texto: "Tensor da corrente lateral"
+  - texto: "Cárter de magnésio"
 ---
-
-- Cilindrada: 70,7 cm³
-- Potência: 4,1 kW 
-- Velocidade da corrente à potência máx.: 30,2 m/s
 
 Motosserra profissional concebida para aplicações exigentes. Com motor X-TORQ - **reduz o consumo de combustível** e as emissões. O cárter do motor e a cambota são **extrarresistentes ao desgaste**. O carburador possui um sistema de **atenuação de vibrações** para gerir velocidades e cargas elevadas. **Combina baixo peso, potência elevada e aceleração rápida com flexibilidade**. Agora com a opção de comprar a motosserra e um pack de 10 barras.
 

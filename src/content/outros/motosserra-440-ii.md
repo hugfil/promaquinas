@@ -8,11 +8,18 @@ precoCampanha: 399
 imagem: "/imagens/motosserra-440-ii-000.jpg"
 destaque: false
 ordem: 180
+destaques:
+  - "40,9 cm³ | Cilindrada"
+  - "1,8 kW | Potência"
+  - "23 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Injeção por ar"
+  - texto: "Motor X-TORQ® potente e eficiente"
+  - texto: "Fecho de acção rápida no filtro de ar"
+  - texto: "Tampa articulada do depósito"
+  - texto: "Marcas de corte"
+  - texto: "Comando misto ar / paragem do motor"
 ---
-
-- Cilindrada: 40,9 cm³
-- Potência: 1,8 kW 
-- Velocidade da corrente à potência máx.: 23 m/s
 
 **Motosserra completa, leve e eficiente**, ideal para quem procura uma motosserra excepcionalmente fácil de arrancar e manobrar. Com motor X-Torq® - **baixo consumo de combustível** e gases de escape reduzidos. Equipada com Smart Start®, e interruptor de paragem de retorno automático para um arranque mais fácil.
 

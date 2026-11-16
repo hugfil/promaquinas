@@ -9,6 +9,10 @@ imagem: "/imagens/motosserra-135-mark-ii-000.jpg"
 galeria: ["/imagens/motosserra-135-mark-ii-000.jpg", "/imagens/motosserra-135-mark-ii-001.jpg", "https://youtu.be/t5HsikRBero"]
 destaque: true
 ordem: 2
+destaques:
+  - "38 cm³ | Cilindrada"
+  - "1,6 kW | Potência"
+  - "22,3 m/s | Velocidade da corrente à potência máx."
 ---
 
 **Serra robusta, confiável e fácil de usar**, com amplo desempenho de corte para os proprietários. A **motosserra perfeita para tarefas de corte ocasionais, como cortar lenha e derrubar árvores mais pequenas**. Arranca rapidamente e é facilmente guiada, e, graças ao tensionador de corrente montado na lateral, o tensionamento da corrente é rápido e fácil.

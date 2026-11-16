@@ -8,11 +8,20 @@ precoCampanha: 1029
 imagem: "/imagens/motosserra-560-xp-000.jpg"
 destaque: false
 ordem: 230
+destaques:
+  - "59,8 cm³ | Cilindrada"
+  - "3,5 kW | Potência"
+  - "28,3 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Motor X-TORQ® potente e eficiente"
+  - texto: "AutoTune"
+  - texto: "RevBoost™"
+  - texto: "Tecnologia LowVib®"
+  - texto: "Bomba de óleo regulável"
+  - texto: "Injeção por ar"
+  - texto: "Fecho rápido do filtro do ar"
+  - texto: "Comando misto ar / paragem do motor"
 ---
-
-- Cilindrada: 59,8 cm³
-- Potência: 3,5 kW
-- Velocidade da corrente à potência máx.: 28,3 m/s
 
 Esta motosserra foi pensada para madeireiros profissionais. Equipada com soluções inovadoras para operar eficientemente. O nosso exclusivo motor com tecnologia X-Torq® fornece mais potência, até 20% menos em consumo de combustível e emissões de escape 75% menores. O sistema RevBoost™ fornece alta velocidade da corrente instantânea para uma poda de árvores hiper eficiente.
 

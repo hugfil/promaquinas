@@ -8,10 +8,20 @@ precoCampanha: 799
 imagem: "/imagens/motosserra-365-000.jpg"
 destaque: false
 ordem: 210
+destaques:
+  - "70,7 cm³ | Cilindrada"
+  - "3,6 kW | Potência"
+  - "30,2 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Injeção por ar"
+  - texto: "Motor X-TORQ® potente e eficiente"
+  - texto: "Bomba de óleo regulável"
+  - texto: "Fecho de acção rápida no filtro de ar"
+  - texto: "Tensor da corrente lateral"
+  - texto: "Cárter de magnésio"
 ---
 
 Motosserra profissional desenvolvida em estreita colaboração com utilizadores muito experientes para realizar os **trabalhos mais pesados nas condições mais exigentes e adversas**. Robustas, com **peso reduzido** e dotadas de um **motor muito potente**, são **excepcionalmente versáteis** e adequadas para as mais diversas aplicações. O motor X-TORQ é **garantia de baixo consumo**.
-
 
 ## Características em destaque
 

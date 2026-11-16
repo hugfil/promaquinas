@@ -8,10 +8,10 @@ precoCampanha: 769
 imagem: "/imagens/motoenxada-tf338-000.jpg"
 destaque: false
 ordem: 140
+destaques:
+  - "95 cm | Largura de corte/trabalho"
+  - "212 cm³ | Cilindrada"
 ---
-
-- Largura de corte/trabalho: 95 cm
-- Cilindrada: 212 cm³
 
 **Motoenxada fácil de manusear e confiável** com todas as funções essenciais. Motor Husqvarna potente e confiável com filtro de ar em banho de óleo para maior vida útil e marcha-atrás para facilitar o trabalho. A transmissão totalmente selada torna-a extremamente utilizável em culturas húmidas. Um kit de rodas é fornecido como padrão, permitindo usar acessórios ou mover a máquina de forma eficiente. Uma excelente escolha para clientes que valorizam eficiência e durabilidade de longa duração. **Largura de trabalho: 95 cm**.
 

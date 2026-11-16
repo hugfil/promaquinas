@@ -8,10 +8,19 @@ precoCampanha: 939
 imagem: "/imagens/rocadora-545rx-000.jpg"
 destaque: false
 ordem: 330
+destaques:
+  - "45,7 cm³ | Cilindrada"
+  - "2,1 kW | Potência"
+  - "8,9 kg | Peso (sem corte)"
+caracteristicas:
+  - texto: "Guiador confortável"
+  - texto: "LowVib®"
+  - texto: "Motor X-Torq® potente e eficiente"
+  - texto: "Balance X"
+  - texto: "Tubo largo"
+  - texto: "Centro de gravidade otimizado"
+  - texto: "Smart Start®"
 ---
-
-- Potência: 2,1 kW
-- Peso (sem corte): 8,9 kg
 
 **Roçadora profissional de elevado desempenho**, bem como **ergonomia** e **manobrabilidade** sensacionais. O motor X-Torq® assegura **grande potência** e binário graças à combustão eficiente. Comprimento da haste optimizado e engrenagem cónica com ângulo de 35 graus. **Entregue com o suspensório Balance X**.
 

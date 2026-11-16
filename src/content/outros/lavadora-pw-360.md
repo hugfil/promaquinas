@@ -9,11 +9,11 @@ imagem: "/imagens/lavadora-pw-360-000.jpeg"
 galeria: ["/imagens/lavadora-pw-360-000.jpeg","/imagens/lavadora-pw-360-001.jpeg", "/imagens/lavadora-pw-360-002.jpeg"]
 destaque: false
 ordem: 100
+destaques:
+  - "500 l/h | Caudal máximo"
+  - "160 bar | Pressão máxima"
+  - "20 kg | Peso"
 ---
-
-- Caudal máximo: 500 l/h
-- Pressão máxima: 160 bar
-- Peso: 20 kg
 
 Máquina de lavar à pressão de alto desempenho, versátil, 'design' compacto e funcional, com funções inteligentes para limpar facilmente superfícies exteriores. A PW 360 está equipada com uma lança múltipla 3-em-1 que permite adaptar-se a cada tarefa de forma rápida. Além disso, possui uma mangueira longa e flexível para ampliar o alcance e facilitar o manuseamento, função de espuma melhorada, motor de indução de alto desempenho e bomba metálica que minimizam as roturas e oferece um desempenho excelente. A PW 360 trabalha com uma pressão máxima de 160 bares, com um caudal de 500 l/h, sendo um modelo perfeito para limpar veículos, superfícies pequenas e médias.
 

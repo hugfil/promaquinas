@@ -9,10 +9,10 @@ imagem: "/imagens/lavadora-pw-240-000.jpg"
 galeria: ["/imagens/lavadora-pw-240-000.jpg", "/imagens/lavadora-pw-240-001.jpg", "/imagens/lavadora-pw-240-002.jpg"]
 destaque: true
 ordem: 80
+destaques:
+  - "520 l/h | Caudal máximo"
+  - "140 bar | Pressão máxima"
 ---
-
-- Caudal máximo: 520 l/h
-- Pressão máxima: 140 bar
 
 Lavadora de alta pressão otimizada para limpeza no exterior sem esforço Uma lavadora de alta pressão, elétrica, propositadamente projetada para otimizar a limpeza no exterior. Operação ergonómica e descomplicada com uma mangueira ultraflexível, altura da alça aprimorada, estabilidade excecional e experiência intuitiva do utilizador. O carretel de mangueira da lavadora de alta pressão com guia de mangueira permite um armazenamento compacto e conveniente, e uma variedade de recursos inteligentes permitem uma configuração simples e uso eficiente. Perfeitamente adequada para enxaguar eficazmente as áreas ao redor da sua casa com excelentes resultados, sempre.
 

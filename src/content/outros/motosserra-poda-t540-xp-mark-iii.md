@@ -8,11 +8,18 @@ precoCampanha: 739
 imagem: "/imagens/motosserra-poda-t540-xp-mark-iii-000.jpg"
 destaque: false
 ordem: 290
+destaques:
+  - "39,1 cm³ | Cilindrada"
+  - "1,9 kW | Potência"
+  - "20 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Alta capacidade de corte"
+  - texto: "Sempre otimizada"
+  - texto: "Visão de abate para durar uma vida"
+  - texto: "Corpo da serra optimizado"
+  - texto: "A injeção de ar filtra 98% da poeira que entra"
+  - texto: "Pronta para conectividade"
 ---
-
-- Cilindrada: 39,1 cm³
-- Potência: 1,9 kW
-- Velocidade da corrente à potência máx.: 20 m/s
 
 A Husqvarna 540 XP® Mark III é uma motosserra a gasolina ágil e leve da classe de 40 cc, projetada para o cuidado profissional de árvores e operações de desbaste. O motor potente combinado com as correntes SP21G ou S93G oferece capacidade de corte impressionante com aceleração rápida. Os arranques fáceis e confiáveis — tanto a frio quanto a quente — e a manobrabilidade suave tornam esta motosserra a favorita das equipas de manutenção de árvores.
 

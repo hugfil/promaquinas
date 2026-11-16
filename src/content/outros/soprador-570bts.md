@@ -8,11 +8,20 @@ precoCampanha: 819
 imagem: "/imagens/soprador-570bts-000.jpg"
 destaque: false
 ordem: 380
+destaques:
+  - "65,6 cm³ | Cilindrada"
+  - "37 N | Força de sopro"
+  - "11,2 kg | Peso em vazio"
+caracteristicas:
+  - texto: "Motor X-Torq® potente e eficiente"
+  - texto: "Guiador confortável"
+  - texto: "Bomba de combustível"
+  - texto: "Filtragem eficaz do ar"
+  - texto: "Grande capacidade de sopro"
+  - texto: "Suspensório ergonómico"
+  - texto: "Guiador ajustável"
+  - texto: "Comandos ergonómicos"
 ---
-
-- Cilindrada: 65,6 cm³
-- Peso em vazio (kg): 11,2 kg
-- Força de sopro: 37 N
 
 Poderoso **soprador** profissional de mochila, projetado para tarefas exigentes. Grande fluxo e elevada velocidade de ar são fornecidos por um **design eficiente do ventilador** conjugado com um **potente motor X-Torq®**. O filtro de ar de classe profissional permite ter um tempo de funcionamento longo e livre de problemas. O arnês tem cintas de ombro largas.
 

@@ -9,10 +9,11 @@ imagem: "/imagens/lavadora-pw-350-000.jpg"
 galeria: ["/imagens/lavadora-pw-350-000.jpg", "/imagens/lavadora-pw-350-001.jpg", "/imagens/lavadora-pw-350-002.jpg"]
 destaque: false
 ordem: 90
+destaques:
+  - "450 l/h | Caudal máximo"
+  - "150 bar | Pressão máxima"
+  - "21,7 kg | Peso"
 ---
-
-- Caudal máximo: 450 l/h
-- Pressão máxima: 150 bar
 
 Uma máquina de desempenho verdadeiramente alto com um design robusto, para excelentes resultados e trabalhos exigentes, tais como limpeza de veículos e de paredes de pedra. O punho Low Force aciona o gatilho com menos esforço e mais conforto. O motor de indução e a bomba de metal garantem um desempenho confiável e uma longa vida útil do produto. O transporte é fácil graças à alça de transporte de alumínio. O engate rápido da mangueira, rodas grandes e robustas para uma melhor tração, e uma lança de pulverização longa tornam a máquina de lavar à pressão ainda mais útil. Com duas funções giratórias para regular o bocal e a conexão rápida. O armazenamento de acessórios a bordo, do carretel da mangueira e do cabo de alimentação tornam a operação eficiente. A lavadora é fornecida com dois bocais e um pulverizador de espuma..
 

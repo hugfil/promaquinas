@@ -9,10 +9,10 @@ imagem: "/imagens/motoenxada-tf230-000.jpg"
 galeria: ["/imagens/motoenxada-tf230-000.jpg", "/imagens/motoenxada-tf230-001.jpg"]
 destaque: false
 ordem: 130
+destaques:
+  - "75 cm | Largura de corte/trabalho"
+  - "196 cm³ | Cilindrada"
 ---
-
-- Largura de corte/trabalho: 75 cm
-- Cilindrada: 196 cm³
 
 **Motoenxada básica e prática, fácil de manobrar**. Alimentada por um motor Husqvarna confiável e potente, e equipada com um para-choque para proteger o motor em uso ou durante o transporte. Com guiador **dobrável e roda de transporte**. A transmissão totalmente vedada torna-a um parceiro perfeito e duradouro para o trabalho em culturas húmidas. Esta é **uma motoenxada para quem valoriza durabilidade e eficiência**.
 

@@ -9,11 +9,25 @@ imagem: "/imagens/corta-relva-rider-r-214tc-000.jpg"
 galeria: ["/imagens/corta-relva-rider-r-214tc-000.jpg", "/imagens/corta-relva-rider-r-214tc-001.jpg", "/imagens/corta-relva-rider-r-214tc-002.jpg", "/imagens/corta-relva-rider-r-214tc-003.jpg"]
 destaque: false
 ordem: 30
+destaques:
+  - " | Eixo traseiro móvel"
+  - " | Unidade de corte Combi"
+  - " | Posição confortável do condutor"
+caracteristicas:
+  - texto: "Eixo traseiro móvel"
+  - texto: "Unidade de corte Combi"
+  - texto: "Direção articulada"
+  - texto: "BioClip®"    
+  - texto: "Husqvarna Connect"
+  - texto: "Motor atrás do condutor"
+  - texto: "Posição de manutenção"
+  - texto: "Plataforma de corte montada na frente"
+  - texto: "Transmissão hidrostática operada por pedal"
+  - texto: "Uso versátil"
+  - texto: "Comandos de acesso fácil"
+  - texto: "Arranque com o virar da chave"
+  - texto: "Engate automático da lâmina"
 ---
-
-- Eixo traseiro móvel
-- Unidade de corte Combi
-- Posição confortável do condutor
 
 ## Rider versátil e fácil de utilizar
 Eficiente, versátil e fácil de operar, este Rider corta-relva cuida de relvados maiores com facilidade. **O Husqvarna R 214 TC possui um motor de dois cilindros e uma plataforma de corte combinada de 94 cm que oferece duas opções de corte – mulching BioClip®** para fertilização do relvado e corte de ejeção traseira para relva mais alta e mais resistente. Uma máqina durável com excelente manobrabilidade, fácil de limpar e manter graças à posição de manutenção da plataforma de corte. Está disponível uma vasta gama de acessórios Husqvarna.

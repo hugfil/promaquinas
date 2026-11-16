@@ -9,11 +9,15 @@ imagem: "/imagens/motosserra-poda-t525-000.jpg"
 galeria: ["/imagens/motosserra-poda-t525-000.jpg", "/imagens/motosserra-poda-t525-001.jpg | Ponto de fixação", "/imagens/motosserra-poda-t525-002.jpg | Interruptor de paragem com retorno automático", "/imagens/motosserra-poda-t525-003.jpg | Fecho rápido da tampa do filtro"]
 destaque: false
 ordem: 280
+destaques:
+  - "27 cm³ | Cilindrada"
+  - "1 kW | Potência"
+  - "24,1 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Ponto de fixação"
+  - texto: "Interruptor de paragem com retorno automático"
+  - texto: "Fecho rápido da tampa do filtro"
 ---
-
-- Cilindrada: 27 cm³
-- Potência: 1 kW
-- Velocidade da corrente à potência máx.: 24,1 m/s
 
 A nossa serra de poda mais leve oferece-lhe desempenho quando o necessita, seja para uso profissional a tempo parcial ou a tempo inteiro. Esta motosserra Husqvarna T525 tem pega superior. Tem um design leve e inclui um motor a gasolina, poderoso, de baixas emissões, com a nossa tecnologia X-Torq® para desempenho profissional, facilidade de uso e segurança para todos os trabalhos de poda e corte.
 

@@ -8,10 +8,20 @@ precoCampanha: 629
 imagem: "/imagens/rocadora-553rs-000.jpg"
 destaque: false
 ordem: 340
+destaques:
+  - "45,7 cm³ | Cilindrada"
+  - "2,3 kW | Potência"
+  - "8,4 kg | Peso (sem corte)"
+caracteristicas:
+  - texto: "Motor X-Torq® potente e eficiente"
+  - texto: "Arnês standard duplo"
+  - texto: "Bomba de combustível"
+  - texto: "Protetor Combi"
+  - texto: "Guiador robusto"
+  - texto: "Embraiagem extra resistente"
+  - texto: "Starter automático"
+  - texto: "Filtro do ar eficaz"
 ---
-
-- Potência: 2,3 kW
-- Peso (sem corte): 8,4 kg
 
 Roçadora altamente produtiva e **versátil** para **corte frequente de relva grossa e ervas daninhas**. Ideal para os proprietários que querem uma **roçadeira robusta, confiável e fácil de usar**. Equipada com poderoso motor com tecnologia X-Torq e filtro de ar eficiente que proporciona menor desgaste do motor. **A cabeça de corte**, a **lâmina de relva** e a **proteção combi-guard estão incluídos**.
 

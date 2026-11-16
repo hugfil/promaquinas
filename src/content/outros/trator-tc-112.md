@@ -9,10 +9,10 @@ imagem: "/imagens/trator-tc-112-000.jpg"
 galeria: ["/imagens/trator-tc-112-000.jpg", "/imagens/trator-tc-112-001.jpg", "/imagens/trator-tc-112-002.jpg"]
 destaque: false
 ordem: 40
+destaques:
+  - "8 kW a 2800 rpm | Potência"
+  - "Husqvarna 413AE | Motor"
 ---
-
-- Potência: 8 kW a 2800 rpm
-- Motor: Husqvarna 413AE
 
 Corte confortável e conveniente para grandes relvados Corte convenientemente confortável para resultados excelentes. Navegue sem esforço por passagens estreitas e cubra grandes áreas de relvado sem problemas. Desfrute de uma experiência suave sentada com as alavancas ergonomicamente colocadas, pedais intuitivos lado a lado e plataforma de corte assistida por mola. Corte mais por mais tempo com uma capacidade de ensacamento otimizada, armazene em menos espaço graças a um ‘design’ compacto e aproveite as possibilidades com o seu gancho de reboque e variedade de acessórios compatíveis.
 

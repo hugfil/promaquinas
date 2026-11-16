@@ -8,11 +8,18 @@ precoCampanha: 799
 imagem: "/imagens/motosserra-550-xp-mark-ii-000.jpg"
 destaque: false
 ordem: 220
+destaques:
+  - "50,1 cm³ | Cilindrada"
+  - "3,0 kW | Potência"
+  - "26,1 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Excelente capacidade de refrigeração para o motor ter uma maior longevidade"
+  - texto: "Visão de abate para durar uma vida"
+  - texto: "Porcas de retenção da barra"
+  - texto: "Tecnologia LowVib®"
+  - texto: "Design reduzido"
+  - texto: "Injeção por ar"
 ---
-
-- Cilindrada: 50,1 cm³
-- Potência: 3,0 kW
-- Velocidade da corrente à potência máx.: 26,1 m/s
 
 Motosserra profissional Husqvarna da última geração. Concebida especialmente para arboristas e lenhadores que requeiram uma serra potente, eficiente e de alta capacidade de corte. Destaca-se por estar equipada com motor X-Torq® de 50cc, uma lâmina de 45 cm, sistema Air Injection™ e amortecedores LowVib®.
 

@@ -8,11 +8,11 @@ precoCampanha: 759
 imagem: "/imagens/lavadora-pw-480-000.png"
 destaque: false
 ordem: 120
+destaques:
+  - "610 l/h | Caudal máximo"
+  - "180 bar | Pressão máxima"
+  - "27,8 kg | Peso"
 ---
-
-- Caudal máximo: 610 l/h
-- Pressão máxima: 180 bar
-- Peso: 27,8 kg
 
 Lavadora de alta pressão extra grande e potente com um ‘design’ robusto, construída para as tarefas de limpeza mais difíceis no exterior.
 
