@@ -612,3 +612,8 @@ sup.reg { font-size: .55em; line-height: 0; vertical-align: super; margin-left: 
   .ver-imagem { padding: .1rem; }
   .ver-imagem-texto { display: none; }
 }
+
+/* Galeria das fichas: miniaturas pequenas em telemóvel (3 por linha) */
+@media (max-width: 600px) {
+  .galeria-lista { grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); gap: .5rem; }
+}
