@@ -27,8 +27,10 @@ export const horario: { dias: string; diasSemana: number[]; periodos: [string, s
 // ex.: feriado municipal, Carnaval, 24 de dezembro.
 export const feriadosExtra: string[] = [
   '06-13', // Santo António (feriado municipal)
-  // '06-24',
-  // '2026-12-24',
+  '06-24', // São João (feriado municipal)
+  '12-24', // Véspera de Natal
+  '12-31', // Véspera de Ano Novo
+  '2027-02-09', // Carnaval (2027)
 ];
 
 // Redes sociais: preencha o endereço quando a página existir.
