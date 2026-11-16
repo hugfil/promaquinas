@@ -8,10 +8,20 @@ precoCampanha: 519
 imagem: "/imagens/rocadora-543rs-000.jpg"
 destaque: false
 ordem: 320
+destaques:
+  - "40,1 cm³ | Cilindrada"
+  - "1,5 kW | Potência"
+  - "7,4 kg | Peso (sem corte)"
+caracteristicas:
+  - texto: "Motor X-Torq® potente e eficiente"
+  - texto: "Suspensórios standard duplos"
+  - texto: "Bomba de combustível"
+  - texto: "Protetor Combi"
+  - texto: "Guiador robusto"
+  - texto: "Embraiagem extra resistente"
+  - texto: "Starter automático"
+  - texto: "Filtro do ar eficaz"
 ---
-
-- Potência: 1,5 kW
-- Peso (sem corte): 7,4 kg
 
 As roçadoras semi profissionais Husqvarna estão equipadas com um protetor multifunções, podendo utilizar-se com lâmina de roçagem ou cabeça de corte. Desenvolvidas com arranque automático e embraiagem extra resistente. 40.1 cm³, 1.5 kW, 7.4 kg.
 

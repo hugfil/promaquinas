@@ -9,9 +9,11 @@ imagem: "/imagens/lavadora-pw-370-000.jpg"
 galeria: ["/imagens/lavadora-pw-370-000.jpg", "/imagens/lavadora-pw-370-001.jpg", "/imagens/lavadora-pw-370-002.jpg"]
 destaque: false
 ordem: 110
+destaques:
+  - "500 l/h | Caudal máximo"
+  - "170 bar | Pressão máxima"
+  - "22,7 kg | Peso"
 ---
-
-- Caudal máximo: 500 l/h
 
 A Husqvarna PW 370 é uma lavadora de alta pressão 'premium' desenvolvida para limpar todas as superfícies externas e, com pressão extra alta, pode lidar até com a sujidade mais teimosa. Possui uma mangueira extra longa e flexível que oferece maior alcance e fácil operação, além de ser reforçada com aço para alta durabilidade. O motor de indução confiável e de alto desempenho e a bomba metálica minimizam quebras e oferecem desempenho 'premium'. Sensores inteligentes e um ecrã digital irão mantê-lo atualizado com indicações de erros, dados do produto e instruções detalhadas. A limpeza de todos os tipos de superfícies – desde uma leve enxaguadela com o bocal de baixa pressão até tarefas mais exigentes é feita sem esforço. Com a nova Multi-Lança 3 em 1, pode alternar rapidamente entre diferentes tarefas, pois é possível trocar o bocal com apenas um clique. Projetada com armazenamento conveniente a bordo para ter tudo o que precisa com fácil acesso A PW 370 é compatível com diversos acessórios e, finalizado o trabalho, o enrolamento é feito rapidamente através do carretel de mangueira com guia de apoio, proporcionando armazenamento eficiente da mangueira. Também possui grandes rodas macias para excelente tração em terrenos exigentes e alça de alumínio dobrável para reduzir o espaço necessário para armazenamento.
 

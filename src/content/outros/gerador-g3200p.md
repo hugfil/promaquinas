@@ -8,10 +8,10 @@ precoCampanha: 559
 imagem: "/imagens/gerador-g3200p-000.png"
 destaque: false
 ordem: 70
+destaques:
+  - "50 Hz | Frequência"
+  - "2800 W | Potência contínua"
 ---
-
-- Frequência: 50 Hz
-- Potência contínua: 2800 W
 
 Projetado para fornecer energia a residências e locais de trabalho, este **gerador de médio porte** com classificação de 2,7 kW (50 Hz) é eficiente, confiável e fácil de usar, mesmo em ambientes difíceis onde o fornecimento de eletricidade pode ser limitado. O tanque de combustível de 15 litros garante um desempenho contínuo do seu motor a gasolina de arranque fácil.
 

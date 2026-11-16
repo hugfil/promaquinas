@@ -9,10 +9,10 @@ imagem: "/imagens/rocadora-122r-000.jpg"
 galeria: ["/imagens/rocadora-122r-000.jpg", "/imagens/rocadora-122r-001.jpg"]
 destaque: true
 ordem: 6
+destaques:
+  - "21,7 cm³ | Cilindrada"
+  - "0,6 kW | Potência"
 ---
-
-- Cilindrada: 21,7 cm³
-- Potência: 0,6 kW
 
 ## Roçadora confortável com cabeça de corte e arnês duplo.
 

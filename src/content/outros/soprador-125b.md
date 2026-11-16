@@ -8,11 +8,11 @@ precoCampanha: 319
 imagem: "/imagens/soprador-125b-000.jpg"
 destaque: true
 ordem: 6
+destaques:
+  - "28 cm³ | Cilindrada"
+  - "12,5 N | Força de sopro"
+  - "4,3 kg | Peso em vazio"
 ---
-
-- Cilindrada: 28 cm³
-- Peso em vazio (kg): 4,3 kg
-- Força de sopro: 12,5 N
 
 ## Soprador Husqvarna 125B: potência leve para a manutenção de jardins
 O Husqvarna 125B é um soprador de mão a gasolina, concebido para utilizadores particulares que procuram um desempenho de nível profissional em tarefas ocasionais de limpeza e manutenção de jardins. A sua construção compacta, o design ergonómico bem equilibrado e a excelente relação entre potência e peso tornam-no numa ferramenta eficiente, confortável e durável para remover folhas e detritos com rapidez e precisão.

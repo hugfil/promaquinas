@@ -8,11 +8,11 @@ precoCampanha: 399
 imagem: "/imagens/soprador-345bt-000.jpg"
 destaque: false
 ordem: 360
+destaques:
+  - "51,7 cm³ | Cilindrada"
+  - "20,5 N | Força de sopro"
+  - "9,9 kg | Peso em vazio"
 ---
-
-- Cilindrada: 51,7 cm³
-- Peso em vazio (kg): 9,9 kg
-- Força de sopro: 20,5 N
 
 A grande força de sopro e o suspensório Confort que reduz a carga tornam rápida e simples as tarefas de limpeza. Mova-se intuitivamente e opere sem problemas graças ao Cruise Control numa pega ajustável montada na parte superior. Tudo, desde o arranque fácil do Air Purge até o volume do tanque de longa duração e o bocal redondo, foi feito para eliminar o trabalho duro do trabalho no pátio. Com uma excelência ergonómica nas costas e um desempenho 'premium' na mão, este compacto soprador de mochila a gasolina oferece a máxima produtividade com o mínimo de esforço.
 

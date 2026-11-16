@@ -8,10 +8,11 @@ precoCampanha: 379
 imagem: "/imagens/rocadora-333r-mark-ii-000.jpg"
 destaque: false
 ordem: 310
+destaques:
+  - "32,6 cm³ | Cilindrada"
+  - "1 kW | Potência"
+  - "7,2 kg | Peso (sem corte)"
 ---
-
-- Potência: 1 kW
-- Peso (sem corte): 7,2 kg
 
 ## Potência e durabilidade para trabalhos exigentes
 

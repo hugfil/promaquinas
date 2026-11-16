@@ -8,12 +8,19 @@ precoCampanha: 649
 imagem: "/imagens/motosserra-460-rancher-000.jpg"
 destaque: false
 ordem: 200
+destaques:
+  - "60,3 cm³ | Cilindrada"
+  - "2,7 kW | Potência"
+  - "26,6 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Rancher® Series: Potente e Resistente"
+  - texto: "Motor X-TORQ® potente e eficiente"
+  - texto: "Corrente X-CUT®"
+  - texto: "Tecnologia LowVib®"
+  - texto: "Tecnologia Smart Start®"
+  - texto: "Bomba de combustível"
 ---
-
-- Cilindrada: 60,3 cc
-- Potência: 2,7 kW
-- Velocidade da corrente à potência máx.: 26,6 m/s
-
+ 
 Motosserra robusta para utilizadores exigentes, ideal para os exigentes trabalhos de corte em que é necessária mais potência e uma guia mais longa. Equipada com bomba de combustível, tensor de corrente lateral, motor X-Torq ®. O chassis da motoserra foi concebido ergonomicamente, permitindo a fácil manipulação do poder da motossserra.
 
 Uma serra completa robusta para trabalhos de corte exigentes onde é necessária mais potência para uma lâmina mais longa. Equipada com um motor X-Torq® de elevado binário entre um limite elevado de rpm. O corpo da serra é ergonomicamente desenhado, permitindo um fácil manuseamento da potência da serra. Também inclui Smart Start®, Injecção de Ar, LowVib® e comando combinado do controlo da mistura de ar e gasolina/stop.

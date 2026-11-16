@@ -8,11 +8,17 @@ precoCampanha: 1129
 imagem: "/imagens/motosserra-562-xp-mark-ii-000.jpg"
 destaque: false
 ordem: 240
+destaques:
+  - "59,8 cm³ | Cilindrada"
+  - "3,5 kW | Potência"
+  - "28,3 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Motor X-TORQ® potente e eficiente"
+  - texto: "AutoTune 3.0 60cc Mark II"
+  - texto: "Capacidade de transportar barras mais longas"
+  - texto: "Filtro magnético protege o motor"
+  - texto: "Tensão da corrente rápido e fácil"
 ---
-
-- Cilindrada: 59,8 cm³
-- Potência: 3,5 kW
-- Velocidade da corrente à potência máx.: 28,3 m/s
 
 A Husqvarna 562 XP® Mark II é uma **motosserra de 60 cc** de **alto desempenho, projetada para silvicultura profissional de madeira nobre**. Para uso com barra guia de até 28 polegadas (aprox. 71 cm). **Quando precisa da potência de uma serra grande num corpo fino e ágil, esta é uma das nossas melhores motosserras a gasolina**. Com AutoTune 3.0 com tecnologia Simple Start, esta motosserra arranca sempre facilmente e funciona perfeitamente em todas as condições. O motor X-Torq® de 60 cc. de alta rotação facilita o abate, desrama e desbaste de madeira dura e grandes coníferas/resinosas.
 

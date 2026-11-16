@@ -8,10 +8,10 @@ precoCampanha: 659
 imagem: "/imagens/corta-sebes-522hd60x-000.jpg"
 destaque: false
 ordem: 60
+destaques:
+  - "4400 cortes/min | Velocidade de corte"
+  - "30 mm | Largura dos dentes"
 ---
-
-- Velocidade de corte: 4400 cortes/min
-- Largura dos dentes: 4400 cortes/min
 
 Corta-sebes de dupla face de 21.7 cc com uma barra de corte de 60 cm para trabalhos de desbaste. A pega multiposições e a leveza, combinadas com o design fino e equilibrado e baixos níveis de vibração proporcionam um excelente manuseamento, enquanto as lâminas profissionais de alta capacidade e velocidade, a proteção de lâmina aberta e a enorme potência permitem um excelente desempenho de corte.
 

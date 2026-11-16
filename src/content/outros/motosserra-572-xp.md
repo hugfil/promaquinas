@@ -8,11 +8,18 @@ precoCampanha: 999
 imagem: "/imagens/motosserra-572-xp-000.jpg"
 destaque: false
 ordem: 260
+destaques:
+  - "70,6 cm³ | Cilindrada"
+  - "4,3 kW | Potência"
+  - "29,3 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Maior capacidade de corte"
+  - texto: "Excelente capacidade de refrigeração para o motor ter uma maior longevidade"
+  - texto: "Equipada com sistema de filtragem de última geração"
+  - texto: "Ajuste da mistura de ar / combustível 10 vezes mais rápido"
+  - texto: "Baixa vibração"
+  - texto: "Tampas articuladas do tanque"
 ---
-
-- Cilindrada: 70,6 cm³
-- Potência: 4,3 kW
-- Velocidade da corrente à potência máx.: 29,3 m/s
   
 **Esta motosserra Husqvarna tem uma melhor relação peso/potência do que qualquer outro modelo da Husqvarna com cilindrada semelhante e capacidade de corte 12% maior do que os modelos equivalentes** anteriores. Com ótimo desempenho, enquanto o design inteligente e a operação fácil mantêm a produtividade alta, mesmo com barras-guia longas. Com AutoTune™, Air Injection™ e poucas vibrações.
 

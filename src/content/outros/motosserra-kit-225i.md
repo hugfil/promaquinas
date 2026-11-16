@@ -9,13 +9,13 @@ imagem: "/imagens/motosserra-225i-000.jpg"
 galeria: ["/imagens/motosserra-225i-000.jpg", "/imagens/motosserra-225i-001.jpg"]
 destaque: false
 ordem: 170
+destaques:
+  - "36 V | Tensão da bateria"
+  - "0,8 kW | Potência"
+  - "11,8 m/s | Velocidade da corrente à potência máx."
 ---
 
 ### Inclui bateria e carregador.
-
-- Tensão da bateria: 36 V
-- Potência: 0,8 kW
-- Velocidade da corrente à potência máx.: 11,8 m/s
 
 **A Husqvarna 225i é uma motosserra a bateria**, que oferece **alta capacidade de corte** com menos ruído em comparação com um motor a gasolina, sem fumos ou emissões diretas. **Excelente para podas** rápidas e fáceis, abate de pequenas árvores e corte de lenha à volta da horta. **Leve, fina e bem equilibrada**, esta motosserra a bateria é muito fácil de arrancar e usar, construída com qualidade 'premium' em 'design', desempenho de corte e durabilidade. Equipada com a nossa ‘interface’ de utilizador digital atualizada, travão de corrente de inércia e opcional com tensor de corrente sem ferramentas.
 

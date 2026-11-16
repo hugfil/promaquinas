@@ -9,11 +9,27 @@ imagem: "/imagens/motosserra-450s-000.jpg"
 galeria: ["/imagens/motosserra-450s-000.jpg", "/imagens/motosserra-450s-001.jpg", "/imagens/motosserra-450s-002.jpg", "/imagens/motosserra-450s-003.jpg", "/imagens/motosserra-450s-004.jpg", "/imagens/motosserra-450s-005.jpg"]
 destaque: false
 ordem: 190
+destaques:
+  - "50,2 cm³ | Cilindrada"
+  - "2,4 kW | Potência"
+  - "18,5 m/s | Velocidade da corrente à potência máx."
+caracteristicas:
+  - texto: "Tecnologia LowVib®"
+  - texto: "Marcas de corte"
+  - texto: "Motor X-TORQ® potente e eficiente"
+  - texto: "Cambota de três peças"
+  - texto: "Injeção por ar"
+  - texto: "Tampa articulada do depósito"
+  - texto: "Visor de nível do combustível"
+  - texto: "Fecho de acção rápida no filtro de ar"
+  - texto: "Interrutor de paragem de retorno automático"
+  - texto: "Pega traseira ergonómica"
+  - texto: "Purga de ar"
+  - texto: "Travão de corrente acionado por inércia"
+  - texto: "Porcas de retenção da barra"
+  - texto: "Tampa do cilindro com fecho de mola"
+  - texto: "Cárter híbrido patenteado pela Husqvarna"
 ---
-
-- Cilindrada: 50,2 cm³
-- Potência: 2,4 kW
-- Velocidade da corrente à potência máx.: 18,5 m/s
 
 ## Potência otimizada para trabalhos florestais e domésticos
 

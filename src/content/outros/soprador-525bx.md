@@ -8,11 +8,17 @@ precoCampanha: 399
 imagem: "/imagens/soprador-525bx-000.jpg"
 destaque: false
 ordem: 370
+destaques:
+  - "25,4 cm³ | Cilindrada"
+  - "15 N | Força de sopro"
+  - "4,3 kg | Peso em vazio"
+caracteristicas:
+  - texto: "Motor X-Torq® potente e eficiente"
+  - texto: "Tubo com comprimento regulável"
+  - texto: "Botão de STOP com retorno automático"
+  - texto: "Regulador de Velocidade"
+  - texto: "Saída em linha"
 ---
-
-- Cilindrada: 25,4 cm³
-- Peso em vazio (kg): 4,3 kg
-- Força de sopro: 15 N
 
 ## Soprador/Ventilador HUSQVARNA 525 BX
 Ventilador de mão poderoso e bem equilibrado para uso profissional.
