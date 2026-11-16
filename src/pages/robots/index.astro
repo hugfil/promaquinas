@@ -11,10 +11,12 @@ const robots = (await getCollection('robots')).sort((a, b) => a.data.ordem - b.d
 const emCampanha = await produtosEmCampanha();
 const lista = robots.map((r, i) => ({ r, i, valor: resolverPreco(r.data, emCampanha.has('robots/' + r.id)).atual }));
 
-// Opções dos filtros: cada valor que existe nas fichas (areaMaxima, decliveMaximo) vira uma opção "Até N"
+// Opções dos filtros: cada valor que existe nas fichas (areaMaxima, decliveMaximo) vira uma opção.
+// Lógica: o cliente escolhe o que o jardim precisa e vê os robots que cobrem pelo menos esse valor.
 const unicos = (valores: number[]) => [...new Set(valores)].sort((a, b) => a - b);
 const areas = unicos(robots.map((r) => r.data.areaMaxima));
 const declives = unicos(robots.map((r) => r.data.decliveMaximo));
+const temCampanha = robots.some((r) => emCampanha.has('robots/' + r.id));
 const temFiltros = robots.length > 1;
 ---
 <Base titulo="Robots corta-relva" descricao="Gama de robots corta-relva Husqvarna: escolha o modelo certo para o seu jardim.">
@@ -37,23 +39,34 @@ const temFiltros = robots.length > 1;
         <div class="filtros-grupos" id="filtros-grupos">
           {areas.length > 1 && (
             <fieldset class="grupo">
-              <legend>Área máxima</legend>
+              <legend>Área do meu jardim</legend>
+              <p class="grupo-ajuda">Mostra os robots que cobrem pelo menos esta área.</p>
               <div class="chips">
                 <label class="chip"><input type="radio" name="area" value="" checked /><span>Todas<small class="chip-n"></small></span></label>
                 {areas.map((a) => (
-                  <label class="chip"><input type="radio" name="area" value={a} /><span>Até {a} m²<small class="chip-n"></small></span></label>
+                  <label class="chip"><input type="radio" name="area" value={a} /><span>{a} m²<small class="chip-n"></small></span></label>
                 ))}
               </div>
             </fieldset>
           )}
           {declives.length > 1 && (
             <fieldset class="grupo">
-              <legend>Declive máximo</legend>
+              <legend>Declive do meu terreno</legend>
+              <p class="grupo-ajuda">Mostra os robots que aguentam pelo menos este declive.</p>
               <div class="chips">
                 <label class="chip"><input type="radio" name="declive" value="" checked /><span>Todos<small class="chip-n"></small></span></label>
                 {declives.map((d) => (
-                  <label class="chip"><input type="radio" name="declive" value={d} /><span>Até {d}%<small class="chip-n"></small></span></label>
+                  <label class="chip"><input type="radio" name="declive" value={d} /><span>{d}%<small class="chip-n"></small></span></label>
                 ))}
+              </div>
+            </fieldset>
+          )}
+          {temCampanha && (
+            <fieldset class="grupo">
+              <legend>Campanha</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="campanha" value="" checked /><span>Todos<small class="chip-n"></small></span></label>
+                <label class="chip"><input type="radio" name="campanha" value="1" /><span>Em campanha<small class="chip-n"></small></span></label>
               </div>
             </fieldset>
           )}
@@ -86,7 +99,7 @@ const temFiltros = robots.length > 1;
     )}
     <ul class="grelha">
       {lista.map(({ r, i, valor }) => (
-        <li class="cartao" data-i={i} data-area={r.data.areaMaxima} data-declive={r.data.decliveMaximo} data-preco={valor ?? ''}>
+        <li class="cartao" data-i={i} data-area={r.data.areaMaxima} data-declive={r.data.decliveMaximo} data-campanha={emCampanha.has('robots/' + r.id) ? '1' : '0'} data-preco={valor ?? ''}>
           {emCampanha.has('robots/' + r.id) && <EmCampanha />}
           {r.data.imagem && <img loading="lazy" decoding="async" src={u(r.data.imagem)} alt={r.data.nome} />}
           <div class="corpo">
@@ -102,20 +115,21 @@ const temFiltros = robots.length > 1;
     <p id="sem-resultados" hidden>Não há robots com esta seleção. <a href={u('/robots/')}>Ver todos os robots</a></p>
   </div>
   <script>
-    // Filtros por área e declive, ordenação por preço e animação dos cartões.
-    // Filtros cumulativos: "Até 1000 m²" mostra os robots com areaMaxima igual ou inferior a 1000 (o mesmo para o declive).
+    // Filtros por área, declive e campanha, ordenação por preço e animação dos cartões.
+    // Filtros cumulativos: "1000 m²" mostra os robots com areaMaxima igual ou superior a 1000 (o mesmo para o declive).
     const grelha = document.querySelector<HTMLElement>('.grelha');
     const itens = Array.from(document.querySelectorAll<HTMLElement>('.grelha > [data-area]'));
     const limpar = document.getElementById('limpar-filtros');
     const vazio = document.getElementById('sem-resultados');
     const contagem = document.getElementById('contagem');
-    const nomes = ['area', 'declive', 'ordem'];
+    const nomes = ['area', 'declive', 'campanha', 'ordem'];
 
     const radios = (nome: string) => Array.from(document.querySelectorAll<HTMLInputElement>('input[name="' + nome + '"]'));
     const valor = (nome: string) => document.querySelector<HTMLInputElement>('input[name="' + nome + '"]:checked')?.value ?? '';
-    const corresponde = (li: HTMLElement, area: string, declive: string) =>
-      (area === '' || Number(li.dataset.area) <= Number(area)) &&
-      (declive === '' || Number(li.dataset.declive) <= Number(declive));
+    const corresponde = (li: HTMLElement, area: string, declive: string, campanha: string) =>
+      (area === '' || Number(li.dataset.area) >= Number(area)) &&
+      (declive === '' || Number(li.dataset.declive) >= Number(declive)) &&
+      (campanha === '' || li.dataset.campanha === '1');
     const indice = (li: HTMLElement) => Number(li.dataset.i);
     const preco = (li: HTMLElement) => (li.dataset.preco === '' ? null : Number(li.dataset.preco));
     const escreverN = (r: HTMLInputElement, n: number) => {
@@ -166,11 +180,12 @@ const temFiltros = robots.length > 1;
     const aplicar = (animar: boolean) => {
       const area = valor('area');
       const declive = valor('declive');
+      const campanha = valor('campanha');
       const ordem = valor('ordem');
 
       let visiveis = 0;
       itens.forEach((li) => {
-        const ok = corresponde(li, area, declive);
+        const ok = corresponde(li, area, declive, campanha);
         li.hidden = !ok;
         if (ok) visiveis++;
       });
@@ -188,22 +203,27 @@ const temFiltros = robots.length > 1;
       });
       ordenados.forEach((li) => grelha?.appendChild(li));
 
-      // Cada opção mostra quantos robots daria, tendo em conta o outro filtro
+      // Cada opção mostra quantos robots daria, tendo em conta os outros filtros
       radios('area').forEach((r) => {
-        const n = itens.filter((li) => corresponde(li, r.value, declive)).length;
+        const n = itens.filter((li) => corresponde(li, r.value, declive, campanha)).length;
         escreverN(r, n);
         r.disabled = n === 0 && !r.checked;
       });
       radios('declive').forEach((r) => {
-        const n = itens.filter((li) => corresponde(li, area, r.value)).length;
+        const n = itens.filter((li) => corresponde(li, area, r.value, campanha)).length;
+        escreverN(r, n);
+        r.disabled = n === 0 && !r.checked;
+      });
+      radios('campanha').forEach((r) => {
+        const n = itens.filter((li) => corresponde(li, area, declive, r.value)).length;
         escreverN(r, n);
         r.disabled = n === 0 && !r.checked;
       });
 
       if (contagem) contagem.textContent = visiveis === 1 ? '1 robot' : visiveis + ' robots';
       if (vazio) vazio.hidden = visiveis > 0;
-      if (limpar) limpar.hidden = area === '' && declive === '' && ordem === '';
-      const ativos = [area, declive, ordem].filter((v) => v !== '').length;
+      if (limpar) limpar.hidden = area === '' && declive === '' && campanha === '' && ordem === '';
+      const ativos = [area, declive, campanha, ordem].filter((v) => v !== '').length;
       if (badge) {
         badge.textContent = String(ativos);
         badge.hidden = ativos === 0;
@@ -212,6 +232,7 @@ const temFiltros = robots.length > 1;
       const params = new URLSearchParams();
       if (area) params.set('area', area);
       if (declive) params.set('declive', declive);
+      if (campanha) params.set('campanha', campanha);
       if (ordem) params.set('ordem', ordem);
       const texto = params.toString();
       history.replaceState(null, '', location.pathname + (texto ? '?' + texto : ''));
