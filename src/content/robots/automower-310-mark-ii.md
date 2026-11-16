@@ -1,5 +1,5 @@
 ---
-nome: "Robot corta-relva Automower® 310 Mark II"
+nome: "Automower® 310 Mark II"
 gama: "Jardins pequenos"
 resumo: "O modelo 310 Mark II é o novo robot corta-relva da Husqvarna concebido para trabalhar em jardins complexos de tamanho pequeno ou superfícies médias e simples."
 imagem: "/imagens/automower-310-mark-ii-000.jpg"

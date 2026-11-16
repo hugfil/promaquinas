@@ -1,5 +1,5 @@
 ---
-nome: "Robot Automower® 305"
+nome: "Automower® 305"
 marca: "Husqvarna®"
 gama: "Jardins pequenos"
 resumo: "O Husqvarna Automower® 305 é um robot corta-relva compacto ideal para jardins mais pequenos e complexos de até 600 m²."

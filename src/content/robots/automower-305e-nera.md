@@ -1,5 +1,5 @@
 ---
-nome: "Robot corta-relva Automower® 305E NERA"
+nome: "Automower® 305E NERA"
 gama: "Jardins pequenos"
 resumo: "O Husqvarna Automower 305E NERA é um corta-relva robotizado para jardins até 600 m². Possui EdgeCut para reduzir o corte manual das margens e permite escolher entre a instalação com fios tradicional ou limites virtuais utilizando o EPOS."
 imagem: "/imagens/automower-305e-nera-000.jpg"
