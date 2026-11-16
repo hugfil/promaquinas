@@ -1,5 +1,5 @@
 ---
-nome: "Robot Automower® Aspire™ R4"
+nome: "Automower® Aspire™ R4"
 marca: "Husqvarna®"
 gama: "Jardins pequenos"
 resumo: "Modelo ideal para pequenos jardins com declives até 25 %."
