@@ -12,6 +12,7 @@ const emCampanha = await produtosEmCampanha();
 const lista = produtos.map((p, i) => ({ p, i, valor: resolverPreco(p.data, emCampanha.has('produtos/' + p.id)).atual }));
 const marcas = [...new Set(produtos.map((p) => p.data.marca))].sort((a, b) => a.localeCompare(b, 'pt'));
 const tipos = [...new Set(produtos.map((p) => p.data.tipo).filter((t): t is string => Boolean(t)))].sort((a, b) => a.localeCompare(b, 'pt'));
+const temCampanha = produtos.some((p) => emCampanha.has('produtos/' + p.id));
 const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
 ---
 <Base titulo="Outros produtos">
@@ -52,6 +53,15 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
               </div>
             </fieldset>
           )}
+          {temCampanha && (
+            <fieldset class="grupo">
+              <legend>Campanha</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="campanha" value="" checked /><span>Todos<small class="chip-n"></small></span></label>
+                <label class="chip"><input type="radio" name="campanha" value="1" /><span>Em campanha<small class="chip-n"></small></span></label>
+              </div>
+            </fieldset>
+          )}
           {produtos.length > 1 && (
             <fieldset class="grupo">
               <legend>Ordenar</legend>
@@ -83,7 +93,7 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
     )}
     <ul class="grelha">
       {lista.map(({ p, i, valor }) => (
-        <li class="cartao" data-i={i} data-marca={p.data.marca} data-tipo={p.data.tipo ?? ''} data-preco={valor ?? ''}>
+        <li class="cartao" data-i={i} data-marca={p.data.marca} data-tipo={p.data.tipo ?? ''} data-campanha={emCampanha.has('produtos/' + p.id) ? '1' : '0'} data-preco={valor ?? ''}>
           {emCampanha.has('produtos/' + p.id) && <EmCampanha />}
           {p.data.imagem && <img loading="lazy" decoding="async" src={u(p.data.imagem)} alt={p.data.nome} />}
           <div class="corpo">
@@ -98,7 +108,7 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
     <p id="sem-resultados" hidden>Não há produtos com esta seleção. <a href={u('/produtos/')}>Ver todos os produtos</a></p>
   </div>
   <script>
-    // Filtros por marca e tipo, e ordenação por preço. Aceitam ligações como /produtos/?tipo=Motosserra
+    // Filtros por marca, tipo e campanha, e ordenação por preço. Aceitam ligações como /produtos/?tipo=Motosserra
     const lista = document.querySelector<HTMLElement>('.grelha');
     const itens = Array.from(document.querySelectorAll<HTMLElement>('.grelha > [data-marca]'));
     const limpar = document.getElementById('limpar-filtros');
@@ -107,8 +117,10 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
 
     const radios = (nome: string) => Array.from(document.querySelectorAll<HTMLInputElement>('input[name="' + nome + '"]'));
     const valor = (nome: string) => document.querySelector<HTMLInputElement>('input[name="' + nome + '"]:checked')?.value ?? '';
-    const corresponde = (li: HTMLElement, marca: string, tipo: string) =>
-      (marca === '' || li.dataset.marca === marca) && (tipo === '' || li.dataset.tipo === tipo);
+    const corresponde = (li: HTMLElement, marca: string, tipo: string, campanha: string) =>
+      (marca === '' || li.dataset.marca === marca) &&
+      (tipo === '' || li.dataset.tipo === tipo) &&
+      (campanha === '' || li.dataset.campanha === '1');
     const indice = (li: HTMLElement) => Number(li.dataset.i);
     const preco = (li: HTMLElement) => (li.dataset.preco === '' ? null : Number(li.dataset.preco));
     const escreverN = (r: HTMLInputElement, n: number) => {
@@ -159,11 +171,12 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
     const aplicar = (animar: boolean) => {
       const marca = valor('marca');
       const tipo = valor('tipo');
+      const campanha = valor('campanha');
       const ordem = valor('ordem');
 
       let visiveis = 0;
       itens.forEach((li) => {
-        const ok = corresponde(li, marca, tipo);
+        const ok = corresponde(li, marca, tipo, campanha);
         li.hidden = !ok;
         if (ok) visiveis++;
       });
@@ -181,22 +194,27 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
       });
       ordenados.forEach((li) => lista?.appendChild(li));
 
-      // Cada opção mostra quantos produtos daria, tendo em conta o outro filtro
+      // Cada opção mostra quantos produtos daria, tendo em conta os outros filtros
       radios('marca').forEach((r) => {
-        const n = itens.filter((li) => corresponde(li, r.value, tipo)).length;
+        const n = itens.filter((li) => corresponde(li, r.value, tipo, campanha)).length;
         escreverN(r, n);
         r.disabled = n === 0 && !r.checked;
       });
       radios('tipo').forEach((r) => {
-        const n = itens.filter((li) => corresponde(li, marca, r.value)).length;
+        const n = itens.filter((li) => corresponde(li, marca, r.value, campanha)).length;
+        escreverN(r, n);
+        r.disabled = n === 0 && !r.checked;
+      });
+      radios('campanha').forEach((r) => {
+        const n = itens.filter((li) => corresponde(li, marca, tipo, r.value)).length;
         escreverN(r, n);
         r.disabled = n === 0 && !r.checked;
       });
 
       if (contagem) contagem.textContent = visiveis === 1 ? '1 produto' : visiveis + ' produtos';
       if (vazio) vazio.hidden = visiveis > 0;
-      if (limpar) limpar.hidden = marca === '' && tipo === '' && ordem === '';
-      const ativos = [marca, tipo, ordem].filter((v) => v !== '').length;
+      if (limpar) limpar.hidden = marca === '' && tipo === '' && campanha === '' && ordem === '';
+      const ativos = [marca, tipo, campanha, ordem].filter((v) => v !== '').length;
       if (badge) {
         badge.textContent = String(ativos);
         badge.hidden = ativos === 0;
@@ -205,6 +223,7 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
       const params = new URLSearchParams();
       if (marca) params.set('marca', marca);
       if (tipo) params.set('tipo', tipo);
+      if (campanha) params.set('campanha', campanha);
       if (ordem) params.set('ordem', ordem);
       const texto = params.toString();
       history.replaceState(null, '', location.pathname + (texto ? '?' + texto : ''));
@@ -212,14 +231,14 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
     };
 
     const inicial = new URLSearchParams(location.search);
-    ['marca', 'tipo', 'ordem'].forEach((nome) => {
+    ['marca', 'tipo', 'campanha', 'ordem'].forEach((nome) => {
       const pedido = inicial.get(nome);
       const alvo = radios(nome).find((r) => r.value === pedido);
       if (alvo) alvo.checked = true;
     });
-    ['marca', 'tipo', 'ordem'].forEach((nome) => radios(nome).forEach((r) => r.addEventListener('change', () => aplicar(true))));
+    ['marca', 'tipo', 'campanha', 'ordem'].forEach((nome) => radios(nome).forEach((r) => r.addEventListener('change', () => aplicar(true))));
     limpar?.addEventListener('click', () => {
-      ['marca', 'tipo', 'ordem'].forEach((nome) => {
+      ['marca', 'tipo', 'campanha', 'ordem'].forEach((nome) => {
         const todos = radios(nome).find((r) => r.value === '');
         if (todos) todos.checked = true;
       });

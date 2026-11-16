@@ -166,8 +166,10 @@ header.topo nav a.nav-cta[aria-current] { color: var(--verde); background: #fff;
 /* Barra de filtros compacta: chips para os filtros, controlo segmentado para ordenar */
 .filtros-barra { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .6rem 1.5rem; background: #fff; border: 1px solid var(--linha); border-radius: 12px; padding: .75rem 1rem; margin: 0 0 1.5rem; box-shadow: 0 4px 16px rgba(22, 58, 45, .05); }
 .filtros-grupos { display: flex; flex: 1 1 auto; flex-wrap: wrap; gap: .6rem 1.5rem; min-width: 0; }
-.grupo { min-width: 0; min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+.grupo { min-width: 0; min-inline-size: 0; margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; }
+.grupo > .chips, .grupo > .segmentos { margin-top: auto; } /* chips alinhados pela base, haja ou não frase de apoio */
 .grupo legend { padding: 0; margin-bottom: .3rem; font-family: var(--f-sub); font-weight: 700; font-size: .75rem; color: var(--cinza); }
+.grupo-ajuda { max-width: 20rem; margin: -.1rem 0 .4rem; font-size: .6875rem; line-height: 1.3; color: var(--cinza-suave); }
 .chips, .segmentos { display: flex; flex-wrap: wrap; gap: .35rem; }
 .chip, .segmento { position: relative; cursor: pointer; }
 .chip input, .segmento input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
@@ -198,6 +200,10 @@ header.topo nav a.nav-cta[aria-current] { color: var(--verde); background: #fff;
   .filtros-rodape { order: 2; margin-left: auto; }
   .filtros-grupos { order: 3; flex: 1 1 100%; }
   .filtros-barra:not(.aberta) .filtros-grupos { display: none; }
+  /* Ordenar em telemóvel: botões soltos como os chips, em vez de uma pílula única que quebra em duas linhas */
+  .segmentos { display: flex; gap: .35rem; padding: 0; background: none; border: 0; border-radius: 0; }
+  .segmento > span { border: 1px solid var(--linha); background: var(--cinza-claro); }
+  .segmento input:checked + span { border-color: var(--verde); box-shadow: none; }
 }
 .etiquetas { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1rem; }
 .etiqueta-filtro { display: inline-block; font-family: var(--f-sub); font-weight: 600; font-size: .875rem; color: var(--verde); background: var(--cinza-claro); border: 1px solid var(--linha); border-radius: 999px; padding: .3rem .85rem; text-decoration: none; transition: background .2s, color .2s, border-color .2s; }
