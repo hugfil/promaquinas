@@ -1,8 +1,7 @@
 import { defineConfig } from 'astro/config';
 
-// ENQUANTO USAS github.io: preenche utilizador e nome do repositório.
-// QUANDO LIGARES O DOMÍNIO: muda 'site' para https://teudominio.pt e apaga a linha 'base'.
+// Domínio próprio ligado ao GitHub Pages (ficheiro public/CNAME e registos DNS no Cloudflare).
+// Sem 'base': o site fica na raiz do domínio.
 export default defineConfig({
-  site: 'https://hugfil.github.io',
-  base: '/promaquinas',
+  site: 'https://lojapromaquinas.com',
 });
