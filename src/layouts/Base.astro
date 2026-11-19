@@ -28,6 +28,8 @@ if (destaque) {
 const caminho = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
 // Endereço oficial da página (sem filtros nem parâmetros), para os motores de busca
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+// Imagem que aparece ao partilhar a página (WhatsApp, Facebook, LinkedIn...)
+const imagemPartilha = new URL(u('/imagens/partilha.jpg'), Astro.site).href;
 const nav = [
   { href: '/', texto: 'Início', icone: true },
   { href: '/robots/', texto: 'Robots', dica: 'Robots corta-relva' },
@@ -44,6 +46,17 @@ const nav = [
     <title>{titulo} | Promáquinas</title>
     <meta name="description" content={descricao} />
     <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Promáquinas" />
+    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:title" content={`${titulo} | Promáquinas`} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagemPartilha} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Promáquinas: robots corta-relva Husqvarna e equipamentos para o jardim e floresta" />
+    <meta name="twitter:card" content="summary_large_image" />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href={u('/imagens/logo-icone-cabecalho.svg')} />
     <link rel="icon" type="image/png" sizes="192x192" href={u('/imagens/logo-icone-192.png')} />
