@@ -17,10 +17,11 @@ export async function getStaticPaths() {
 const { produto } = Astro.props;
 const { Content } = await render(produto);
 const d = produto.data;
+const descricao = `${d.resumo.replace(/[.\s]+$/, '')}. Peça informações à Promaquinas.`;
 const emCampanha = (await produtosEmCampanha()).has('produtos/' + produto.id);
 const assunto = encodeURIComponent(`Pedido de informações: ${d.nome}`);
 ---
-<Base titulo={d.nome} descricao={d.resumo}>
+<Base titulo={d.tipo ? `${d.nome}, ${d.tipo.toLowerCase()}` : d.nome} descricao={descricao}>
   <div class="wrap">
     <p><a href={u('/produtos/')}>Voltar a outros produtos</a></p>
     {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}

@@ -15,9 +15,10 @@ export async function getStaticPaths() {
 const { robot } = Astro.props;
 const { Content } = await render(robot);
 const d = robot.data;
+const descricao = `${d.resumo.replace(/[.\s]+$/, '')}. Robot corta-relva ${d.marca} até ${d.areaMaxima} m². Peça orçamento à Promaquinas.`;
 const emCampanha = (await produtosEmCampanha()).has('robots/' + robot.id);
 ---
-<Base titulo={d.nome} descricao={d.resumo}>
+<Base titulo={`${d.nome}, robot corta-relva ${d.marca}`} descricao={descricao}>
   <div class="wrap">
     <p><a href={u('/robots/')}>Voltar aos robots</a></p>
     {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}

@@ -15,7 +15,7 @@ const tipos = [...new Set(produtos.map((p) => p.data.tipo).filter((t): t is stri
 const temCampanha = produtos.some((p) => emCampanha.has('produtos/' + p.id));
 const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
 ---
-<Base titulo="Outros produtos">
+<Base titulo="Equipamentos para jardim e floresta" descricao="Equipamentos Husqvarna® e de outras marcas para jardim e floresta, com venda e assistência técnica. Veja a gama e peça informações.">
   <section class="hero claro">
     <div class="wrap">
       <h1>Outros produtos</h1>
