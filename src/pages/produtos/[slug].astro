@@ -7,7 +7,6 @@ import EmCampanha from '../../components/EmCampanha.astro';
 import Preco from '../../components/Preco.astro';
 import { produtosEmCampanha } from '../../lib/campanhas';
 import NomeMarca from '../../components/NomeMarca.astro';
-import ProdutoDados from '../../components/ProdutoDados.astro';
 import FichaDestaques from '../../components/FichaDestaques.astro';
 import { contactos } from '../../lib/empresa';
 
@@ -23,7 +22,6 @@ const emCampanha = (await produtosEmCampanha()).has('produtos/' + produto.id);
 const assunto = encodeURIComponent(`Pedido de informações: ${d.nome}`);
 ---
 <Base titulo={d.tipo ? `${d.nome}, ${d.tipo.toLowerCase()}` : d.nome} descricao={descricao}>
-  <ProdutoDados nome={d.nome} marca={d.marca} descricao={d.resumo} imagem={d.imagem} galeria={d.galeria} categoria={d.tipo} />
   <div class="wrap">
     <p><a href={u('/produtos/')}>Voltar a outros produtos</a></p>
     {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}

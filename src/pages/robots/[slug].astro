@@ -7,7 +7,6 @@ import EmCampanha from '../../components/EmCampanha.astro';
 import Preco from '../../components/Preco.astro';
 import { produtosEmCampanha } from '../../lib/campanhas';
 import NomeMarca from '../../components/NomeMarca.astro';
-import ProdutoDados from '../../components/ProdutoDados.astro';
 
 export async function getStaticPaths() {
   const robots = await getCollection('robots');
@@ -20,7 +19,6 @@ const descricao = `${d.resumo.replace(/[.\s]+$/, '')}. Robot corta-relva ${d.mar
 const emCampanha = (await produtosEmCampanha()).has('robots/' + robot.id);
 ---
 <Base titulo={`${d.nome}, robot corta-relva ${d.marca}`} descricao={descricao}>
-  <ProdutoDados nome={d.nome} marca={d.marca} descricao={d.resumo} imagem={d.imagem} galeria={d.galeria} categoria="Robots corta-relva" propriedades={[{ nome: 'Área máxima', valor: d.areaMaxima, unidade: 'm²' }, { nome: 'Declive máximo', valor: d.decliveMaximo, unidade: '%' }]} />
   <div class="wrap">
     <p><a href={u('/robots/')}>Voltar aos robots</a></p>
     {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}
