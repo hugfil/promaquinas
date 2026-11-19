@@ -1,0 +1,59 @@
+---
+// Dados da empresa para o Google (JSON-LD, tipo "Store"): nome, morada, telefone, horário, redes e zona de atuação.
+// Lê tudo de src/lib/empresa.ts e src/lib/local.ts: ao mudar lá o telefone, o horário ou a morada, isto acompanha.
+import { contactos, horario, redes } from '../lib/empresa';
+import { local } from '../lib/local';
+import { u } from '../lib/url';
+
+const site = Astro.site ?? new URL('https://lojapromaquinas.com');
+const abs = (p: string) => new URL(u(p), site).href;
+
+// "Av. do Casal, 94 · 4730-570 Soutelo" -> rua, código postal e localidade
+const [rua, resto = ''] = local.morada.split('·').map((s) => s.trim());
+const m = resto.match(/^(\d{4}-\d{3})\s+(.+)$/);
+
+// Horário: uma entrada por período (manhã e tarde são duas); os dias sem períodos ficam de fora (encerrado)
+const dias = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const aberto = horario.flatMap((h) =>
+  h.periodos.map(([abre, fecha]) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: h.diasSemana.map((d) => dias[d]),
+    opens: abre,
+    closes: fecha,
+  }))
+);
+
+const dados = {
+  '@context': 'https://schema.org',
+  '@type': 'Store',
+  '@id': abs('/') + '#empresa',
+  name: local.nome,
+  url: abs('/'),
+  description: 'Venda, reparação e assistência técnica de robots corta-relva e equipamentos para jardim e floresta. Revendedor oficial Husqvarna®, especialista Automower®.',
+  image: abs('/imagens/partilha.jpg'),
+  logo: abs('/imagens/logo-icone-192.png'),
+  telephone: contactos.telefoneLigacao,
+  email: contactos.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: rua,
+    postalCode: m?.[1],
+    addressLocality: m?.[2],
+    addressRegion: 'Braga',
+    addressCountry: 'PT',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: local.latitude, longitude: local.longitude },
+  openingHoursSpecification: aberto,
+  areaServed: ['Distrito de Braga', 'Portugal continental'],
+  brand: { '@type': 'Brand', name: 'Husqvarna' },
+  makesOffer: [
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Reparação de equipamentos' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Assistência técnica' } },
+  ],
+  sameAs: redes.map((r) => r.url).filter(Boolean),
+};
+
+// "<" escapado para o texto nunca poder fechar a etiqueta <script>
+const json = JSON.stringify(dados).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" set:html={json} />
