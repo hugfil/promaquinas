@@ -5,7 +5,7 @@
 //    (aparecem como "41.5454, -8.4264": o primeiro número é a latitude, o segundo a longitude);
 //  - zoom: de 1 (mundo) a 19 (rua); 16 mostra o bairro.
 export const local = {
-  nome: 'Promáquinas',
+  nome: 'Promaquinas',
   morada: 'Av. do Casal, 94 · 4730-570 Soutelo',
   latitude: 41.613918,
   longitude: -8.433020,
