@@ -21,7 +21,7 @@ const descricao = `${d.resumo.replace(/[.\s]+$/, '')}. Peça informações à Pr
 const emCampanha = (await produtosEmCampanha()).has('produtos/' + produto.id);
 const assunto = encodeURIComponent(`Pedido de informações: ${d.nome}`);
 ---
-<Base titulo={d.tipo ? `${d.nome}, ${d.tipo.toLowerCase()}` : d.nome} descricao={descricao}>
+<Base titulo={d.tipo ? `${d.nome}, ${d.tipo.toLowerCase()}` : d.nome} descricao={descricao} imagem={d.imagem}>
   <div class="wrap">
     <p><a href={u('/produtos/')}>Voltar a outros produtos</a></p>
     {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}
