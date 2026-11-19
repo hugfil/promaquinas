@@ -12,6 +12,6 @@ const { variante = 'cabecalho' } = Astro.props;
 const nome = ['/imagens/logo-nome-' + variante + '.svg', '/imagens/logo-nome.svg'].find((p) => existsSync('./public' + p));
 ---
 <span class="logo">
-  <img class="logo-icone" src={u('/imagens/logo-icone-' + variante + '.svg')} alt={nome ? '' : 'Promáquinas'} width="259" height="259" />
-  {nome && <img class="logo-nome" src={u(nome)} alt="Promáquinas" />}
+  <img class="logo-icone" src={u('/imagens/logo-icone-' + variante + '.svg')} alt={nome ? '' : 'Promaquinas'} width="259" height="259" />
+  {nome && <img class="logo-nome" src={u(nome)} alt="Promaquinas" />}
 </span>
