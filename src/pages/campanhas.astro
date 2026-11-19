@@ -47,11 +47,6 @@ const itens = await Promise.all(
             </aside>
           )}
         </div>
-        {videos.length > 0 && (
-          <div class="campanha-videos">
-            <Galeria imagens={videos} nome={c.data.titulo} titulo={videos.length > 1 ? 'Vídeos' : 'Vídeo'} />
-          </div>
-        )}
         {produtos.length > 0 && (
           <>
             <h3>Produtos desta campanha</h3>
@@ -70,6 +65,11 @@ const itens = await Promise.all(
               ))}
             </ul>
           </>
+        )}
+        {videos.length > 0 && (
+          <div class="campanha-videos">
+            <Galeria imagens={videos} nome={c.data.titulo} titulo={videos.length > 1 ? 'Vídeos' : 'Vídeo'} nivel={3} />
+          </div>
         )}
         {folhetos.length > 0 && <p><a href={`#folheto-${c.id}`} data-abrir-folheto>Saber mais</a></p>}
       </article>

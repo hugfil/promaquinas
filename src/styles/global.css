@@ -379,9 +379,6 @@ html:has(.galeria-dialogo[open]) { overflow: hidden; }
 }
 .campanha-img { display: block; width: 100%; max-width: 48rem; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; margin: 1rem 0; }
 
-/* Vídeos da campanha: miniaturas maiores, em formato 16:9 */
-.campanha-videos .galeria-lista { grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 22rem)); }
-.campanha-videos .galeria-abrir img, .campanha-videos .galeria-tile { aspect-ratio: 16 / 9; }
 
 /* Folheto da campanha: miniatura inteira (sem cortar), levemente inclinada, com botão de ampliar */
 .campanha-layout { display: grid; gap: 1.5rem 2.5rem; align-items: start; }
