@@ -18,7 +18,7 @@ const d = robot.data;
 const descricao = `${d.resumo.replace(/[.\s]+$/, '')}. Robot corta-relva ${d.marca} até ${d.areaMaxima} m². Peça orçamento à Promaquinas.`;
 const emCampanha = (await produtosEmCampanha()).has('robots/' + robot.id);
 ---
-<Base titulo={`${d.nome}, robot corta-relva ${d.marca}`} descricao={descricao}>
+<Base titulo={`${d.nome}, robot corta-relva ${d.marca}`} descricao={descricao} imagem={d.imagem}>
   <div class="wrap">
     <p><a href={u('/robots/')}>Voltar aos robots</a></p>
     {emCampanha && <p class="pill-ficha"><EmCampanha /></p>}
