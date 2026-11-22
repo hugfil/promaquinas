@@ -7,7 +7,7 @@ imagem: "/imagens/motosserra-535i-xp-000.jpg"
 preco: 534.57
 precoCampanha: 469
 destaque: false
-ordem: 100
+ordem: 66
 destaques:
   - "20 m/s | Velocidade da corrente à potência máx."
 caracteristicas:

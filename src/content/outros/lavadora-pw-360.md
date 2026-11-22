@@ -8,7 +8,7 @@ precoCampanha: 559
 imagem: "/imagens/lavadora-pw-360-000.jpeg"
 galeria: ["/imagens/lavadora-pw-360-000.jpeg","/imagens/lavadora-pw-360-001.jpeg", "/imagens/lavadora-pw-360-002.jpeg"]
 destaque: false
-ordem: 100
+ordem: 42
 destaques:
   - "500 l/h | Caudal máximo"
   - "160 bar | Pressão máxima"

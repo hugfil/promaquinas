@@ -7,7 +7,7 @@ preco: 1286.47
 precoCampanha: 1129
 imagem: "/imagens/motosserra-562-xp-mark-ii-000.jpg"
 destaque: false
-ordem: 240
+ordem: 69
 destaques:
   - "59,8 cm³ | Cilindrada"
   - "3,5 kW | Potência"

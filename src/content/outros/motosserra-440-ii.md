@@ -7,7 +7,7 @@ preco: 534.57
 precoCampanha: 399
 imagem: "/imagens/motosserra-440-ii-000.jpg"
 destaque: false
-ordem: 180
+ordem: 64
 destaques:
   - "40,9 cm³ | Cilindrada"
   - "1,8 kW | Potência"

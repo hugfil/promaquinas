@@ -6,8 +6,8 @@ resumo: "Potente soprador de mochila profissional, concebido para tarefas exigen
 preco: 998.07
 precoCampanha: 819
 imagem: "/imagens/soprador-570bts-000.jpg"
-destaque: false
-ordem: 380
+destaque: true
+ordem: 6
 destaques:
   - "65,6 cm³ | Cilindrada"
   - "37 N | Força de sopro"

@@ -7,8 +7,8 @@ preco: 627.27
 precoCampanha: 499
 imagem: "/imagens/motosserra-450s-000.jpg"
 galeria: ["/imagens/motosserra-450s-000.jpg", "/imagens/motosserra-450s-001.jpg", "/imagens/motosserra-450s-002.jpg", "/imagens/motosserra-450s-003.jpg", "/imagens/motosserra-450s-004.jpg", "/imagens/motosserra-450s-005.jpg"]
-destaque: false
-ordem: 190
+destaque: true
+ordem: 1
 destaques:
   - "50,2 cm³ | Cilindrada"
   - "2,4 kW | Potência"

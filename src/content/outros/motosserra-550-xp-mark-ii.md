@@ -7,7 +7,7 @@ preco: 946.57
 precoCampanha: 799
 imagem: "/imagens/motosserra-550-xp-mark-ii-000.jpg"
 destaque: false
-ordem: 220
+ordem: 67
 destaques:
   - "50,1 cm³ | Cilindrada"
   - "3,0 kW | Potência"

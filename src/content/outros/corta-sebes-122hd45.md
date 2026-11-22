@@ -7,8 +7,8 @@ preco: 493.37
 precoCampanha: 399
 imagem: "/imagens/corta-sebes-122hd45-000.jpg"
 galeria: ["/imagens/corta-sebes-122hd45-000.jpg | Motor silencioso", "/imagens/corta-sebes-122hd45-001.jpg | Smart Start®", "/imagens/corta-sebes-122hd45-002.jpg | Interruptor de paragem com auto return", "/imagens/corta-sebes-122hd45-003.jpg | Bomba de combustível", "/imagens/corta-sebes-122hd45-004.jpg | LowVib®", "https://www.youtube.com/watch?v=h2Nd-fi0bG4&t=16s"]
-destaque: true
-ordem: 5
+destaque: false
+ordem: 23
 destaques:
   - "4050 cortes/min | Velocidade de corte"
   - "28 mm | Largura dos dentes"

@@ -7,7 +7,7 @@ preco: 967.17
 precoCampanha: 799
 imagem: "/imagens/motosserra-365-000.jpg"
 destaque: false
-ordem: 210
+ordem: 62
 destaques:
   - "70,7 cm³ | Cilindrada"
   - "3,6 kW | Potência"

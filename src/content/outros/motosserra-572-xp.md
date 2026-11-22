@@ -6,8 +6,8 @@ resumo: "A melhor relação peso-potência e uma capacidade de corte 12 % superi
 preco: 1265.87
 precoCampanha: 999
 imagem: "/imagens/motosserra-572-xp-000.jpg"
-destaque: false
-ordem: 260
+destaque: true
+ordem: 4
 destaques:
   - "70,6 cm³ | Cilindrada"
   - "4,3 kW | Potência"

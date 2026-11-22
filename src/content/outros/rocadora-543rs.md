@@ -6,8 +6,8 @@ resumo: "Roçadora profissional. Inclui 2 tipos de corte e um arnês duplo padr�
 preco: 781.77
 precoCampanha: 519
 imagem: "/imagens/rocadora-543rs-000.jpg"
-destaque: false
-ordem: 320
+destaque: true
+ordem: 2
 destaques:
   - "40,1 cm³ | Cilindrada"
   - "1,5 kW | Potência"

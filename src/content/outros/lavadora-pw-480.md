@@ -7,7 +7,7 @@ preco: 833.27
 precoCampanha: 759
 imagem: "/imagens/lavadora-pw-480-000.png"
 destaque: false
-ordem: 120
+ordem: 44
 destaques:
   - "610 l/h | Caudal máximo"
   - "180 bar | Pressão máxima"

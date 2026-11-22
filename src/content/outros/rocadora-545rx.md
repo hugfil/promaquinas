@@ -6,8 +6,8 @@ resumo: "Roçadora florestal com motor X-TORQ® potente e eficiente. Inclui 2 ti
 preco: 1059.87
 precoCampanha: 939
 imagem: "/imagens/rocadora-545rx-000.jpg"
-destaque: false
-ordem: 330
+destaque: true
+ordem: 5
 destaques:
   - "45,7 cm³ | Cilindrada"
   - "2,1 kW | Potência"

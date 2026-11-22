@@ -7,7 +7,7 @@ preco: 390.37
 precoCampanha: 319
 imagem: "/imagens/soprador-125b-000.jpg"
 destaque: true
-ordem: 6
+ordem: 3
 destaques:
   - "28 cm³ | Cilindrada"
   - "12,5 N | Força de sopro"

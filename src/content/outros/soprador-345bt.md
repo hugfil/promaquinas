@@ -7,7 +7,7 @@ preco: 503.67
 precoCampanha: 399
 imagem: "/imagens/soprador-345bt-000.jpg"
 destaque: false
-ordem: 360
+ordem: 101
 destaques:
   - "51,7 cm³ | Cilindrada"
   - "20,5 N | Força de sopro"

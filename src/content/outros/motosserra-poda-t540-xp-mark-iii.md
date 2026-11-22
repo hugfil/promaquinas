@@ -7,7 +7,7 @@ preco: 874.47
 precoCampanha: 739
 imagem: "/imagens/motosserra-poda-t540-xp-mark-iii-000.jpg"
 destaque: false
-ordem: 290
+ordem: 82
 destaques:
   - "39,1 cm³ | Cilindrada"
   - "1,9 kW | Potência"

@@ -8,7 +8,7 @@ precoCampanha: 469
 imagem: "/imagens/motosserra-poda-t525-000.jpg"
 galeria: ["/imagens/motosserra-poda-t525-000.jpg", "/imagens/motosserra-poda-t525-001.jpg | Ponto de fixação", "/imagens/motosserra-poda-t525-002.jpg | Interruptor de paragem com retorno automático", "/imagens/motosserra-poda-t525-003.jpg | Fecho rápido da tampa do filtro"]
 destaque: false
-ordem: 280
+ordem: 81
 destaques:
   - "27 cm³ | Cilindrada"
   - "1 kW | Potência"

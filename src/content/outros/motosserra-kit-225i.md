@@ -8,7 +8,7 @@ precoCampanha: 399
 imagem: "/imagens/motosserra-225i-000.jpg"
 galeria: ["/imagens/motosserra-225i-000.jpg", "/imagens/motosserra-225i-001.jpg"]
 destaque: false
-ordem: 170
+ordem: 70
 destaques:
   - "36 V | Tensão da bateria"
   - "0,8 kW | Potência"
