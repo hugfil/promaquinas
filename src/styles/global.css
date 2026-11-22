@@ -281,6 +281,15 @@ header.topo nav a.nav-cta[aria-current] { color: var(--verde); background: #fff;
 .campanha { margin-bottom: 4rem; }
 .campanha-produtos { margin: 1rem 0 1.5rem; }
 .campanha-produtos h3 { margin-top: 0; }
+/* Página das campanhas quando não há nenhuma ativa */
+.sem-campanha-cartao { display: grid; justify-items: start; gap: 1rem; padding: 2rem 1.5rem; background: var(--cinza-claro); border: 1px solid var(--linha); border-radius: 16px; }
+@media (min-width: 768px) { .sem-campanha-cartao { padding: 2.75rem 3rem; } }
+main > .wrap .sem-campanha-cartao h2 { margin: 0; }
+.sem-campanha-cartao p { margin: 0; }
+.sem-campanha-icone { width: 4rem; height: 4rem; color: var(--verde); }
+.sem-campanha-datas, .sem-campanha-contacto { color: var(--cinza); font-size: .9375rem; }
+.sem-campanha-contacto a { color: var(--verde); font-weight: 600; }
+.sem-campanha-cartao .acoes { margin-top: .5rem; }
 
 /* Galeria e imagem de campanha */
 .galeria-lista { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); list-style: none; padding: 0; margin: 0; }

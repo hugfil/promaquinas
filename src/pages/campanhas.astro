@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { render } from 'astro:content';
+import { render, getCollection } from 'astro:content';
 import { campanhasAtivas, resolverProdutos } from '../lib/campanhas';
 import { u, data } from '../lib/url';
 import EmCampanha from '../components/EmCampanha.astro';
@@ -8,6 +8,7 @@ import Galeria from '../components/Galeria.astro';
 import Preco from '../components/Preco.astro';
 import { lerItem } from '../lib/media';
 import { resolverPreco } from '../lib/preco';
+import { contactos, redes } from '../lib/empresa';
 
 const ativas = await campanhasAtivas();
 // Ordem "Recomendados": primeiro os robots, depois os outros produtos; em cada grupo, primeiro o destaque e depois o campo "ordem"
@@ -31,6 +32,14 @@ const itens = await Promise.all(
     };
   })
 );
+
+// Sem campanhas ativas: mostra a próxima (se já estiver marcada) ou a última que terminou
+const hoje = new Date();
+const todas = itens.length === 0 ? await getCollection('campanhas') : [];
+const fimDoDia = (d: Date) => { const f = new Date(d); f.setUTCHours(23, 59, 59, 999); return f; };
+const proxima = todas.filter((c) => c.data.dataInicio > hoje).sort((a, b) => a.data.dataInicio.getTime() - b.data.dataInicio.getTime())[0];
+const ultima = todas.filter((c) => fimDoDia(c.data.dataFim) < hoje).sort((a, b) => b.data.dataFim.getTime() - a.data.dataFim.getTime())[0];
+const instagram = redes.find((r) => r.nome === 'Instagram')?.url;
 ---
 <Base titulo="Campanhas e promoções" descricao="Campanhas e ofertas em robots corta-relva e equipamentos Husqvarna®, por tempo limitado. Veja as condições e peça o seu orçamento.">
   <section class="hero claro">
@@ -41,7 +50,33 @@ const itens = await Promise.all(
   </section>
   <div class="wrap">
     {itens.length === 0 && (
-      <p>Neste momento não há campanhas ativas. Volte em breve ou continue a explorar a nossa <a href={u('/')}>loja</a>.</p>
+      <section class="sem-campanha" aria-labelledby="sem-campanha-titulo">
+        <div class="sem-campanha-cartao">
+          <svg class="sem-campanha-icone" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 54h54" />
+            <path d="M7 48c0-8 6-14 15-15l19-1c9 0 16 5 16 12v4z" />
+            <path d="M27 32v-3h10v3" />
+            <path d="M45 40h8" />
+            <circle cx="21" cy="48" r="6" style="fill:var(--cinza-claro)" />
+            <circle cx="21" cy="48" r="1.8" />
+            <circle cx="52" cy="50.5" r="3" style="fill:var(--cinza-claro)" />
+            <path d="M42 16h7l-7 8h7M52 8h5l-5 6h5" />
+          </svg>
+          {proxima && <p><span class="banner-chip"><span class="banner-ponto"></span>Em breve</span></p>}
+          <h2 id="sem-campanha-titulo">De momento não há campanhas ativas</h2>
+          <p>As nossas campanhas são por tempo limitado. Enquanto a próxima não chega, peça-nos um orçamento e conheça as condições atuais de cada equipamento.</p>
+          {proxima && <p class="sem-campanha-datas">Próxima campanha: <strong>{proxima.data.titulo}</strong>, a partir de {data(proxima.data.dataInicio)}.</p>}
+          {!proxima && ultima && <p class="sem-campanha-datas">A última campanha, <strong>{ultima.data.titulo}</strong>, terminou a {data(ultima.data.dataFim)}.</p>}
+          <div class="acoes">
+            <a class="botao" href={u('/orcamento/')}>Pedir orçamento</a>
+            <a class="botao sec" href={u('/robots/')}>Ver robots</a>
+            <a class="botao sec" href={u('/produtos/')}>Ver outros produtos</a>
+          </div>
+          <p class="sem-campanha-contacto">
+            Prefere falar connosco?<br />Ligue para <a href={'tel:' + contactos.telefoneLigacao}>{contactos.telefone}</a> <small>({contactos.telefoneNota})</small>{instagram && <><br />ou acompanhe-nos no <a href={instagram} target="_blank" rel="noopener">Instagram</a></>}.
+          </p>
+        </div>
+      </section>
     )}
     {itens.map(({ c, Content, produtos, tipos, marcas, folhetos, videos }) => (
       <article class="prosa campanha" id={c.id}>
