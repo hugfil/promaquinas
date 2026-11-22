@@ -7,16 +7,29 @@ import EmCampanha from '../components/EmCampanha.astro';
 import Galeria from '../components/Galeria.astro';
 import Preco from '../components/Preco.astro';
 import { lerItem } from '../lib/media';
+import { resolverPreco } from '../lib/preco';
 
 const ativas = await campanhasAtivas();
+// Ordem "Recomendados": primeiro os robots, depois os outros produtos; em cada grupo, primeiro o destaque e depois o campo "ordem"
+const recomendados = (a: { colecao: string; destaque: boolean; ordem: number; nome: string }, b: { colecao: string; destaque: boolean; ordem: number; nome: string }) =>
+  (a.colecao === b.colecao ? 0 : a.colecao === 'robots' ? -1 : 1) || Number(b.destaque) - Number(a.destaque) || a.ordem - b.ordem || a.nome.localeCompare(b.nome, 'pt');
 const itens = await Promise.all(
-  ativas.map(async (c) => ({
+  ativas.map(async (c) => {
+    const produtos = (await resolverProdutos(c.data.produtos, c.data.titulo))
+      .sort(recomendados)
+      .map((p, i) => ({ ...p, i, valor: resolverPreco(p.dados, true).atual }));
+    const tipos = [...new Set(produtos.map((p) => p.tipo).filter(Boolean))].sort((a, b) => (a === 'Robots' ? -1 : b === 'Robots' ? 1 : a.localeCompare(b, 'pt')));
+    const marcas = [...new Set(produtos.map((p) => p.marca))].sort((a, b) => a.localeCompare(b, 'pt'));
+    return {
     c,
     Content: (await render(c)).Content,
-    produtos: await resolverProdutos(c.data.produtos, c.data.titulo),
+    produtos,
+    tipos,
+    marcas,
     videos: c.data.video ? (Array.isArray(c.data.video) ? c.data.video : [c.data.video]) : [],
     folhetos: c.data.folheto ? (Array.isArray(c.data.folheto) ? c.data.folheto : [c.data.folheto]) : (c.data.folhetoPdf ? [c.data.folhetoPdf] : []),
-  }))
+    };
+  })
 );
 ---
 <Base titulo="Campanhas e promoções" descricao="Campanhas e ofertas em robots corta-relva e equipamentos Husqvarna®, por tempo limitado. Veja as condições e peça o seu orçamento.">
@@ -30,7 +43,7 @@ const itens = await Promise.all(
     {itens.length === 0 && (
       <p>Neste momento não há campanhas ativas. Volte em breve ou continue a explorar a nossa <a href={u('/')}>loja</a>.</p>
     )}
-    {itens.map(({ c, Content, produtos, folhetos, videos }) => (
+    {itens.map(({ c, Content, produtos, tipos, marcas, folhetos, videos }) => (
       <article class="prosa campanha" id={c.id}>
         <h2>{c.data.titulo}</h2>
         <p class="etiqueta">De {data(c.data.dataInicio)} a {data(c.data.dataFim)}</p>
@@ -48,11 +61,68 @@ const itens = await Promise.all(
           )}
         </div>
         {produtos.length > 0 && (
-          <>
+          <div data-filtros>
             <h3>Produtos desta campanha</h3>
+            {produtos.length > 1 && (
+              <div class="filtros-barra">
+                <button type="button" class="filtros-abrir" aria-expanded="false" aria-controls={`filtros-${c.id}`}>
+                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle cx="15" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="9" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+                  Filtrar
+                  <span class="filtros-badge" hidden>0</span>
+                </button>
+                <div class="filtros-grupos" id={`filtros-${c.id}`}>
+                  {tipos.length > 1 && (
+                    <fieldset class="grupo">
+                      <legend>Tipo</legend>
+                      <div class="chips">
+                        <label class="chip"><input type="radio" name={`tipo-${c.id}`} data-grupo="tipo" value="" checked /><span>Todos<small class="chip-n"></small></span></label>
+                        {tipos.map((t) => (
+                          <label class="chip"><input type="radio" name={`tipo-${c.id}`} data-grupo="tipo" value={t} /><span>{t}<small class="chip-n"></small></span></label>
+                        ))}
+                      </div>
+                    </fieldset>
+                  )}
+                  {marcas.length > 1 && (
+                    <fieldset class="grupo">
+                      <legend>Marca</legend>
+                      <div class="chips">
+                        <label class="chip"><input type="radio" name={`marca-${c.id}`} data-grupo="marca" value="" checked /><span>Todas<small class="chip-n"></small></span></label>
+                        {marcas.map((m) => (
+                          <label class="chip"><input type="radio" name={`marca-${c.id}`} data-grupo="marca" value={m} /><span>{m}<small class="chip-n"></small></span></label>
+                        ))}
+                      </div>
+                    </fieldset>
+                  )}
+                  <fieldset class="grupo">
+                    <legend>Ordenar</legend>
+                    <div class="segmentos">
+                      <label class="segmento"><input type="radio" name={`ordem-${c.id}`} data-grupo="ordem" value="" checked /><span>Recomendados</span></label>
+                      <label class="segmento">
+                        <input type="radio" name={`ordem-${c.id}`} data-grupo="ordem" value="preco-asc" />
+                        <span>
+                          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                          Preço crescente
+                        </span>
+                      </label>
+                      <label class="segmento">
+                        <input type="radio" name={`ordem-${c.id}`} data-grupo="ordem" value="preco-desc" />
+                        <span>
+                          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                          Preço decrescente
+                        </span>
+                      </label>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="filtros-rodape">
+                  <p class="filtros-contagem" aria-live="polite">{produtos.length === 1 ? '1 produto' : produtos.length + ' produtos'}</p>
+                  <button type="button" class="filtro-limpar" hidden>Limpar filtros</button>
+                </div>
+              </div>
+            )}
             <ul class="grelha campanha-produtos">
               {produtos.map((p) => (
-                <li class="cartao">
+                <li class="cartao" data-i={p.i} data-tipo={p.tipo} data-marca={p.marca} data-preco={p.valor ?? ''}>
                   <EmCampanha />
                   {p.imagem && <img loading="lazy" decoding="async" src={u(p.imagem)} alt={p.nome} />}
                   <div class="corpo">
@@ -64,7 +134,8 @@ const itens = await Promise.all(
                 </li>
               ))}
             </ul>
-          </>
+            <p class="sem-resultados" hidden>Não há produtos com esta seleção.</p>
+          </div>
         )}
         {videos.length > 0 && (
           <div class="campanha-videos">
@@ -86,5 +157,93 @@ const itens = await Promise.all(
       e.preventDefault();
       alvo.click();
     });
+  });
+</script>
+<script>
+  // Filtros por tipo e marca, e ordenação por preço, em cada campanha (mesmo comportamento das páginas Robots e Produtos)
+  document.querySelectorAll<HTMLElement>('[data-filtros]').forEach((bloco) => {
+    const lista = bloco.querySelector<HTMLElement>('.campanha-produtos');
+    const itens = Array.from(bloco.querySelectorAll<HTMLElement>('.campanha-produtos > li[data-tipo]'));
+    const barra = bloco.querySelector<HTMLElement>('.filtros-barra');
+    if (!lista || !barra) return;
+    const abrir = bloco.querySelector<HTMLElement>('.filtros-abrir');
+    const badge = bloco.querySelector<HTMLElement>('.filtros-badge');
+    const limpar = bloco.querySelector<HTMLElement>('.filtro-limpar');
+    const vazio = bloco.querySelector<HTMLElement>('.sem-resultados');
+    const contagem = bloco.querySelector<HTMLElement>('.filtros-contagem');
+
+    const radios = (grupo: string) => Array.from(bloco.querySelectorAll<HTMLInputElement>('input[data-grupo="' + grupo + '"]'));
+    const valor = (grupo: string) => bloco.querySelector<HTMLInputElement>('input[data-grupo="' + grupo + '"]:checked')?.value ?? '';
+    const corresponde = (li: HTMLElement, tipo: string, marca: string) =>
+      (tipo === '' || li.dataset.tipo === tipo) && (marca === '' || li.dataset.marca === marca);
+    const indice = (li: HTMLElement) => Number(li.dataset.i);
+    const preco = (li: HTMLElement) => (li.dataset.preco === '' ? null : Number(li.dataset.preco));
+    const escreverN = (r: HTMLInputElement, n: number) => {
+      const el = r.nextElementSibling?.querySelector('.chip-n');
+      if (el) el.textContent = String(n);
+    };
+
+    // Em ecrãs pequenos, os filtros ficam escondidos atrás do botão "Filtrar"
+    abrir?.addEventListener('click', () => {
+      const aberta = barra.classList.toggle('aberta');
+      abrir.setAttribute('aria-expanded', String(aberta));
+    });
+
+    const aplicar = () => {
+      const tipo = valor('tipo');
+      const marca = valor('marca');
+      const ordem = valor('ordem');
+
+      let visiveis = 0;
+      itens.forEach((li) => {
+        const ok = corresponde(li, tipo, marca);
+        li.hidden = !ok;
+        if (ok) visiveis++;
+      });
+
+      const ordenados = [...itens].sort((a, b) => {
+        if (ordem === 'preco-asc' || ordem === 'preco-desc') {
+          const x = preco(a);
+          const y = preco(b);
+          if (x === null && y === null) return indice(a) - indice(b);
+          if (x === null) return 1;
+          if (y === null) return -1;
+          return (ordem === 'preco-asc' ? x - y : y - x) || indice(a) - indice(b);
+        }
+        return indice(a) - indice(b);
+      });
+      ordenados.forEach((li) => lista.appendChild(li));
+
+      // Cada opção mostra quantos produtos daria, tendo em conta os outros filtros
+      radios('tipo').forEach((r) => {
+        const n = itens.filter((li) => corresponde(li, r.value, marca)).length;
+        escreverN(r, n);
+        r.disabled = n === 0 && !r.checked;
+      });
+      radios('marca').forEach((r) => {
+        const n = itens.filter((li) => corresponde(li, tipo, r.value)).length;
+        escreverN(r, n);
+        r.disabled = n === 0 && !r.checked;
+      });
+
+      if (contagem) contagem.textContent = visiveis === 1 ? '1 produto' : visiveis + ' produtos';
+      if (vazio) vazio.hidden = visiveis > 0;
+      if (limpar) limpar.hidden = tipo === '' && marca === '' && ordem === '';
+      const ativos = [tipo, marca, ordem].filter((v) => v !== '').length;
+      if (badge) {
+        badge.textContent = String(ativos);
+        badge.hidden = ativos === 0;
+      }
+    };
+
+    ['tipo', 'marca', 'ordem'].forEach((grupo) => radios(grupo).forEach((r) => r.addEventListener('change', aplicar)));
+    limpar?.addEventListener('click', () => {
+      ['tipo', 'marca', 'ordem'].forEach((grupo) => {
+        const todos = radios(grupo).find((r) => r.value === '');
+        if (todos) todos.checked = true;
+      });
+      aplicar();
+    });
+    aplicar();
   });
 </script>
