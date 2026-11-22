@@ -7,8 +7,8 @@ preco: 318.27
 precoCampanha: 289
 imagem: "/imagens/lavadora-pw-240-000.jpg"
 galeria: ["/imagens/lavadora-pw-240-000.jpg", "/imagens/lavadora-pw-240-001.jpg", "/imagens/lavadora-pw-240-002.jpg"]
-destaque: true
-ordem: 80
+destaque: false
+ordem: 41
 destaques:
   - "520 l/h | Caudal máximo"
   - "140 bar | Pressão máxima"

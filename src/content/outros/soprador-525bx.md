@@ -7,7 +7,7 @@ preco: 524.27
 precoCampanha: 399
 imagem: "/imagens/soprador-525bx-000.jpg"
 destaque: false
-ordem: 370
+ordem: 102
 destaques:
   - "25,4 cm³ | Cilindrada"
   - "15 N | Força de sopro"

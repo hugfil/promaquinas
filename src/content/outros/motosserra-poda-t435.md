@@ -7,7 +7,7 @@ preco: 483.07
 precoCampanha: 379
 imagem: "/imagens/motosserra-poda-t435-000.jpg"
 destaque: false
-ordem: 270
+ordem: 80
 destaques:
   - "35,2 cm³ | Cilindrada"
   - "1,5 kW | Potência"

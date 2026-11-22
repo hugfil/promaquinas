@@ -7,7 +7,7 @@ preco: 967.17
 precoCampanha: 769
 imagem: "/imagens/motoenxada-tf338-000.jpg"
 destaque: false
-ordem: 140
+ordem: 51
 destaques:
   - "95 cm | Largura de corte/trabalho"
   - "212 cm³ | Cilindrada"

@@ -7,7 +7,7 @@ preco: 874.47
 precoCampanha: 629
 imagem: "/imagens/rocadora-553rs-000.jpg"
 destaque: false
-ordem: 340
+ordem: 92
 destaques:
   - "45,7 cm³ | Cilindrada"
   - "2,3 kW | Potência"

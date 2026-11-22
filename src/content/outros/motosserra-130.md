@@ -6,8 +6,8 @@ resumo: "Concebida para utilização ocasional. Motor X-Torq® e bomba de óleo 
 preco: 349.17
 precoCampanha: 259
 imagem: "/imagens/motosserra-130-000.jpg"
-destaque: true
-ordem: 1
+destaque: false
+ordem: 60
 destaques:
   - "38 cm³ | Cilindrada"
   - "1,5 kW | Potência"

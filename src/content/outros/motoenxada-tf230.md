@@ -8,7 +8,7 @@ precoCampanha: 599
 imagem: "/imagens/motoenxada-tf230-000.jpg"
 galeria: ["/imagens/motoenxada-tf230-000.jpg", "/imagens/motoenxada-tf230-001.jpg"]
 destaque: false
-ordem: 130
+ordem: 50
 destaques:
   - "75 cm | Largura de corte/trabalho"
   - "196 cm³ | Cilindrada"

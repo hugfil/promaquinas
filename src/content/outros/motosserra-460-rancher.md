@@ -7,7 +7,7 @@ preco: 771.47
 precoCampanha: 649
 imagem: "/imagens/motosserra-460-rancher-000.jpg"
 destaque: false
-ordem: 200
+ordem: 65
 destaques:
   - "60,3 cm³ | Cilindrada"
   - "2,7 kW | Potência"

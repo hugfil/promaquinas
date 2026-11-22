@@ -7,7 +7,7 @@ preco: 441.87
 precoCampanha: 379
 imagem: "/imagens/rocadora-333r-mark-ii-000.jpg"
 destaque: false
-ordem: 310
+ordem: 91
 destaques:
   - "32,6 cm³ | Cilindrada"
   - "1 kW | Potência"

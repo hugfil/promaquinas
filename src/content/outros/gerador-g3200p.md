@@ -7,7 +7,7 @@ preco: 627.27
 precoCampanha: 559
 imagem: "/imagens/gerador-g3200p-000.png"
 destaque: false
-ordem: 70
+ordem: 30
 destaques:
   - "50 Hz | Frequência"
   - "2800 W | Potência contínua"

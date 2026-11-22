@@ -7,7 +7,7 @@ preco: 596.37
 precoCampanha: 459
 imagem: "/imagens/corta-relva-lc-140sp-000.jpg"
 destaque: false
-ordem: 10
+ordem: 21
 destaques:
   - "1,95 kW | Potência (kW)"
   - "Autopropulsado | Propulsão"

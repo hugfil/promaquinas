@@ -7,8 +7,8 @@ preco: 390.37
 precoCampanha: 309
 imagem: "/imagens/motosserra-135-mark-ii-000.jpg"
 galeria: ["/imagens/motosserra-135-mark-ii-000.jpg", "/imagens/motosserra-135-mark-ii-001.jpg", "https://youtu.be/t5HsikRBero"]
-destaque: true
-ordem: 2
+destaque: false
+ordem: 61
 destaques:
   - "38 cm³ | Cilindrada"
   - "1,6 kW | Potência"

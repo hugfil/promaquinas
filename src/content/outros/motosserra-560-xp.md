@@ -7,7 +7,7 @@ preco: 1183.47
 precoCampanha: 1029
 imagem: "/imagens/motosserra-560-xp-000.jpg"
 destaque: false
-ordem: 230
+ordem: 68
 destaques:
   - "59,8 cm³ | Cilindrada"
   - "3,5 kW | Potência"

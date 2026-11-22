@@ -8,7 +8,7 @@ precoCampanha: 4799
 imagem: "/imagens/corta-relva-rider-r-214tc-000.jpg"
 galeria: ["/imagens/corta-relva-rider-r-214tc-000.jpg", "/imagens/corta-relva-rider-r-214tc-001.jpg", "/imagens/corta-relva-rider-r-214tc-002.jpg", "/imagens/corta-relva-rider-r-214tc-003.jpg"]
 destaque: false
-ordem: 30
+ordem: 22
 destaques:
   - " | Eixo traseiro móvel"
   - " | Unidade de corte Combi"

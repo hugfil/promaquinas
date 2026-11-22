@@ -7,7 +7,7 @@ preco: 740.57
 precoCampanha: 659
 imagem: "/imagens/corta-sebes-522hd60x-000.jpg"
 destaque: false
-ordem: 60
+ordem: 24
 destaques:
   - "4400 cortes/min | Velocidade de corte"
   - "30 mm | Largura dos dentes"

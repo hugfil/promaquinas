@@ -8,7 +8,7 @@ precoCampanha: 659
 imagem: "/imagens/lavadora-pw-370-000.jpg"
 galeria: ["/imagens/lavadora-pw-370-000.jpg", "/imagens/lavadora-pw-370-001.jpg", "/imagens/lavadora-pw-370-002.jpg"]
 destaque: false
-ordem: 110
+ordem: 43
 destaques:
   - "500 l/h | Caudal máximo"
   - "170 bar | Pressão máxima"

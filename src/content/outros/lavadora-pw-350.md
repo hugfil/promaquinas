@@ -7,8 +7,8 @@ preco: 524.27
 precoCampanha: 459
 imagem: "/imagens/lavadora-pw-350-000.jpg"
 galeria: ["/imagens/lavadora-pw-350-000.jpg", "/imagens/lavadora-pw-350-001.jpg", "/imagens/lavadora-pw-350-002.jpg"]
-destaque: false
-ordem: 90
+destaque: true
+ordem: 7
 destaques:
   - "450 l/h | Caudal máximo"
   - "150 bar | Pressão máxima"

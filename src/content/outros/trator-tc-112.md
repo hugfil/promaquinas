@@ -7,8 +7,8 @@ preco: 4221.97
 precoCampanha: 3299
 imagem: "/imagens/trator-tc-112-000.jpg"
 galeria: ["/imagens/trator-tc-112-000.jpg", "/imagens/trator-tc-112-001.jpg", "/imagens/trator-tc-112-002.jpg"]
-destaque: false
-ordem: 40
+destaque: true
+ordem: 8
 destaques:
   - "8 kW a 2800 rpm | Potência"
   - "Husqvarna 413AE | Motor"
