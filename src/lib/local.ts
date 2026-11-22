@@ -10,4 +10,6 @@ export const local = {
   latitude: 41.613918,
   longitude: -8.433020,
   zoom: 16,
+  // Identificação do perfil da loja no Google Maps (faz os botões abrirem o perfil, com nome e morada certos)
+  placeId: 'ChIJs6wiBAABJQ0RMgBylt7845w',
 };

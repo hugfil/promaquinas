@@ -430,6 +430,10 @@ footer.rodape p { margin: 0; }
 .rodape-nota { color: var(--r-suave); font-size: .875rem; max-width: 34rem; }
 .rodape-morada { display: flex; align-items: center; gap: .45rem; }
 .rodape-morada svg { flex: none; color: #2FB57A; }
+.rodape-rotas { display: flex; flex-wrap: wrap; gap: .5rem; }
+.rota { display: inline-flex; align-items: center; gap: .4rem; padding: .4rem .9rem; color: #fff; font-family: var(--f-sub); font-weight: 600; font-size: .8125rem; text-decoration: none; border: 1px solid var(--r-linha); border-radius: 999px; transition: background .2s, color .2s, border-color .2s; }
+.rota img { flex: none; height: 1.15rem; width: auto; }
+footer.rodape a.rota:hover { color: var(--tinta); background: #fff; border-color: #fff; }
 .rodape-redes { display: flex; gap: .6rem; margin-top: .4rem; }
 .rede { display: inline-flex; align-items: center; justify-content: center; width: 2.4rem; height: 2.4rem; color: #fff; border: 1px solid var(--r-linha); border-radius: 50%; transition: background .2s, border-color .2s, color .2s, transform .2s; }
 a.rede:hover { background: #fff; color: var(--tinta); border-color: #fff; transform: translateY(-2px); }
@@ -496,8 +500,6 @@ footer.rodape .legais a:hover { color: #fff; text-decoration: underline; text-un
 .mapa-morada { color: #cdd2ce; font-size: .75rem; white-space: normal; overflow-wrap: anywhere; }
 .mapa-lupa { flex: none; display: inline-flex; align-items: center; gap: .35rem; padding: .3rem .65rem; font-family: var(--f-sub); font-weight: 600; font-size: .75rem; background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .3); border-radius: 999px; transition: background .2s, color .2s, border-color .2s; }
 .mapa-abrir:hover .mapa-lupa, .mapa-abrir:focus-visible .mapa-lupa { color: var(--verde); background: var(--banner-fundo); border-color: var(--banner-fundo); }
-.mapa-externo { position: absolute; top: .5rem; right: .5rem; z-index: 2; display: flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem; color: #fff; background: rgba(0, 0, 0, .45); border: 1px solid rgba(255, 255, 255, .3); border-radius: 50%; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: background .2s, color .2s, border-color .2s; }
-.mapa-externo:hover { color: var(--verde); background: var(--banner-fundo); border-color: var(--banner-fundo); }
 .mapa-dialogo { width: min(94vw, 62rem); max-width: none; height: min(84vh, 40rem); max-height: none; padding: 0; overflow: hidden; color: var(--tinta); background: transparent; border: 0; border-radius: 16px; }
 .mapa-dialogo[open] { display: flex; flex-direction: column; animation: galeria-abre .25s ease-out; }
 .mapa-dialogo { transition: width .25s ease-out, height .25s ease-out, border-radius .25s ease-out; }
@@ -548,7 +550,7 @@ footer.rodape .legais a:hover { color: #fff; text-decoration: underline; text-un
   .topo-voltar { transition: none; transform: none; }
   .logo-icone { transition: none; }
   .mapa-onda { animation: none; }
-  .mapa-cartao, .mapa-lupa, .mapa-externo, .mapa-btn, .mapa-fechar { transition: none; }
+  .mapa-cartao, .mapa-lupa, .rota, .mapa-btn, .mapa-fechar { transition: none; }
   .mapa-cartao:hover { transform: none; }
   .mapa-dialogo[open] { animation: none; }
   .mapa-dialogo { transition: none; }
