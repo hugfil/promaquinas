@@ -64,6 +64,7 @@ const intervalo = (p: [string, string][]) => p.map(([a, f]) => `${a}–${f}`);
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 6.5h16v11H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /><path d="M4.5 7l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
           Contactos
         </h2>
+        <span class="estado estado-vazio" aria-hidden="true">&nbsp;</span>
       </div>
       <ul class="contactos">
         <li>
@@ -159,6 +160,12 @@ const intervalo = (p: [string, string][]) => p.map(([a, f]) => `${a}–${f}`);
       estado.classList.toggle('aberto', !!atual);
       texto.textContent = atual ? 'Aberto agora' : 'Fechado';
       estado.hidden = false;
+      // O mesmo estado aparece como um ponto no cartão do mapa (sem texto; leitores de ecrã recebem o texto)
+      document.querySelectorAll<HTMLElement>('[data-estado-mapa]').forEach((ponto) => {
+        ponto.classList.toggle('aberto', !!atual);
+        ponto.setAttribute('aria-label', atual ? 'Aberto agora' : 'Fechado');
+        ponto.hidden = false;
+      });
     };
     atualizar();
     setInterval(atualizar, 60000);

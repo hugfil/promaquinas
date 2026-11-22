@@ -475,7 +475,7 @@ footer.rodape .legais a:hover { color: #fff; text-decoration: underline; text-un
   .legais { gap: .35rem 1.1rem; }
   .legais li + li::before { content: none; }
 }
-@media (prefers-reduced-motion: reduce) { .estado.aberto .estado-ponto::after { animation: none; opacity: 0; } .rede { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .estado.aberto .estado-ponto::after, .mapa-estado.aberto::after { animation: none; opacity: 0; } .rede { transition: none; } }
 /* Texto escrito em Markdown (fichas, campanhas, privacidade): usa mais largura.
    Para ajustar, mude --prosa-largura (ex.: 56rem mais estreito, 80rem mais largo, 100% toda a largura) */
 :root { --prosa-largura: 64rem; }
@@ -490,6 +490,13 @@ footer.rodape .legais a:hover { color: #fff; text-decoration: underline; text-un
 .mapa-cartao { position: relative; width: 100%; max-width: 22rem; height: 9.5rem; overflow: hidden; background: #2b2b2b; border: 1px solid rgba(255, 255, 255, .16); border-radius: 12px; box-shadow: 0 6px 18px rgba(0, 0, 0, .35); transition: transform .25s ease-out, border-color .2s; }
 .mapa-cartao:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, .4); }
 .mapa-fundo { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* indicador aberto/fechado (só um ponto) no canto do cartão do mapa, ao nível da etiqueta do Horário; não bloqueia o clique que abre o mapa */
+.mapa-estado { position: absolute; top: calc(1.1rem + 9px); left: 1rem; z-index: 1; display: block; width: 8px; height: 8px; border-radius: 50%; background: #e8665c; box-shadow: 0 0 0 1px rgba(0, 0, 0, .5); pointer-events: none; }
+.mapa-estado.aberto { background: #2FB57A; }
+.mapa-estado.aberto::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #2FB57A; animation: estado-onda 2s ease-out infinite; }
+.mapa-estado[hidden] { display: none; }
+/* espaço invisível com a altura da etiqueta do Horário, para o título dos Contactos ficar à mesma altura do título do Horário */
+.estado-vazio { visibility: hidden; }
 .mapa-onda { transform-box: fill-box; transform-origin: center; animation: mapa-onda 2.6s ease-out infinite; }
 .mapa-onda-2 { animation-delay: 1.3s; }
 @keyframes mapa-onda { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(3.6); opacity: 0; } }
