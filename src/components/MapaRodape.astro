@@ -3,8 +3,13 @@ import { local } from '../lib/local';
 
 const { nome, morada, latitude: lat, longitude: lon, zoom } = local;
 // Ligações que abrem num novo separador (sem carregar nada de terceiros até o visitante clicar)
-const google = 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lon;
-const rota = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lon;
+const google = local.placeId
+  ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(nome) + '&query_place_id=' + local.placeId
+  : 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lon;
+const rota = 'https://www.google.com/maps/dir/?api=1&destination=' + (local.placeId
+  ? encodeURIComponent(nome + ', ' + morada.replace(' · ', ', ')) + '&destination_place_id=' + local.placeId
+  : lat + ',' + lon);
+const waze = 'https://waze.com/ul?ll=' + lat + ',' + lon + '&navigate=yes';
 // Mapa ampliado: OpenStreetMap, só carregado quando o visitante abre a janela
 const dLon = 0.01 * Math.pow(2, 16 - zoom);
 const dLat = dLon * 0.55;
@@ -36,16 +41,14 @@ const embed = 'https://www.openstreetmap.org/export/embed.html?bbox=' +
       Ampliar
     </span>
   </button>
-  <a class="mapa-externo" href={google} target="_blank" rel="noopener" aria-label="Abrir no Google Maps (novo separador)" title="Abrir no Google Maps (novo separador)">
-    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-  </a>
 </div>
 <dialog class="mapa-dialogo" aria-label={'Onde estamos: ' + nome}>
   <div class="mapa-cabeca">
     <div class="mapa-titulo"><strong>Onde estamos</strong><span>{morada}</span></div>
     <div class="mapa-acoes">
+      <a class="mapa-btn" href={waze} target="_blank" rel="noopener">Waze</a>
       <a class="mapa-btn" href={rota} target="_blank" rel="noopener">Como chegar</a>
-      <a class="mapa-btn" href={google} target="_blank" rel="noopener">Google Maps</a>
+      <a class="mapa-btn" href={google} target="_blank" rel="noopener">Ver no Google Maps</a>
       <button type="button" class="mapa-maximizar" aria-label="Maximizar mapa" aria-pressed="false">
         <svg class="ic-ampliar" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
         <svg class="ic-reduzir" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -62,6 +65,15 @@ const embed = 'https://www.openstreetmap.org/export/embed.html?bbox=' +
   <p class="mapa-nota">Mapa © colaboradores do OpenStreetMap. Só é carregado quando abre esta janela.</p>
 </dialog>
 <script>
+  // O cartão do mapa fica com a mesma altura da caixa dos contactos (acompanha se o conteúdo ou o tamanho do ecrã mudarem)
+  const caixaContactos = document.getElementById('rodape-contactos-titulo')?.closest<HTMLElement>('section');
+  const cartaoMapa = document.querySelector<HTMLElement>('[data-mapa]');
+  if (caixaContactos && cartaoMapa) {
+    const igualar = () => { cartaoMapa.style.height = caixaContactos.offsetHeight + 'px'; };
+    igualar();
+    if ('ResizeObserver' in window) new ResizeObserver(igualar).observe(caixaContactos);
+  }
+
   // O mapa só é pedido ao OpenStreetMap quando o visitante abre a janela (nada é carregado ao abrir a página)
   document.querySelectorAll<HTMLElement>('[data-mapa]').forEach((cartao) => {
     const dialogo = cartao.nextElementSibling as HTMLDialogElement | null;

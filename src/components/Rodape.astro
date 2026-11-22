@@ -6,6 +6,12 @@ import Logo from './Logo.astro';
 import MapaRodape from './MapaRodape.astro';
 
 const ano = new Date().getFullYear();
+// Ligações para chegar à loja (abrem num novo separador)
+const waze = 'https://waze.com/ul?ll=' + local.latitude + ',' + local.longitude + '&navigate=yes';
+// Com o Place ID o destino é o perfil da loja (nome e morada do perfil); sem ele, as coordenadas
+const rota = 'https://www.google.com/maps/dir/?api=1&destination=' + (local.placeId
+  ? encodeURIComponent(local.nome + ', ' + local.morada.replace(' · ', ', ')) + '&destination_place_id=' + local.placeId
+  : local.latitude + ',' + local.longitude);
 const intervalo = (p: [string, string][]) => p.map(([a, f]) => `${a}–${f}`);
 ---
 <footer class="rodape">
@@ -17,6 +23,10 @@ const intervalo = (p: [string, string][]) => p.map(([a, f]) => `${a}–${f}`);
       <p class="rodape-morada">
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 21s-7-6.3-7-11.5A7 7 0 0 1 19 9.5C19 14.7 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8" /></svg>
         {local.morada}
+      </p>
+      <p class="rodape-rotas">
+        <a class="rota" href={waze} target="_blank" rel="noopener" aria-label="Abrir no Waze (novo separador)"><img src={u('/imagens/icone-waze.svg')} width="18" height="18" alt="" />Abrir no Waze</a>
+        <a class="rota" href={rota} target="_blank" rel="noopener" aria-label="Como chegar no Google Maps (novo separador)"><img src={u('/imagens/icone-google-maps.svg')} width="13" height="18" alt="" />Google Maps</a>
       </p>
       <div class="rodape-redes" aria-label="Redes sociais">
         {redes.map((r) => {
