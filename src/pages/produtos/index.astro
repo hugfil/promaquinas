@@ -7,7 +7,8 @@ import { resolverPreco } from '../../lib/preco';
 import Preco from '../../components/Preco.astro';
 import EmCampanha from '../../components/EmCampanha.astro';
 
-const produtos = (await getCollection('outros')).sort((a, b) => a.data.nome.localeCompare(b.data.nome, 'pt'));
+// Ordem "Recomendados": primeiro os produtos em destaque, depois pelo campo "ordem" (menor primeiro) e, em caso de empate, por nome
+const produtos = (await getCollection('outros')).sort((a, b) => Number(b.data.destaque) - Number(a.data.destaque) || a.data.ordem - b.data.ordem || a.data.nome.localeCompare(b.data.nome, 'pt'));
 const emCampanha = await produtosEmCampanha();
 const lista = produtos.map((p, i) => ({ p, i, valor: resolverPreco(p.data, emCampanha.has('produtos/' + p.id)).atual }));
 const marcas = [...new Set(produtos.map((p) => p.data.marca))].sort((a, b) => a.localeCompare(b, 'pt'));
@@ -66,7 +67,7 @@ const temFiltros = marcas.length > 1 || tipos.length > 1 || produtos.length > 1;
             <fieldset class="grupo">
               <legend>Ordenar</legend>
               <div class="segmentos">
-                <label class="segmento"><input type="radio" name="ordem" value="" checked /><span>Nome</span></label>
+                <label class="segmento"><input type="radio" name="ordem" value="" checked /><span>Recomendados</span></label>
                 <label class="segmento">
                   <input type="radio" name="ordem" value="preco-asc" />
                   <span>
