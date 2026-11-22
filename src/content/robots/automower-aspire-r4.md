@@ -1,6 +1,6 @@
 ---
 nome: "Automower® Aspire™ R4"
-marca: "Husqvarna®"
+marca: "Husqvarna"
 gama: "Jardins pequenos"
 resumo: "Para pequenos jardins com declives até 25 %."
 areaMaxima: 400
