@@ -43,6 +43,11 @@ export async function resolverProdutos(chaves: string[], campanha: string) {
       marca: entrada.data.marca,
       resumo: entrada.data.resumo,
       imagem: entrada.data.imagem,
+      // para os filtros e a ordem "Recomendados" da página das campanhas
+      colecao: tipo,
+      tipo: tipo === 'robots' ? 'Robots' : ('tipo' in entrada.data ? entrada.data.tipo ?? '' : ''),
+      destaque: entrada.data.destaque,
+      ordem: entrada.data.ordem,
       // dados completos da ficha (preco, precoDesde, precoCampanha) para o componente Preco
       dados: entrada.data,
     });
