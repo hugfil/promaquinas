@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { u } from '../lib/url';
+import { contactos } from '../lib/empresa';
+---
+<Base titulo="Página não encontrada" descricao="A página que procura não existe ou mudou de endereço. Veja os nossos robots corta-relva, os outros produtos ou peça o seu orçamento." noindex>
+  <section class="hero claro">
+    <div class="wrap">
+      <h1>Página não encontrada</h1>
+      <p>O endereço que abriu não existe ou foi alterado.</p>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sem-campanha" aria-labelledby="erro-404-titulo">
+      <div class="sem-campanha-cartao">
+        <svg class="sem-campanha-icone" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 54h56" />
+          <path d="M5 54V41c0-2 1.5-3 3.5-3H14v16" />
+          <g transform="translate(61.9 8) scale(-.84 .84)" stroke-width="3.1">
+            <path d="M7 48c0-8 6-14 15-15l19-1c9 0 16 5 16 12v4z" />
+            <path d="M27 32v-3h10v3" />
+            <path d="M45 40h8" />
+            <circle cx="21" cy="48" r="6" style="fill:var(--cinza-claro)" />
+            <circle cx="21" cy="48" r="1.8" />
+            <circle cx="52" cy="50.5" r="3" style="fill:var(--cinza-claro)" />
+          </g>
+          <path d="M44 6l-6 10h6l-3 9 8-11h-6z" />
+        </svg>
+        <h2 id="erro-404-titulo">Vamos ajudá-lo a encontrar o que procura</h2>
+        <p>A ligação pode estar errada ou a página já não existe. Escolha por onde continuar.</p>
+        <div class="acoes">
+          <a class="botao" href={u('/robots/')}>Ver robots</a>
+          <a class="botao sec" href={u('/produtos/')}>Ver outros produtos</a>
+          <a class="botao sec" href={u('/campanhas/')}>Campanhas</a>
+          <a class="botao sec" href={u('/')}>Página inicial</a>
+        </div>
+        <p class="sem-campanha-contacto">
+          Procura algo em concreto?<br />Ligue para <a href={'tel:' + contactos.telefoneLigacao}>{contactos.telefone}</a> <small>({contactos.telefoneNota})</small> ou <a href={u('/orcamento/')}>peça o seu orçamento</a>.
+        </p>
+      </div>
+    </section>
+  </div>
+</Base>
